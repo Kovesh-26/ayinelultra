@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "builder": "swc",
+    "assets": [
+      { "include": "src/**/*.hbs", "outDir": "dist" },
+      { "include": "src/**/*.html", "outDir": "dist" },
+      { "include": "src/**/*.graphql", "outDir": "dist" },
+      { "include": "src/**/*.gql", "outDir": "dist" },
+      { "include": "src/**/*.txt", "outDir": "dist" },
+      { "include": "src/templates/**/*", "outDir": "dist" }
+    ],
+    "watchAssets": true,
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "classValidatorShim": true,
+          "introspectComments": true
+        }
+      }
+    ]
+  }
+}

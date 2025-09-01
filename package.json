@@ -1,0 +1,42 @@
+{
+  "name": "ayinel",
+  "version": "1.0.0",
+  "description": "AYINEL — Next-gen creator platform blending YouTube, Facebook, and MySpace",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel dev",
+    "dev:api": "pnpm --filter @ayinel/api dev",
+    "dev:web": "pnpm --filter @ayinel/web dev",
+    "dev:mobile": "pnpm --filter @ayinel/mobile dev",
+    "build": "pnpm --recursive build",
+    "build:api": "pnpm --filter @ayinel/api build",
+    "build:web": "pnpm --filter @ayinel/web build",
+    "build:mobile": "pnpm --filter @ayinel/mobile build",
+    "lint": "pnpm --recursive lint",
+    "format": "prettier --write .",
+    "db:generate": "pnpm --filter @ayinel/api db:generate",
+    "db:migrate": "pnpm --filter @ayinel/api db:migrate",
+    "db:seed": "pnpm --filter @ayinel/api db:seed",
+    "db:studio": "pnpm --filter @ayinel/api db:studio",
+    "worker": "pnpm --filter @ayinel/api worker",
+    "services:up": "docker-compose -f docker-compose.dev.yml up -d",
+    "services:down": "docker-compose -f docker-compose.dev.yml down",
+    "services:logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "routes:scaffold": "node scripts/scaffold-routes.js",
+    "setup": "pnpm install && pnpm db:migrate && pnpm db:seed"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.11",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "^15.5.2",
+    "eslint-config-prettier": "^9.1.2",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

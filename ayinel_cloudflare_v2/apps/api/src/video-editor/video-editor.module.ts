@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { VideoEditorController } from './video-editor.controller';
+import { VideoEditorService } from './video-editor.service';
+import { PrismaModule } from '../prisma/prisma.module';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [VideoEditorController],
+  providers: [VideoEditorService],
+  exports: [VideoEditorService],
+})
+export class VideoEditorModule {}

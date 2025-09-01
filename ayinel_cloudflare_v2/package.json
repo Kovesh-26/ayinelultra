@@ -1,0 +1,38 @@
+{
+  "name": "ayinel-platform",
+  "version": "2.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:web": "npm run dev --workspace=@ayinel/web",
+    "dev:api": "npm run start:dev --workspace=@ayinel/api",
+    "build": "npm run build --workspaces",
+    "build:web": "npm run build --workspace=@ayinel/web",
+    "build:api": "npm run build --workspace=@ayinel/api",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
+    "db:generate": "npm run prisma:generate --workspace=@ayinel/api",
+    "db:migrate": "npm run prisma:migrate --workspace=@ayinel/api",
+    "db:seed": "npm run seed --workspace=@ayinel/api",
+    "db:studio": "npm run prisma:studio --workspace=@ayinel/api"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@cloudflare/next-on-pages": "^1.13.14",
+    "cookie": "^1.0.2",
+    "esbuild": "^0.25.9"
+  }
+}

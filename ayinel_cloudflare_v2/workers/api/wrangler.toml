@@ -1,0 +1,24 @@
+name = "ayinel-api"
+main = "src/index.ts"
+compatibility_date = "2025-08-24"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "AYINEL_DB"
+database_id = "YOUR_DATABASE_ID_HERE"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "ayinel-assets"
+
+[durable_objects]
+bindings = [
+  { name = "CHAT_ROOM", class_name = "ChatRoom" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatRoom"]
+
+[vars]
+# STREAM_ACCOUNT_ID and STREAM_API_TOKEN can be set as secrets instead

@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+  --border: 255 255 255 / 0.1;
+  --card: 17 23 34;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* AYINEL Brand Colors */
+.ayinel-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.ayinel-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Custom CSS variables for components */
+.border-border {
+  border-color: rgb(var(--border));
+}
+
+.bg-card {
+  background-color: rgb(var(--card));
+}
+
+.text-muted-foreground {
+  color: rgb(255 255 255 / 0.7);
+}
