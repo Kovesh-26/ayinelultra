@@ -179,6 +179,29 @@ SQL
     exit 1
   fi
   
+  # Test the user can actually connect
+  log "Testing user connection..."
+  if PGPASSWORD="${PG_PASS}" psql -h localhost -U "${PG_USER}" -d "${PG_DB}" -c "SELECT 1;" >/dev/null 2>&1; then
+    log "✅ User connection test passed"
+  else
+    log "Testing with postgres user..."
+    # Try to connect as postgres and test the user
+    if sudo -u postgres psql -c "SELECT 1;" >/dev/null 2>&1; then
+      log "PostgreSQL is running, testing user..."
+      # Show user details
+      sudo -u postgres psql -c "SELECT rolname, rolcanlogin, rolpassword FROM pg_roles WHERE rolname='${PG_USER}';"
+      # Test connection
+      if PGPASSWORD="${PG_PASS}" psql -h localhost -U "${PG_USER}" -d "${PG_DB}" -c "SELECT 1;" >/dev/null 2>&1; then
+        log "✅ User authentication works"
+      else
+        warn "⚠️  User authentication failed"
+        log "Password: ${PG_PASS}"
+        log "User: ${PG_USER}"
+        log "Database: ${PG_DB}"
+      fi
+    fi
+  fi
+  
   # Small delay to ensure database is fully created
   sleep 2
   
