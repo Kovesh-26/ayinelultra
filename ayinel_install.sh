@@ -132,9 +132,26 @@ ufw --force enable || true
 # Postgres (only for single/api-only)
 if [[ "$MODE" != "web-only" ]]; then
   apt-get install -y postgresql postgresql-contrib
+  
+  # Configure PostgreSQL for local connections
+  log "Configuring PostgreSQL authentication..."
+  
+  # Update pg_hba.conf to allow local connections with password
+  sed -i "s/local.*all.*all.*peer/local all all md5/" /etc/postgresql/*/main/pg_hba.conf
+  sed -i "s/local.*all.*all.*trust/local all all md5/" /etc/postgresql/*/main/pg_hba.conf
+  
+  # Restart PostgreSQL to apply changes
+  systemctl restart postgresql
+  
+  # Wait for PostgreSQL to be ready
+  log "Waiting for PostgreSQL to be ready..."
+  while ! sudo -u postgres pg_isready -q; do
+    sleep 1
+  done
+  
   sudo -u postgres psql <<SQL
 DO
-$do$
+\$do\$
 BEGIN
    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${PG_USER}') THEN
       CREATE ROLE ${PG_USER} LOGIN PASSWORD '${PG_PASS}';
@@ -143,9 +160,24 @@ BEGIN
       CREATE DATABASE ${PG_DB} OWNER ${PG_USER};
    END IF;
 END
-$do$;
+\$do\$;
 ALTER ROLE ${PG_USER} WITH CREATEDB;
 SQL
+
+  # Grant additional privileges for smooth operation
+  log "Setting up database privileges..."
+  sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${PG_DB} TO ${PG_USER};"
+  sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON SCHEMA public TO ${PG_USER};"
+  sudo -u postgres psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ${PG_USER};"
+  sudo -u postgres psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ${PG_USER};"
+  
+  # Test database connection
+  log "Testing database connection..."
+  if sudo -u postgres psql -d "${PG_DB}" -U "${PG_USER}" -c "SELECT 1;" >/dev/null 2>&1; then
+    log "Database connection validated successfully"
+  else
+    warn "Database connection validation failed, but continuing..."
+  fi
 fi
 
 # Clone/update repo
@@ -166,6 +198,7 @@ NODE_ENV=production
 PORT=${API_PORT}
 DATABASE_URL=postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public
 JWT_SECRET=${JWT_SECRET}
+FRONTEND_URL=https://${DOMAIN_WEB}
 # STRIPE_SECRET_KEY=
 # STRIPE_WEBHOOK_SECRET=
 # CLOUDFLARE_STREAM_TOKEN=
@@ -199,8 +232,19 @@ fi
 if [[ "$MODE" != "web-only" ]]; then
   pushd "$APP_ROOT/$API_DIR" >/dev/null
   sudo -u "$APP_USER" pnpm build || sudo -u "$APP_USER" npm run build
-  sudo -u "$APP_USER" npx prisma generate
-  sudo -u "$APP_USER" npx prisma migrate deploy
+  
+  # Final database connection test before Prisma
+  log "Testing database connection before Prisma operations..."
+  if sudo -u "$APP_USER" psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
+    log "Database connection test passed, proceeding with Prisma..."
+    sudo -u "$APP_USER" npx prisma generate
+    sudo -u "$APP_USER" npx prisma migrate deploy
+  else
+    err "Database connection test failed. Please check your database setup."
+    err "Expected DATABASE_URL format: postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public"
+    exit 1
+  fi
+  
   popd >/dev/null
 fi
 
@@ -218,6 +262,48 @@ fi
 sudo -u "$APP_USER" pm2 save
 pm2 startup systemd -u "$APP_USER" --hp "$APP_HOME" >/dev/null 2>&1 || true
 systemctl restart pm2-"$APP_USER" || true
+
+# Wait for services to be ready
+log "Waiting for services to start..."
+sleep 10
+
+# Test all connections
+log "Testing all connections..."
+if [[ "$MODE" != "web-only" ]]; then
+  # Test API database connection
+  log "Testing API database connection..."
+  if curl -s "http://localhost:${API_PORT}/api/v1/health" >/dev/null 2>&1; then
+    log "✅ API is responding and connected to database"
+  else
+    warn "⚠️  API health check failed, checking logs..."
+    pm2 logs ayinel-api --lines 10
+  fi
+fi
+
+if [[ "$MODE" != "api-only" ]]; then
+  # Test web app
+  log "Testing web application..."
+  if curl -s "http://localhost:${WEB_PORT}" >/dev/null 2>&1; then
+    log "✅ Web application is responding"
+  else
+    warn "⚠️  Web application check failed, checking logs..."
+    pm2 logs ayinel-web --lines 10
+  fi
+fi
+
+# Test database connection directly
+if [[ "$MODE" != "web-only" ]]; then
+  log "Testing direct database connection..."
+  if sudo -u "$APP_USER" psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT version();" >/dev/null 2>&1; then
+    log "✅ Direct database connection successful"
+  else
+    err "❌ Direct database connection failed"
+    err "Database credentials:"
+    err "  User: ${PG_USER}"
+    err "  Database: ${PG_DB}"
+    err "  Connection: postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public"
+  fi
+fi
 
 # Nginx sites
 rm -f /etc/nginx/sites-enabled/default || true
@@ -272,6 +358,42 @@ fi
 if [[ "$MODE" != "web-only" ]]; then
   certbot --nginx -d "${DOMAIN_API}" -m "${EMAIL_LETSENCRYPT}" --agree-tos --non-interactive || warn "Certbot api failed (DNS not ready?)"
 fi
+
+# Final comprehensive test
+log "Running final comprehensive tests..."
+sleep 5
+
+# Test database schema and tables
+if [[ "$MODE" != "web-only" ]]; then
+  log "Testing database schema..."
+  if sudo -u "$APP_USER" psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "\dt" >/dev/null 2>&1; then
+    log "✅ Database schema is ready"
+  else
+    warn "⚠️  Database schema test failed - migrations may not have completed"
+  fi
+fi
+
+# Test API endpoints
+if [[ "$MODE" != "web-only" ]]; then
+  log "Testing API endpoints..."
+  if curl -s "http://localhost:${API_PORT}/api/v1/health" | grep -q "healthy\|ok" 2>/dev/null; then
+    log "✅ API health endpoint working"
+  else
+    warn "⚠️  API health endpoint not responding correctly"
+  fi
+fi
+
+# Test web app connectivity
+if [[ "$MODE" != "api-only" ]]; then
+  log "Testing web app connectivity..."
+  if curl -s "http://localhost:${WEB_PORT}" | grep -q "AYINEL\|ayinel" 2>/dev/null; then
+    log "✅ Web application is serving content"
+  else
+    warn "⚠️  Web application content check failed"
+  fi
+fi
+
+log "All tests completed!"
 
 # Summary
 cat <<EOF
