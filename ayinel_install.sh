@@ -156,6 +156,9 @@ DO
 BEGIN
    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${PG_USER}') THEN
       CREATE ROLE ${PG_USER} LOGIN PASSWORD '${PG_PASS}';
+   ELSE
+      -- Update existing user's password
+      ALTER ROLE ${PG_USER} WITH PASSWORD '${PG_PASS}';
    END IF;
 END
 \$do\$;
@@ -167,6 +170,15 @@ SELECT 'CREATE DATABASE ${PG_DB} OWNER ${PG_USER}' WHERE NOT EXISTS (SELECT FROM
 ALTER ROLE ${PG_USER} WITH CREATEDB;
 SQL
 
+  # Verify user was created
+  log "Verifying database user creation..."
+  if sudo -u postgres psql -c "SELECT rolname, rolcanlogin FROM pg_roles WHERE rolname='${PG_USER}';" | grep -q "${PG_USER}"; then
+    log "✅ Database user ${PG_USER} created successfully"
+  else
+    err "❌ Failed to create database user ${PG_USER}"
+    exit 1
+  fi
+  
   # Small delay to ensure database is fully created
   sleep 2
   
@@ -180,9 +192,24 @@ SQL
   # Test database connection
   log "Testing database connection..."
   if sudo -u "$APP_USER" /usr/bin/psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
-    log "Database connection validated successfully"
+    log "✅ Database connection validated successfully"
   else
-    warn "Database connection validation failed, but continuing..."
+    # Try to test as postgres user first
+    log "Testing user authentication as postgres..."
+    if sudo -u postgres psql -c "SELECT 1;" >/dev/null 2>&1; then
+      log "PostgreSQL is running, testing user credentials..."
+      # Test if user can connect with password
+      if PGPASSWORD="${PG_PASS}" psql -h localhost -U "${PG_USER}" -d "${PG_DB}" -c "SELECT 1;" >/dev/null 2>&1; then
+        log "✅ User authentication works with password"
+      else
+        warn "⚠️  User authentication failed, but continuing..."
+        log "Password: ${PG_PASS}"
+        log "User: ${PG_USER}"
+        log "Database: ${PG_DB}"
+      fi
+    else
+      warn "⚠️  PostgreSQL connection failed, but continuing..."
+    fi
   fi
 fi
 
