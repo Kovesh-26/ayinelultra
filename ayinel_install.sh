@@ -150,20 +150,26 @@ if [[ "$MODE" != "web-only" ]]; then
   done
   
   sudo -u postgres psql <<SQL
+-- Create user if it doesn't exist
 DO
 \$do\$
 BEGIN
    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${PG_USER}') THEN
       CREATE ROLE ${PG_USER} LOGIN PASSWORD '${PG_PASS}';
    END IF;
-   IF NOT EXISTS (SELECT FROM pg_database WHERE datname = '${PG_DB}') THEN
-      CREATE DATABASE ${PG_DB} OWNER ${PG_USER};
-   END IF;
 END
 \$do\$;
+
+-- Create database if it doesn't exist (must be outside DO block)
+SELECT 'CREATE DATABASE ${PG_DB} OWNER ${PG_USER}' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${PG_DB}')\gexec
+
+-- Grant privileges to the user
 ALTER ROLE ${PG_USER} WITH CREATEDB;
 SQL
 
+  # Small delay to ensure database is fully created
+  sleep 2
+  
   # Grant additional privileges for smooth operation
   log "Setting up database privileges..."
   sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${PG_DB} TO ${PG_USER};"
