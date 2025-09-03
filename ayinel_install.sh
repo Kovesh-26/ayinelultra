@@ -134,7 +134,7 @@ if [[ "$MODE" != "web-only" ]]; then
   apt-get install -y postgresql postgresql-contrib
   sudo -u postgres psql <<SQL
 DO
-\$do\$
+$do$
 BEGIN
    IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${PG_USER}') THEN
       CREATE ROLE ${PG_USER} LOGIN PASSWORD '${PG_PASS}';
@@ -143,7 +143,7 @@ BEGIN
       CREATE DATABASE ${PG_DB} OWNER ${PG_USER};
    END IF;
 END
-\$do\$;
+$do$;
 ALTER ROLE ${PG_USER} WITH CREATEDB;
 SQL
 fi
@@ -231,10 +231,10 @@ server {
   location / {
     proxy_pass http://127.0.0.1:${WEB_PORT};
     proxy_http_version 1.1;
-    proxy_set_header Host \$host;
-    proxy_set_header X-Real-IP \$remote_addr;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
   }
 }
@@ -251,10 +251,10 @@ server {
   location / {
     proxy_pass http://127.0.0.1:${API_PORT};
     proxy_http_version 1.1;
-    proxy_set_header Host \$host;
-    proxy_set_header X-Real-IP \$remote_addr;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
   }
 }
@@ -292,6 +292,7 @@ Database (if provisioned):
   Name:        ${PG_DB}
   User:        ${PG_USER}
   Pass:        ${PG_PASS}
+  Connection:  postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public
 
 PM2:
   pm2 status
