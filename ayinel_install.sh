@@ -114,9 +114,6 @@ if [[ $EUID -ne 0 ]]; then err "Run as root: sudo bash $0"; exit 1; fi
 if [[ -z "$PG_PASS" ]]; then PG_PASS="$(openssl rand -base64 24)"; fi
 if [[ -z "$JWT_SECRET" ]]; then JWT_SECRET="$(openssl rand -hex 32)"; fi
 
-# URL encode the password to handle special characters in database URLs
-PG_PASS_ENCODED=$(echo -n "${PG_PASS}" | jq -sRr @uri)
-
 apt-get update -y
 DEBIAN_FRONTEND=noninteractive apt-get install -y \
   build-essential git curl ufw ca-certificates nginx \
@@ -205,7 +202,7 @@ if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
 NODE_ENV=production
 PORT=${API_PORT}
-DATABASE_URL=postgresql://${PG_USER}:${PG_PASS_ENCODED}@localhost:5432/${PG_DB}?schema=public
+DATABASE_URL=postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public
 JWT_SECRET=${JWT_SECRET}
 FRONTEND_URL=https://${DOMAIN_WEB}
 # STRIPE_SECRET_KEY=
@@ -244,7 +241,7 @@ if [[ "$MODE" != "web-only" ]]; then
   
   # Final database connection test before Prisma
   log "Testing database connection before Prisma operations..."
-  if sudo -u "$APP_USER" /usr/bin/psql "postgresql://${PG_USER}:${PG_PASS_ENCODED}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
+  if sudo -u "$APP_USER" /usr/bin/psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
     log "Database connection test passed, proceeding with Prisma..."
     sudo -u "$APP_USER" npx prisma generate
     sudo -u "$APP_USER" npx prisma migrate deploy
