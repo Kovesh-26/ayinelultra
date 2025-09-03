@@ -111,7 +111,7 @@ done
 # Preconditions
 # -----------------------------
 if [[ $EUID -ne 0 ]]; then err "Run as root: sudo bash $0"; exit 1; fi
-if [[ -z "$PG_PASS" ]]; then PG_PASS="$(openssl rand -base64 24)"; fi
+if [[ -z "$PG_PASS" ]]; then PG_PASS="$(openssl rand -base64 24 | tr -d '+=/' | cut -c1-16)"; fi
 if [[ -z "$JWT_SECRET" ]]; then JWT_SECRET="$(openssl rand -hex 32)"; fi
 
 apt-get update -y
