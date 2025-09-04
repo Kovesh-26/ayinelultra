@@ -247,6 +247,15 @@ else
   sudo -u "$APP_USER" git clone -b "$REPO_BRANCH" "$REPO_URL" "$APP_ROOT"
 fi
 
+# Fix import path issue in live controller
+log "Fixing import path in live controller..."
+if [[ -f "$APP_ROOT/$API_DIR/src/modules/live/live.controller.ts" ]]; then
+  sudo -u "$APP_USER" sed -i "s|from '../auth/guards/jwt-auth.guard'|from '../auth/jwt-auth.guard'|g" "$APP_ROOT/$API_DIR/src/modules/live/live.controller.ts"
+  log "✅ Fixed import path in live controller"
+else
+  warn "⚠️  Live controller file not found, skipping import fix"
+fi
+
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
@@ -287,6 +296,8 @@ fi
 
 if [[ "$MODE" != "web-only" ]]; then
   pushd "$APP_ROOT/$API_DIR" >/dev/null
+  # Clean dist folder to ensure fresh build
+  sudo -u "$APP_USER" rm -rf dist
   sudo -u "$APP_USER" pnpm build || sudo -u "$APP_USER" npm run build
   
   # Final database connection test before Prisma
