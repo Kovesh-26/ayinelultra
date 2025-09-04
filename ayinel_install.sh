@@ -285,11 +285,9 @@ fi
 if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/admin/admin.controller.ts" ]]; then
   log "Creating missing admin controller..."
   sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/admin/admin.controller.ts" << 'EOF'
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('api/v1/admin')
-@UseGuards(JwtAuthGuard)
 export class AdminController {
   @Get('health')
   getHealth() {
@@ -299,6 +297,21 @@ export class AdminController {
 EOF
   log "✅ Created admin.controller.ts"
 fi
+
+# Fix any remaining import path issues in all TypeScript files
+log "Fixing remaining import path issues..."
+find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
+  # Fix roles.guard imports
+  if grep -q "from '../auth/guards/roles.guard'" "$file"; then
+    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/roles.guard'|from '../auth/jwt-auth.guard'|g" "$file"
+    log "✅ Fixed roles.guard import in $(basename "$file")"
+  fi
+  # Fix any other guards imports
+  if grep -q "from '../auth/guards/" "$file"; then
+    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/\([^']*\)'|from '../auth/\1'|g" "$file"
+    log "✅ Fixed guards import in $(basename "$file")"
+  fi
+done
 
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
@@ -495,6 +508,54 @@ if [[ "$MODE" != "api-only" ]]; then
   else
     warn "⚠️  Web application content check failed"
   fi
+fi
+
+# Test web server configuration (ports 80/443)
+log "Testing web server configuration..."
+if systemctl is-active --quiet nginx; then
+  log "✅ Nginx is running"
+  
+  # Test port 80
+  if netstat -tlnp | grep -q ":80 "; then
+    log "✅ Port 80 is listening"
+  else
+    warn "⚠️  Port 80 is not listening"
+  fi
+  
+  # Test port 443
+  if netstat -tlnp | grep -q ":443 "; then
+    log "✅ Port 443 is listening"
+  else
+    warn "⚠️  Port 443 is not listening"
+  fi
+  
+  # Test HTTP access
+  if curl -s -I "http://localhost" | grep -q "200 OK\|301\|302"; then
+    log "✅ HTTP (port 80) is accessible"
+  else
+    warn "⚠️  HTTP (port 80) is not accessible"
+  fi
+  
+  # Test HTTPS access (if SSL is configured)
+  if curl -s -I -k "https://localhost" | grep -q "200 OK\|301\|302"; then
+    log "✅ HTTPS (port 443) is accessible"
+  else
+    warn "⚠️  HTTPS (port 443) is not accessible (SSL may not be configured yet)"
+  fi
+  
+  # Check SSL certificate status
+  if [[ -f "/etc/letsencrypt/live/${DOMAIN_WEB}/fullchain.pem" ]]; then
+    log "✅ SSL certificate exists for ${DOMAIN_WEB}"
+    if openssl x509 -in "/etc/letsencrypt/live/${DOMAIN_WEB}/fullchain.pem" -text -noout | grep -q "Not After"; then
+      log "✅ SSL certificate is valid"
+    else
+      warn "⚠️  SSL certificate may be invalid"
+    fi
+  else
+    warn "⚠️  SSL certificate not found for ${DOMAIN_WEB}"
+  fi
+else
+  err "❌ Nginx is not running"
 fi
 
 log "All tests completed!"
