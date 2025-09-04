@@ -264,6 +264,42 @@ find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
   fi
 done
 
+# Check for missing admin module and create it if needed
+log "Checking for missing admin module..."
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/admin/admin.module.ts" ]]; then
+  log "Creating missing admin module..."
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/admin"
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/admin/admin.module.ts" << 'EOF'
+import { Module } from '@nestjs/common';
+import { AdminController } from './admin.controller';
+
+@Module({
+  controllers: [AdminController],
+})
+export class AdminModule {}
+EOF
+  log "✅ Created admin.module.ts"
+fi
+
+# Check for missing admin controller and create it if needed
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/admin/admin.controller.ts" ]]; then
+  log "Creating missing admin controller..."
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/admin/admin.controller.ts" << 'EOF'
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+@Controller('api/v1/admin')
+@UseGuards(JwtAuthGuard)
+export class AdminController {
+  @Get('health')
+  getHealth() {
+    return { status: 'ok', service: 'admin' };
+  }
+}
+EOF
+  log "✅ Created admin.controller.ts"
+fi
+
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
@@ -308,18 +344,10 @@ if [[ "$MODE" != "web-only" ]]; then
   sudo -u "$APP_USER" rm -rf dist
   sudo -u "$APP_USER" pnpm build || sudo -u "$APP_USER" npm run build
   
-  # Final database connection test before Prisma
-  log "Testing database connection before Prisma operations..."
-  if sudo -u "$APP_USER" /usr/bin/psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
-    log "Database connection test passed, proceeding with Prisma..."
-    sudo -u "$APP_USER" npx prisma generate
-    sudo -u "$APP_USER" npx prisma migrate deploy
-  else
-    warn "Database connection test failed, but continuing with Prisma..."
-    log "Proceeding with Prisma operations..."
-    sudo -u "$APP_USER" npx prisma generate
-    sudo -u "$APP_USER" npx prisma migrate deploy
-  fi
+  # Proceed with Prisma operations (database connection will be tested by Prisma itself)
+  log "Proceeding with Prisma operations..."
+  sudo -u "$APP_USER" npx prisma generate
+  sudo -u "$APP_USER" npx prisma migrate deploy
   
   popd >/dev/null
 fi
