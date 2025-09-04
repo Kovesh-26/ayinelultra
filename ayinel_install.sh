@@ -247,14 +247,22 @@ else
   sudo -u "$APP_USER" git clone -b "$REPO_BRANCH" "$REPO_URL" "$APP_ROOT"
 fi
 
-# Fix import path issue in live controller
-log "Fixing import path in live controller..."
-if [[ -f "$APP_ROOT/$API_DIR/src/modules/live/live.controller.ts" ]]; then
-  sudo -u "$APP_USER" sed -i "s|from '../auth/guards/jwt-auth.guard'|from '../auth/jwt-auth.guard'|g" "$APP_ROOT/$API_DIR/src/modules/live/live.controller.ts"
-  log "✅ Fixed import path in live controller"
-else
-  warn "⚠️  Live controller file not found, skipping import fix"
-fi
+# Fix import path issues in all TypeScript files
+log "Fixing import path issues in all TypeScript files..."
+find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
+  if grep -q "from '../auth/guards/jwt-auth.guard'" "$file"; then
+    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/jwt-auth.guard'|from '../auth/jwt-auth.guard'|g" "$file"
+    log "✅ Fixed import path in $(basename "$file")"
+  fi
+done
+
+# Also fix any other potential import path variations
+find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
+  if grep -q "from '\.\./auth/guards/jwt-auth\.guard'" "$file"; then
+    sudo -u "$APP_USER" sed -i "s|from '\.\./auth/guards/jwt-auth\.guard'|from '../auth/jwt-auth.guard'|g" "$file"
+    log "✅ Fixed alternative import path in $(basename "$file")"
+  fi
+done
 
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
