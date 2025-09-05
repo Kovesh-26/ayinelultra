@@ -416,6 +416,153 @@ EOF
   log "✅ Created marketplace.service.ts"
 fi
 
+# Create missing kidzone module if it doesn't exist
+log "Creating missing kidzone module..."
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/kidzone/kidzone.module.ts" ]]; then
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/kidzone/dto"
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/kidzone/kidzone.module.ts" << 'EOF'
+import { Module } from '@nestjs/common';
+import { KidzoneController } from './kidzone.controller';
+import { KidzoneService } from './kidzone.service';
+import { PrismaModule } from '../prisma/prisma.module';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [KidzoneController],
+  providers: [KidzoneService],
+  exports: [KidzoneService],
+})
+export class KidzoneModule {}
+EOF
+  log "✅ Created kidzone.module.ts"
+fi
+
+# Create missing kidzone controller if it doesn't exist
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/kidzone/kidzone.controller.ts" ]]; then
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/kidzone/kidzone.controller.ts" << 'EOF'
+import { 
+  Controller, 
+  Get, 
+  Post, 
+  Put, 
+  Body, 
+  Param, 
+  Query, 
+  UseGuards, 
+  Request 
+} from '@nestjs/common';
+import { KidzoneService } from './kidzone.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
+@Controller('api/v1/kidzone')
+export class KidzoneController {
+  constructor(private readonly kidzoneService: KidzoneService) {}
+
+  @Get('feed')
+  async getKidZoneFeed(@Query('ageGroup') ageGroup?: string, @Request() req?: any) {
+    const userId = req?.user?.id;
+    return this.kidzoneService.getKidZoneFeed(userId, ageGroup);
+  }
+
+  @Get('studios')
+  async getFamilyFriendlyStudios() {
+    return this.kidzoneService.getFamilyFriendlyStudios();
+  }
+
+  @Get('settings')
+  @UseGuards(JwtAuthGuard)
+  async getKidSettings(@Request() req) {
+    return this.kidzoneService.getKidSettings(req.user.id);
+  }
+
+  @Put('settings')
+  @UseGuards(JwtAuthGuard)
+  async updateKidSettings(@Request() req, @Body() dto: any) {
+    return this.kidzoneService.updateKidSettings(req.user.id, dto);
+  }
+}
+EOF
+  log "✅ Created kidzone.controller.ts"
+fi
+
+# Create missing kidzone service if it doesn't exist
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/kidzone/kidzone.service.ts" ]]; then
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/kidzone/kidzone.service.ts" << 'EOF'
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+
+@Injectable()
+export class KidzoneService {
+  constructor(private prisma: PrismaService) {}
+
+  async getKidZoneFeed(userId?: string, ageGroup?: string) {
+    const videos = await this.prisma.video.findMany({
+      where: {
+        isKidSafe: true,
+        visibility: 'PUBLIC'
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            avatarUrl: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: 50
+    });
+
+    return {
+      videos,
+      total: videos.length
+    };
+  }
+
+  async getFamilyFriendlyStudios() {
+    return this.prisma.studio.findMany({
+      where: {
+        isFamilyFriendly: true,
+        kidzoneVisible: true
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            avatarUrl: true
+          }
+        }
+      }
+    });
+  }
+
+  async getKidSettings(userId: string) {
+    return this.prisma.kidSettings.findUnique({
+      where: { userId }
+    });
+  }
+
+  async updateKidSettings(userId: string, dto: any) {
+    return this.prisma.kidSettings.upsert({
+      where: { userId },
+      update: dto,
+      create: {
+        userId,
+        ...dto
+      }
+    });
+  }
+}
+EOF
+  log "✅ Created kidzone.service.ts"
+fi
+
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
