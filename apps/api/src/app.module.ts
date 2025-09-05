@@ -9,6 +9,7 @@ import { MusicModule } from './modules/music/music.module';
 import { BillingModule } from './modules/billing/billing.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { MarketplaceModule } from './modules/marketplace/marketplace.module';
+import { KidzoneModule } from './modules/kidzone/kidzone.module';
 import { HealthModule } from './modules/health/health.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { HealthModule } from './modules/health/health.module';
     BillingModule,
     AdminModule,
     MarketplaceModule,
+    KidzoneModule,
     HealthModule,
   ],
 })
