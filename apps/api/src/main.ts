@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
+import { ThrottlerGuard } from '@nestjs/throttler';
+import { CustomThrottlerGuard } from './modules/rate-limit/rate-limit.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +25,9 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     transform: true,
   }));
+
+  // Global rate limiting
+  app.useGlobalGuards(new CustomThrottlerGuard());
 
   // Global API prefix
   app.setGlobalPrefix('api/v1');

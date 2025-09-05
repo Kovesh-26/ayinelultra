@@ -20,6 +20,10 @@ import { FeatureFlagsModule } from './modules/feature-flags/feature-flags.module
 import { ReportsModule } from './modules/reports/reports.module';
 import { AppealsModule } from './modules/appeals/appeals.module';
 import { HealthModule } from './modules/health/health.module';
+import { RateLimitModule } from './modules/rate-limit/rate-limit.module';
+import { SecurityModule } from './modules/security/security.module';
+import { KidzoneComplianceModule } from './modules/kidzone-compliance/kidzone-compliance.module';
+import { MonitoringModule } from './modules/monitoring/monitoring.module';
 
 @Module({
   imports: [
@@ -46,6 +50,10 @@ import { HealthModule } from './modules/health/health.module';
     ReportsModule,
     AppealsModule,
     HealthModule,
+    RateLimitModule,
+    SecurityModule,
+    KidzoneComplianceModule,
+    MonitoringModule,
   ],
 })
 export class AppModule {}
