@@ -335,6 +335,24 @@ EOF
   log "✅ Created public.decorator.ts"
 fi
 
+# Create missing admin module if it doesn't exist
+log "Creating missing admin module..."
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/admin/admin.module.ts" ]]; then
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/admin"
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/admin/admin.module.ts" << 'EOF'
+import { Module } from '@nestjs/common';
+import { AdminController } from './admin.controller';
+import { AdminService } from './admin.service';
+
+@Module({
+  controllers: [AdminController],
+  providers: [AdminService],
+})
+export class AdminModule {}
+EOF
+  log "✅ Created admin.module.ts"
+fi
+
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
