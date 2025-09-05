@@ -113,6 +113,13 @@ model User {
   kidProfiles KidProfile[]
   kidSettings KidSettings?
 
+  // New relations
+  addresses Address[]
+  payouts Payout[]
+  reports Report[] @relation("ReportReporter")
+  appeals Appeal[]
+  crew Crew[]
+
   @@map("users")
 }
 
@@ -130,6 +137,10 @@ model Studio {
   videos      Video[]
   collections Collection[]
   store       Store?
+  media       Media[]
+  crew        Crew[]
+  chatRooms   ChatRoom[]
+  newsletters Newsletter[]
 
   @@index([ownerId])
   @@map("studios")
@@ -442,4 +453,183 @@ model KidSettings {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("kid_settings")
+}
+
+model Media {
+  id            String      @id @default(cuid())
+  kind          String      // "video" or "audio"
+  studio        Studio      @relation(fields: [studioId], references: [id])
+  studioId      String
+  title         String
+  description   String?
+  tags          String[]    @db.Text
+  durationSec   Int?
+  hlsUrl        String?
+  dashUrl       String?
+  thumbUrl      String?
+  sourceUrl     String?
+  contentRating ContentRating @default(UNRATED)
+  isKidSafe     Boolean     @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([studioId])
+  @@index([publishedAt])
+  @@index([tags])
+  @@map("media")
+}
+
+model Crew {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  studio    Studio  @relation(fields: [studioId], references: [id])
+  studioId  String
+  tier      String? // e.g., "Free", "Member", "VIP"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, studioId])
+  @@index([studioId])
+  @@map("crew")
+}
+
+model ChatRoom {
+  id       String       @id @default(cuid())
+  kind     String       // "dm", "fan", "broadcast"
+  title    String?
+  studio   Studio?      @relation(fields: [studioId], references: [id])
+  studioId String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([studioId])
+  @@map("chat_rooms")
+}
+
+model Address {
+  id          String  @id @default(cuid())
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
+  name        String
+  line1       String
+  line2       String?
+  city        String
+  state       String
+  postalCode  String
+  country     String
+  isDefault   Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("addresses")
+}
+
+model Payout {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  amountCents Int
+  status      String   // "pending", "processing", "completed", "failed"
+  method      String   // "bank", "paypal", "stripe"
+  reference   String?  // external reference
+  processedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("payouts")
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  reporterId  String
+  reporter    User     @relation("ReportReporter", fields: [reporterId], references: [id])
+  reportedId  String?  // user, studio, or media ID
+  type        String   // "user", "studio", "media", "message"
+  reason      String
+  description String?
+  status      String   @default("pending") // "pending", "reviewed", "resolved", "dismissed"
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([reporterId])
+  @@index([status])
+  @@map("reports")
+}
+
+model Appeal {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  reportId    String?
+  type        String   // "ban", "strike", "content_removal"
+  reason      String
+  description String
+  status      String   @default("pending") // "pending", "approved", "denied"
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("appeals")
+}
+
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  enabled     Boolean  @default(false)
+  rollout     Int      @default(0) // percentage 0-100
+  conditions  Json?    // targeting conditions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("feature_flags")
+}
+
+model Newsletter {
+  id          String   @id @default(cuid())
+  studioId    String
+  studio      Studio   @relation(fields: [studioId], references: [id])
+  subject     String
+  content     String
+  status      String   @default("draft") // "draft", "scheduled", "sent"
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  recipients  Int      @default(0)
+  opens       Int      @default(0)
+  clicks      Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([studioId])
+  @@index([status])
+  @@map("newsletters")
+}
+
+model ModerationQueue {
+  id          String   @id @default(cuid())
+  type        String   // "media", "message", "profile"
+  targetId    String
+  reason      String
+  priority    String   @default("normal") // "low", "normal", "high", "urgent"
+  status      String   @default("pending") // "pending", "reviewed", "approved", "rejected"
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type])
+  @@index([status])
+  @@index([priority])
+  @@map("moderation_queue")
 }

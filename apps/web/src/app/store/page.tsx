@@ -1,0 +1,8 @@
+export default function Page() {
+  return (
+    <main className="p-6">
+      <h1 className="text-2xl font-semibold">/store</h1>
+      <p className="opacity-70">TODO</p>
+    </main>
+  );
+}

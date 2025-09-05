@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ayinel-postgres
+    environment:
+      POSTGRES_DB: ayinel
+      POSTGRES_USER: ayineluser
+      POSTGRES_PASSWORD: ayinelpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ayinel-network
+
+  # Redis for caching and queues
+  redis:
+    image: redis:7-alpine
+    container_name: ayinel-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ayinel-network
+
+  # API Service
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    container_name: ayinel-api
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://ayineluser:ayinelpass@postgres:5432/ayinel?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ayinel-network
+    volumes:
+      - ../apps/api/uploads:/app/uploads
+
+  # Web Service
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+    container_name: ayinel-web
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://api:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - ayinel-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: ayinel-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - web
+      - api
+    networks:
+      - ayinel-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  ayinel-network:
+    driver: bridge

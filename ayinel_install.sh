@@ -563,6 +563,70 @@ EOF
   log "✅ Created kidzone.service.ts"
 fi
 
+# Create missing collections module if it doesn't exist
+log "Creating missing collections module..."
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/collections/collections.module.ts" ]]; then
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/collections/dto"
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/collections/collections.module.ts" << 'EOF'
+import { Module } from '@nestjs/common';
+import { CollectionsController } from './collections.controller';
+import { CollectionsService } from './collections.service';
+import { PrismaModule } from '../prisma/prisma.module';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [CollectionsController],
+  providers: [CollectionsService],
+  exports: [CollectionsService],
+})
+export class CollectionsModule {}
+EOF
+  log "✅ Created collections.module.ts"
+fi
+
+# Create missing chat module if it doesn't exist
+log "Creating missing chat module..."
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/chat/chat.module.ts" ]]; then
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/chat/dto"
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/chat/chat.module.ts" << 'EOF'
+import { Module } from '@nestjs/common';
+import { ChatGateway } from './chat.gateway';
+import { ChatService } from './chat.service';
+import { ChatController } from './chat.controller';
+import { PrismaModule } from '../prisma/prisma.module';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [ChatController],
+  providers: [ChatGateway, ChatService],
+  exports: [ChatService],
+})
+export class ChatModule {}
+EOF
+  log "✅ Created chat.module.ts"
+fi
+
+# Create missing webhooks module if it doesn't exist
+log "Creating missing webhooks module..."
+if [[ ! -f "$APP_ROOT/$API_DIR/src/modules/webhooks/webhooks.module.ts" ]]; then
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/webhooks"
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/src/modules/webhooks/webhooks.module.ts" << 'EOF'
+import { Module } from '@nestjs/common';
+import { WebhooksController } from './webhooks.controller';
+import { WebhooksService } from './webhooks.service';
+import { PrismaModule } from '../prisma/prisma.module';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [WebhooksController],
+  providers: [WebhooksService],
+  exports: [WebhooksService],
+})
+export class WebhooksModule {}
+EOF
+  log "✅ Created webhooks.module.ts"
+fi
+
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
