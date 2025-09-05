@@ -12,7 +12,10 @@
     "build:api": "pnpm --filter @ayinel/api build",
     "build:web": "pnpm --filter @ayinel/web build",
     "build:mobile": "pnpm --filter @ayinel/mobile build",
-    "lint": "pnpm --recursive lint",
+    "lint": "pnpm --recursive --parallel lint",
+    "lint:api": "pnpm --filter @ayinel/api lint",
+    "lint:web": "pnpm --filter @ayinel/web lint",
+    "lint:mobile": "pnpm --filter @ayinel/mobile lint",
     "format": "prettier --write .",
     "db:generate": "pnpm --filter @ayinel/api db:generate",
     "db:migrate": "pnpm --filter @ayinel/api db:migrate",
@@ -22,7 +25,7 @@
     "services:up": "docker-compose -f docker-compose.dev.yml up -d",
     "services:down": "docker-compose -f docker-compose.dev.yml down",
     "services:logs": "docker-compose -f docker-compose.dev.yml logs -f",
-    "routes:scaffold": "node scripts/scaffold-routes.js",
+    "routes:scaffold": "node scripts/scaffold-routes.mjs",
     "setup": "pnpm install && pnpm db:migrate && pnpm db:seed"
   },
   "devDependencies": {

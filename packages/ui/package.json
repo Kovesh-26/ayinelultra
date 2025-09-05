@@ -1,0 +1,25 @@
+{
+  "name": "@ayinel/ui",
+  "version": "1.0.0",
+  "description": "Shared UI components for AYINEL platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.9.2"
+  },
+  "files": [
+    "dist"
+  ]
+}

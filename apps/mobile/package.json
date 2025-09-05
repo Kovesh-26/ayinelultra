@@ -1,0 +1,28 @@
+{
+  "name": "@ayinel/mobile",
+  "version": "1.0.0",
+  "description": "AYINEL Mobile App - React Native mobile app for the creator platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build": "expo build",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "expo": "~52.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.3",
+    "@tanstack/react-query": "^5.85.6",
+    "zustand": "^4.5.7",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.3.12",
+    "typescript": "^5.3.0"
+  },
+  "private": true
+}

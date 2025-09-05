@@ -1,12 +1,9 @@
 import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
 import { AdminService, SystemConfig } from './admin.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('api/v1/admin')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin', 'developer')
+@UseGuards(JwtAuthGuard)
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
@@ -71,7 +68,6 @@ export class AdminController {
 
   // Developer Tools
   @Get('dev/tools')
-  @Roles('developer')
   async getDeveloperTools() {
     return {
       tools: [
@@ -100,7 +96,6 @@ export class AdminController {
   }
 
   @Get('dev/schema')
-  @Roles('developer')
   async getDatabaseSchema() {
     // TODO: Implement schema introspection
     return {
@@ -110,7 +105,6 @@ export class AdminController {
   }
 
   @Post('dev/test')
-  @Roles('developer')
   async testApiEndpoint(@Body() testData: { endpoint: string; method: string; data?: any }) {
     // TODO: Implement API testing tool
     return {
@@ -120,7 +114,6 @@ export class AdminController {
   }
 
   @Get('dev/performance')
-  @Roles('developer')
   async getPerformanceMetrics() {
     // TODO: Implement performance monitoring
     return {
@@ -134,7 +127,6 @@ export class AdminController {
   }
 
   @Get('dev/errors')
-  @Roles('developer')
   async getErrorLogs() {
     // TODO: Implement error logging
     return {

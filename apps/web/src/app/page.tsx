@@ -36,8 +36,8 @@ export default function HomePage() {
               <div className="grid gap-8 md:grid-cols-[1fr_auto]">
                 <div>
                   <h1 className="text-4xl font-bold text-white mb-4">Welcome to Ayinel</h1>
-                  <p className="text-xl text-white/80 mb-6">
-                    Discover amazing content from creators worldwide. Tune-In, Boost, and build your Crew.
+                  <p className="text-lg text-muted-foreground">
+                    Join the creator revolution. It&apos;s time to shine.
                   </p>
                   <div className="flex gap-4">
                     <button className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-white font-semibold shadow">

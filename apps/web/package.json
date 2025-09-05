@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "AYINEL Web App - Next.js frontend for the creator platform",
   "private": true,
-
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .ts,.tsx --fix",
     "type-check": "tsc --noEmit",
     "scaffold:routes": "node ../../scripts/scaffold-routes.mjs"
   },
@@ -44,6 +43,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9.34.0",
     "eslint-config-next": "^15.5.2",
+    "globals": "^16.3.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.5.14",

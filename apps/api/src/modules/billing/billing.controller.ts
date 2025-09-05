@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Put, Body, Param, UseGuards, Request, Query } from '@nestjs/common';
 import { BillingService, CreatePaymentIntentDto, CreateSubscriptionDto } from './billing.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('api/v1/billing')
 @UseGuards(JwtAuthGuard)
