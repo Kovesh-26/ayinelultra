@@ -802,11 +802,15 @@ The mobile app includes:
 3. **FFmpeg Issues**: Check FFmpeg installation (`ffmpeg -version`)
 4. **Web3 Connection**: Verify network connectivity and provider URLs
 
-### Support
-- Check logs: `pm2 logs ayinel-api`
+### Support Commands
+- Check service status: `pm2 status`
+- Check API logs: `pm2 logs ayinel-api`
+- Check web logs: `pm2 logs ayinel-web`
 - Review environment: `cat apps/api/.env`
 - Test Redis: `redis-cli ping`
 - Test database: `psql -d ayineldb -c "SELECT 1;"`
+- Check all logs: `pm2 logs`
+- Restart services: `pm2 restart all`
 
 ## 🎉 You're Ready!
 
@@ -816,6 +820,55 @@ Visit `/ai-studio` to start creating amazing content with AI-powered tools.
 EOF
   log "✅ Created AI Studio setup guide"
 fi
+
+# Add verification commands to the setup guide
+log "Adding verification commands to setup guide..."
+sudo -u "$APP_USER" cat >> "$APP_ROOT/AI_STUDIO_SETUP.md" << 'EOF'
+
+## 🔍 Verification Commands
+
+After installation, run these commands to verify everything is working:
+
+```bash
+# Check service status
+pm2 status
+
+# Check all logs
+pm2 logs
+
+# Check specific service logs
+pm2 logs ayinel-api --lines 20
+pm2 logs ayinel-web --lines 20
+
+# Verify environment variables
+cat apps/api/.env
+
+# Test database connection
+psql -d ayineldb -c "SELECT COUNT(*) FROM \"User\";"
+
+# Test Redis connection
+redis-cli ping
+
+# Test FFmpeg installation
+ffmpeg -version
+
+# Check system resources
+pm2 monit
+
+# Restart services if needed
+pm2 restart all
+```
+
+## 🚨 Quick Fixes
+
+If you encounter issues:
+
+1. **Services not starting**: `pm2 restart all`
+2. **Database issues**: `sudo systemctl restart postgresql`
+3. **Redis issues**: `sudo systemctl restart redis-server`
+4. **Nginx issues**: `sudo systemctl restart nginx`
+5. **Permission issues**: `sudo chown -R ayinel:ayinel /home/ayinel/ayinel`
+EOF
 
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
@@ -1227,6 +1280,80 @@ Re-run HTTPS later if DNS needed more time:
    3. Set up Web3 provider (Infura, Alchemy) for NFTs
    4. Configure AWS S3 for file storage
    5. Access AI Studio at: https://${DOMAIN_WEB}/ai-studio
+
+🔍 VERIFICATION COMMANDS:
+   pm2 status                    # Check service status
+   pm2 logs                      # Check all logs
+   cat apps/api/.env             # Verify environment
+   redis-cli ping                # Test Redis
+   psql -d ayineldb -c "SELECT 1;" # Test database
+   ffmpeg -version               # Test FFmpeg
 ===================================================
 EOF
+
+# Run verification commands
+log "Running verification commands..."
+echo ""
+echo "🔍 VERIFICATION RESULTS:"
+echo "========================"
+
+# Check PM2 status
+echo "📊 PM2 Services:"
+pm2 status 2>/dev/null || echo "⚠️  PM2 not running"
+
+# Check logs
+echo ""
+echo "📝 Recent Logs:"
+pm2 logs --lines 3 2>/dev/null || echo "⚠️  No logs available"
+
+# Check environment file
+echo ""
+echo "⚙️  Environment File:"
+if [[ -f "$APP_ROOT/$API_DIR/.env" ]]; then
+  echo "✅ Environment file exists at: $APP_ROOT/$API_DIR/.env"
+  echo "📄 First few lines:"
+  head -5 "$APP_ROOT/$API_DIR/.env" 2>/dev/null || echo "⚠️  Cannot read environment file"
+else
+  echo "❌ Environment file not found"
+fi
+
+# Check Redis
+echo ""
+echo "🔴 Redis Status:"
+if command -v redis-cli >/dev/null 2>&1; then
+  if redis-cli ping 2>/dev/null | grep -q "PONG"; then
+    echo "✅ Redis is running and responding"
+  else
+    echo "⚠️  Redis is installed but not responding"
+  fi
+else
+  echo "❌ Redis CLI not found"
+fi
+
+# Check database
+echo ""
+echo "🗄️  Database Status:"
+if command -v psql >/dev/null 2>&1; then
+  if sudo -u postgres psql -d "$PG_DB" -c "SELECT 1;" >/dev/null 2>&1; then
+    echo "✅ Database is accessible"
+  else
+    echo "⚠️  Database connection failed"
+  fi
+else
+  echo "❌ PostgreSQL client not found"
+fi
+
+# Check FFmpeg
+echo ""
+echo "🎬 FFmpeg Status:"
+if command -v ffmpeg >/dev/null 2>&1; then
+  echo "✅ FFmpeg is installed"
+  ffmpeg -version 2>/dev/null | head -1 || echo "⚠️  FFmpeg version check failed"
+else
+  echo "❌ FFmpeg not found"
+fi
+
+echo ""
+echo "🎉 Installation verification complete!"
+echo "📚 Read the full setup guide: cat AI_STUDIO_SETUP.md"
 
