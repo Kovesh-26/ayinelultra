@@ -214,7 +214,7 @@ SQL
   
   # Test database connection
   log "Testing database connection..."
-  if sudo -u "$APP_USER" /usr/bin/psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
+  if sudo -u "$APP_USER" psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT 1;" >/dev/null 2>&1; then
     log "✅ Database connection validated successfully"
   else
     # Try to test as postgres user first
@@ -250,17 +250,25 @@ fi
 # Fix import path issues in all TypeScript files
 log "Fixing import path issues in all TypeScript files..."
 find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
+  # Fix jwt-auth.guard imports
   if grep -q "from '../auth/guards/jwt-auth.guard'" "$file"; then
     sudo -u "$APP_USER" sed -i "s|from '../auth/guards/jwt-auth.guard'|from '../auth/jwt-auth.guard'|g" "$file"
-    log "✅ Fixed import path in $(basename "$file")"
+    log "✅ Fixed jwt-auth import in $(basename "$file")"
   fi
-done
-
-# Also fix any other potential import path variations
-find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
+  # Fix alternative jwt-auth.guard imports
   if grep -q "from '\.\./auth/guards/jwt-auth\.guard'" "$file"; then
     sudo -u "$APP_USER" sed -i "s|from '\.\./auth/guards/jwt-auth\.guard'|from '../auth/jwt-auth.guard'|g" "$file"
-    log "✅ Fixed alternative import path in $(basename "$file")"
+    log "✅ Fixed alternative jwt-auth import in $(basename "$file")"
+  fi
+  # Fix roles.guard imports
+  if grep -q "from '../auth/guards/roles.guard'" "$file"; then
+    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/roles.guard'|from '../auth/roles.guard'|g" "$file"
+    log "✅ Fixed roles.guard import in $(basename "$file")"
+  fi
+  # Fix any other guards imports
+  if grep -q "from '../auth/guards/" "$file"; then
+    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/\([^']*\)'|from '../auth/\1'|g" "$file"
+    log "✅ Fixed guards import in $(basename "$file")"
   fi
 done
 
@@ -308,20 +316,6 @@ EOF
   log "✅ Created roles.guard.ts"
 fi
 
-# Fix any remaining import path issues in all TypeScript files
-log "Fixing remaining import path issues..."
-find "$APP_ROOT/$API_DIR/src" -name "*.ts" -type f | while read -r file; do
-  # Fix roles.guard imports
-  if grep -q "from '../auth/guards/roles.guard'" "$file"; then
-    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/roles.guard'|from '../auth/jwt-auth.guard'|g" "$file"
-    log "✅ Fixed roles.guard import in $(basename "$file")"
-  fi
-  # Fix any other guards imports
-  if grep -q "from '../auth/guards/" "$file"; then
-    sudo -u "$APP_USER" sed -i "s|from '../auth/guards/\([^']*\)'|from '../auth/\1'|g" "$file"
-    log "✅ Fixed guards import in $(basename "$file")"
-  fi
-done
 
 # Create any other missing common decorators
 log "Creating other missing decorators..."
@@ -722,19 +716,6 @@ if [[ "$MODE" != "api-only" ]]; then
   fi
 fi
 
-# Test database connection directly
-if [[ "$MODE" != "web-only" ]]; then
-  log "Testing direct database connection..."
-  if sudo -u "$APP_USER" psql "postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public" -c "SELECT version();" >/dev/null 2>&1; then
-    log "✅ Direct database connection successful"
-  else
-    err "❌ Direct database connection failed"
-    err "Database credentials:"
-    err "  User: ${PG_USER}"
-    err "  Database: ${PG_DB}"
-    err "  Connection: postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public"
-  fi
-fi
 
 # Nginx sites
 rm -f /etc/nginx/sites-enabled/default || true
