@@ -133,6 +133,33 @@ ufw --force enable || true
 if [[ "$MODE" != "web-only" ]]; then
   apt-get install -y postgresql postgresql-contrib
   
+  # Install Redis for AI Studio interactive features
+  log "Installing Redis for real-time features..."
+  apt-get install -y redis-server
+  
+  # Configure Redis
+  log "Configuring Redis..."
+  systemctl enable redis-server
+  systemctl start redis-server
+  
+  # Test Redis connection
+  if redis-cli ping | grep -q "PONG"; then
+    log "✅ Redis is running and accessible"
+  else
+    warn "⚠️  Redis connection test failed"
+  fi
+  
+  # Install FFmpeg for AI Studio video processing
+  log "Installing FFmpeg for video processing..."
+  apt-get install -y ffmpeg
+  
+  # Test FFmpeg installation
+  if ffmpeg -version | grep -q "ffmpeg version"; then
+    log "✅ FFmpeg is installed and working"
+  else
+    warn "⚠️  FFmpeg installation test failed"
+  fi
+  
   # Configure PostgreSQL for local connections
   log "Configuring PostgreSQL authentication..."
   
@@ -621,12 +648,209 @@ EOF
   log "✅ Created webhooks.module.ts"
 fi
 
+# Create AI Studio environment example file
+log "Creating AI Studio environment example..."
+if [[ ! -f "$APP_ROOT/$API_DIR/env.ai-studio.example" ]]; then
+  sudo -u "$APP_USER" cat > "$APP_ROOT/$API_DIR/env.ai-studio.example" << 'EOF'
+# AI Studio Configuration
+# Copy this to your .env file and configure with your actual API keys
+
+# AI Services
+OPENAI_API_KEY=sk-your-openai-api-key-here
+ANTHROPIC_API_KEY=sk-ant-your-anthropic-api-key-here
+
+# AWS Configuration (for S3 storage and Rekognition)
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_REGION=us-east-1
+AWS_S3_BUCKET=ayinel-uploads
+
+# Web3 Configuration
+WEB3_PROVIDER_URL=https://mainnet.infura.io/v3/YOUR_PROJECT_ID
+NFT_CONTRACT_ADDRESS=0xYourNFTContractAddress
+FAN_TOKEN_CONTRACT_ADDRESS=0xYourFanTokenContractAddress
+
+# IPFS Configuration
+IPFS_GATEWAY_URL=https://ipfs.io/ipfs/
+IPFS_API_URL=https://ipfs.infura.io:5001
+
+# AI Processing Services (optional - for external AI services)
+AI_THUMBNAIL_SERVICE_URL=https://your-thumbnail-service.com
+AI_VIDEO_PROCESSING_URL=https://your-video-service.com
+AI_VOICE_CLONING_URL=https://your-voice-service.com
+
+# Interactive Features
+WEBSOCKET_URL=ws://localhost:3001
+REDIS_URL=redis://localhost:6379
+
+# Web3 Wallet Configuration
+WALLET_CONNECT_PROJECT_ID=your-walletconnect-project-id
+ALCHEMY_API_KEY=your-alchemy-api-key
+
+# Security (generate strong secrets)
+JWT_SECRET=your-super-secure-jwt-secret-here
+EOF
+  log "✅ Created AI Studio environment example"
+fi
+
+# Create AI Studio setup guide
+log "Creating AI Studio setup guide..."
+if [[ ! -f "$APP_ROOT/AI_STUDIO_SETUP.md" ]]; then
+  sudo -u "$APP_USER" cat > "$APP_ROOT/AI_STUDIO_SETUP.md" << 'EOF'
+# 🚀 AYINEL AI Studio Setup Guide
+
+Welcome to AYINEL AI Studio - the most advanced content creation platform ever built!
+
+## 🎯 Quick Start
+
+1. **Access AI Studio**: Navigate to `/ai-studio` in your browser
+2. **Configure API Keys**: Edit your `.env` file with the required API keys
+3. **Start Creating**: Use the AI-powered tools to create amazing content
+
+## 🔧 Required API Keys
+
+### AI Services
+- **OpenAI API Key**: For AI thumbnail generation, video editing, and content suggestions
+- **Anthropic API Key**: For advanced AI content analysis and moderation
+
+### Web3 Services
+- **Infura/Alchemy**: For blockchain interactions and NFT minting
+- **WalletConnect Project ID**: For wallet connections
+
+### Cloud Services
+- **AWS S3**: For file storage and media processing
+- **Redis**: For real-time features (automatically installed)
+
+## 🎨 Available Features
+
+### AI Content Creation
+- **AI Thumbnail Generator**: Create eye-catching thumbnails automatically
+- **AI Video Editor**: Intelligent video editing with AI assistance
+- **AI Voice Cloner**: Clone voices for content creation
+- **Smart Content Suggestions**: AI-powered content ideas
+
+### Interactive Features
+- **Live Polls**: Real-time audience engagement
+- **Reaction Overlays**: Dynamic reaction systems
+- **Q&A Sessions**: Interactive question and answer
+- **AR Filters**: Augmented reality effects
+
+### Metaverse Integration
+- **3D Virtual Studios**: Create content in virtual spaces
+- **3D Avatars**: Customizable virtual representations
+- **Virtual Events**: Host events in the metaverse
+- **NFT Integration**: Mint and trade digital assets
+
+### Advanced Audio
+- **Spatial Audio**: 3D audio experiences
+- **AI Music Generation**: Create custom music
+- **Voice Effects**: Professional voice processing
+- **Podcast Studio**: Complete podcast creation tools
+
+### Creator Economy 2.0
+- **Fan Tokens**: Creator-specific digital currencies
+- **Subscription Tiers**: Multiple monetization levels
+- **Merchandise Integration**: Sell physical products
+- **Sponsorship Marketplace**: Connect with brands
+
+### Web3 Features
+- **NFT Minting**: Create and sell NFTs
+- **Wallet Integration**: Connect crypto wallets
+- **Royalty System**: Automatic creator payments
+- **Decentralized Storage**: IPFS integration
+
+## 🛠️ Configuration Steps
+
+1. **Copy Environment Template**:
+   ```bash
+   cp apps/api/env.ai-studio.example apps/api/.env
+   ```
+
+2. **Add Your API Keys**:
+   Edit `apps/api/.env` and add your actual API keys
+
+3. **Restart Services**:
+   ```bash
+   pm2 restart ayinel-api
+   pm2 restart ayinel-web
+   ```
+
+4. **Test Features**:
+   Visit `/ai-studio` and test each feature
+
+## 📱 Mobile Features
+
+The mobile app includes:
+- **Shorts Creator**: TikTok-style video creation
+- **Mobile Live Streaming**: Stream directly from mobile
+- **Gesture Controls**: Touch-based content creation
+- **AI Camera Assistant**: Smart camera features
+- **Offline Mode**: Create content without internet
+
+## 🔒 Security Notes
+
+- Never commit API keys to version control
+- Use environment variables for all sensitive data
+- Regularly rotate API keys
+- Monitor usage and costs
+
+## 🆘 Troubleshooting
+
+### Common Issues
+1. **API Key Errors**: Verify keys are correct and have proper permissions
+2. **Redis Connection**: Ensure Redis is running (`systemctl status redis-server`)
+3. **FFmpeg Issues**: Check FFmpeg installation (`ffmpeg -version`)
+4. **Web3 Connection**: Verify network connectivity and provider URLs
+
+### Support
+- Check logs: `pm2 logs ayinel-api`
+- Review environment: `cat apps/api/.env`
+- Test Redis: `redis-cli ping`
+- Test database: `psql -d ayineldb -c "SELECT 1;"`
+
+## 🎉 You're Ready!
+
+Your AYINEL AI Studio is now fully configured and ready to create the future of content!
+
+Visit `/ai-studio` to start creating amazing content with AI-powered tools.
+EOF
+  log "✅ Created AI Studio setup guide"
+fi
+
 # Write envs depending on mode
 if [[ "$MODE" != "web-only" ]]; then
   cat >"$APP_ROOT/$API_DIR/.env" <<ENV
 NODE_ENV=production
 PORT=${API_PORT}
 DATABASE_URL=postgresql://${PG_USER}:${PG_PASS}@localhost:5432/${PG_DB}?schema=public
+
+# AI Studio Configuration
+OPENAI_API_KEY=${OPENAI_API_KEY:-}
+ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+AWS_REGION=${AWS_REGION:-us-east-1}
+AWS_S3_BUCKET=${AWS_S3_BUCKET:-ayinel-uploads}
+
+# Web3 Configuration
+WEB3_PROVIDER_URL=${WEB3_PROVIDER_URL:-https://mainnet.infura.io/v3/YOUR_PROJECT_ID}
+NFT_CONTRACT_ADDRESS=${NFT_CONTRACT_ADDRESS:-}
+FAN_TOKEN_CONTRACT_ADDRESS=${FAN_TOKEN_CONTRACT_ADDRESS:-}
+
+# IPFS Configuration
+IPFS_GATEWAY_URL=${IPFS_GATEWAY_URL:-https://ipfs.io/ipfs/}
+IPFS_API_URL=${IPFS_API_URL:-https://ipfs.infura.io:5001}
+
+# AI Processing Configuration
+AI_THUMBNAIL_SERVICE_URL=${AI_THUMBNAIL_SERVICE_URL:-}
+AI_VIDEO_PROCESSING_URL=${AI_VIDEO_PROCESSING_URL:-}
+AI_VOICE_CLONING_URL=${AI_VOICE_CLONING_URL:-}
+
+# Interactive Features
+WEBSOCKET_URL=${WEBSOCKET_URL:-ws://localhost:3001}
+REDIS_URL=${REDIS_URL:-redis://localhost:6379}
+
+# Security
 JWT_SECRET=${JWT_SECRET}
 FRONTEND_URL=https://${DOMAIN_WEB}
 # STRIPE_SECRET_KEY=
@@ -644,6 +868,27 @@ if [[ "$MODE" != "api-only" ]]; then
   cat >"$APP_ROOT/$WEB_DIR/.env.local" <<ENV
 NEXT_PUBLIC_API_BASE=${NEXT_PUBLIC_API_BASE}
 NEXT_PUBLIC_WS_URL=${NEXT_PUBLIC_WS_URL}
+
+# AI Studio Frontend Configuration
+NEXT_PUBLIC_OPENAI_API_KEY=${OPENAI_API_KEY:-}
+NEXT_PUBLIC_ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+NEXT_PUBLIC_WEB3_PROVIDER_URL=${WEB3_PROVIDER_URL:-https://mainnet.infura.io/v3/YOUR_PROJECT_ID}
+NEXT_PUBLIC_NFT_CONTRACT_ADDRESS=${NFT_CONTRACT_ADDRESS:-}
+NEXT_PUBLIC_FAN_TOKEN_CONTRACT_ADDRESS=${FAN_TOKEN_CONTRACT_ADDRESS:-}
+NEXT_PUBLIC_IPFS_GATEWAY_URL=${IPFS_GATEWAY_URL:-https://ipfs.io/ipfs/}
+
+# AI Studio Features
+NEXT_PUBLIC_AI_THUMBNAIL_ENABLED=true
+NEXT_PUBLIC_AI_VIDEO_EDITING_ENABLED=true
+NEXT_PUBLIC_AI_VOICE_CLONING_ENABLED=true
+NEXT_PUBLIC_INTERACTIVE_FEATURES_ENABLED=true
+NEXT_PUBLIC_METAVERSE_ENABLED=true
+NEXT_PUBLIC_WEB3_ENABLED=true
+NEXT_PUBLIC_SPATIAL_AUDIO_ENABLED=true
+
+# Web3 Wallet Configuration
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=${WALLET_CONNECT_PROJECT_ID:-}
+NEXT_PUBLIC_ALCHEMY_API_KEY=${ALCHEMY_API_KEY:-}
 ENV
   chown "$APP_USER":"$APP_USER" "$APP_ROOT/$WEB_DIR/.env.local"
 fi
@@ -652,6 +897,80 @@ fi
 pushd "$APP_ROOT" >/dev/null
 sudo -u "$APP_USER" pnpm install --frozen-lockfile || sudo -u "$APP_USER" pnpm install
 popd >/dev/null
+
+# Install AI Studio dependencies
+log "Installing AI Studio dependencies..."
+pushd "$APP_ROOT" >/dev/null
+
+# Install additional AI/ML dependencies for the API
+pushd "$APP_ROOT/$API_DIR" >/dev/null
+sudo -u "$APP_USER" pnpm add @tensorflow/tfjs-node @tensorflow/tfjs-core
+sudo -u "$APP_USER" pnpm add openai anthropic @anthropic-ai/sdk
+sudo -u "$APP_USER" pnpm add multer sharp ffmpeg-static fluent-ffmpeg
+sudo -u "$APP_USER" pnpm add @aws-sdk/client-s3 @aws-sdk/client-rekognition
+sudo -u "$APP_USER" pnpm add ipfs-http-client web3 ethers
+popd >/dev/null
+
+# Install additional dependencies for the web app
+if [[ "$MODE" != "api-only" ]]; then
+  pushd "$APP_ROOT/$WEB_DIR" >/dev/null
+  sudo -u "$APP_USER" pnpm add @tensorflow/tfjs three @react-three/fiber @react-three/drei
+  sudo -u "$APP_USER" pnpm add @web3modal/react @web3modal/ethereum wagmi viem
+  sudo -u "$APP_USER" pnpm add framer-motion react-spring @use-gesture/react
+  sudo -u "$APP_USER" pnpm add react-webcam react-audio-visualize
+  sudo -u "$APP_USER" pnpm add socket.io-client @types/three
+  popd >/dev/null
+fi
+
+# Install mobile dependencies
+if [[ -d "$APP_ROOT/apps/mobile" ]]; then
+  pushd "$APP_ROOT/apps/mobile" >/dev/null
+  sudo -u "$APP_USER" pnpm add expo-camera expo-av expo-document-picker expo-image-picker
+  sudo -u "$APP_USER" pnpm add expo-gl expo-gl-cpp expo-three expo-asset
+  sudo -u "$APP_USER" pnpm add react-native-gesture-handler react-native-reanimated
+  popd >/dev/null
+fi
+
+popd >/dev/null
+
+# Create AI Studio directory structure and ensure components exist
+log "Setting up AI Studio structure..."
+if [[ "$MODE" != "api-only" ]]; then
+  # Create AI Studio page if it doesn't exist
+  if [[ ! -f "$APP_ROOT/$WEB_DIR/app/ai-studio/page.tsx" ]]; then
+    log "Creating AI Studio page..."
+    sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/app/ai-studio"
+    # The AI Studio page will be created from the repository
+  fi
+
+  # Create component directories
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/ai"
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/interactive"
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/metaverse"
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/audio"
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/economy"
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/web3"
+  sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$WEB_DIR/components/media"
+
+  log "✅ AI Studio directory structure created"
+fi
+
+# Create AI and Interactive API modules if they don't exist
+if [[ "$MODE" != "web-only" ]]; then
+  if [[ ! -d "$APP_ROOT/$API_DIR/src/modules/ai" ]]; then
+    log "Creating AI module..."
+    sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/ai"
+    # The AI module files will be created from the repository
+  fi
+
+  if [[ ! -d "$APP_ROOT/$API_DIR/src/modules/interactive" ]]; then
+    log "Creating Interactive module..."
+    sudo -u "$APP_USER" mkdir -p "$APP_ROOT/$API_DIR/src/modules/interactive"
+    # The Interactive module files will be created from the repository
+  fi
+
+  log "✅ AI and Interactive API modules structure created"
+fi
 
 if [[ "$MODE" != "api-only" ]]; then
   pushd "$APP_ROOT/$WEB_DIR" >/dev/null
@@ -884,6 +1203,30 @@ PM2:
 Re-run HTTPS later if DNS needed more time:
   certbot --nginx -d ${DOMAIN_WEB},${DOMAIN_WWW} -m ${EMAIL_LETSENCRYPT} --agree-tos
   certbot --nginx -d ${DOMAIN_API} -m ${EMAIL_LETSENCRYPT} --agree-tos
+
+🔐 SECURITY WARNING:
+   - Change default passwords in .env file
+   - Generate strong JWT_SECRET
+   - Configure HTTPS in production
+   - Review SECURITY.md for full checklist
+
+🚀 AI STUDIO FEATURES ENABLED:
+   - AI Thumbnail Generator: /ai-studio
+   - AI Video Editor: /ai-studio
+   - AI Voice Cloner: /ai-studio
+   - Interactive Polls & Reactions: /ai-studio
+   - 3D Virtual Studios: /ai-studio
+   - Spatial Audio Player: /ai-studio
+   - Fan Tokens & NFTs: /ai-studio
+   - Smart Feed: /ai-studio
+   - Web3 Integration: /ai-studio
+
+🎯 NEXT STEPS:
+   1. Read AI Studio setup guide: cat AI_STUDIO_SETUP.md
+   2. Configure AI API keys (OpenAI, Anthropic) in .env
+   3. Set up Web3 provider (Infura, Alchemy) for NFTs
+   4. Configure AWS S3 for file storage
+   5. Access AI Studio at: https://${DOMAIN_WEB}/ai-studio
 ===================================================
 EOF
 
