@@ -963,6 +963,10 @@ sudo -u "$APP_USER" pnpm add multer sharp ffmpeg-static fluent-ffmpeg
 sudo -u "$APP_USER" pnpm add @aws-sdk/client-s3 @aws-sdk/client-rekognition
 sudo -u "$APP_USER" pnpm add @nestjs/throttler
 sudo -u "$APP_USER" pnpm add ipfs-http-client web3 ethers
+
+# Ensure throttler is properly installed for API
+echo "[AYINEL] Ensuring @nestjs/throttler is properly installed..."
+sudo -u "$APP_USER" pnpm add @nestjs/throttler --filter @ayinel/api
 popd >/dev/null
 
 # Install additional dependencies for the web app
