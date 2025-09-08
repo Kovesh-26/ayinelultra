@@ -961,6 +961,7 @@ sudo -u "$APP_USER" pnpm add @tensorflow/tfjs-node @tensorflow/tfjs-core
 sudo -u "$APP_USER" pnpm add openai anthropic @anthropic-ai/sdk
 sudo -u "$APP_USER" pnpm add multer sharp ffmpeg-static fluent-ffmpeg
 sudo -u "$APP_USER" pnpm add @aws-sdk/client-s3 @aws-sdk/client-rekognition
+sudo -u "$APP_USER" pnpm add @nestjs/throttler
 sudo -u "$APP_USER" pnpm add ipfs-http-client web3 ethers
 popd >/dev/null
 
