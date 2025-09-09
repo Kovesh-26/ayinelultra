@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('api/v1/health')
 export class HealthController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get()
-  async getHealth() {
+  async getHealth(@Res() res: Response) {
     const health = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -16,9 +21,12 @@ export class HealthController {
       services: {
         database: 'unknown',
         redis: 'unknown',
-        externalServices: 'unknown'
+        stripe: 'unknown',
+        s3: 'unknown'
       }
     };
+
+    let overallHealthy = true;
 
     try {
       // Check database connection
@@ -26,16 +34,60 @@ export class HealthController {
       health.services.database = 'healthy';
     } catch (error) {
       health.services.database = 'unhealthy';
+      overallHealthy = false;
+    }
+
+    // Check Redis connection if configured
+    try {
+      const redisUrl = this.configService.get('REDIS_URL');
+      if (redisUrl) {
+        // Import Redis dynamically to avoid errors if not configured
+        const { createClient } = await import('redis');
+        const redisClient = createClient({ url: redisUrl });
+        await redisClient.connect();
+        await redisClient.ping();
+        await redisClient.quit();
+        health.services.redis = 'healthy';
+      } else {
+        health.services.redis = 'not_configured';
+      }
+    } catch (error) {
+      health.services.redis = 'unhealthy';
+      overallHealthy = false;
+    }
+
+    // Check Stripe if configured
+    try {
+      const stripeKey = this.configService.get('STRIPE_SECRET_KEY');
+      if (stripeKey) {
+        // Basic validation - just check if key is present
+        health.services.stripe = stripeKey.startsWith('sk_') ? 'configured' : 'invalid_key';
+      } else {
+        health.services.stripe = 'not_configured';
+      }
+    } catch (error) {
+      health.services.stripe = 'error';
+    }
+
+    // Check S3 if configured
+    try {
+      const s3Bucket = this.configService.get('S3_BUCKET_NAME');
+      const s3Region = this.configService.get('S3_REGION');
+      if (s3Bucket && s3Region) {
+        health.services.s3 = 'configured';
+      } else {
+        health.services.s3 = 'not_configured';
+      }
+    } catch (error) {
+      health.services.s3 = 'error';
+    }
+
+    if (!overallHealthy) {
       health.status = 'degraded';
     }
 
-    // TODO: Check Redis connection
-    health.services.redis = 'unknown';
-
-    // TODO: Check external services
-    health.services.externalServices = 'unknown';
-
-    return health;
+    const statusCode = overallHealthy ? HttpStatus.OK : HttpStatus.SERVICE_UNAVAILABLE;
+    return res.status(statusCode).json(health);
   }
 
   @Get('ready')

@@ -5,8 +5,11 @@ import {
   Headers, 
   HttpCode, 
   HttpStatus,
-  BadRequestException
+  BadRequestException,
+  RawBodyRequest,
+  Req
 } from '@nestjs/common';
+import { Request } from 'express';
 import { WebhooksService } from './webhooks.service';
 
 @Controller('api/v1/webhooks')
@@ -46,15 +49,20 @@ export class WebhooksController {
   @Post('stripe')
   @HttpCode(HttpStatus.OK)
   async handleStripeWebhook(
-    @Body() payload: any,
+    @Req() req: RawBodyRequest<Request>,
     @Headers('stripe-signature') signature: string
   ) {
-    // TODO: Verify Stripe webhook signature
-    // if (!this.verifyStripeSignature(payload, signature)) {
-    //   throw new BadRequestException('Invalid Stripe signature');
-    // }
+    if (!signature) {
+      throw new BadRequestException('Missing Stripe signature');
+    }
 
-    await this.webhooksService.handleStripeWebhook(payload);
+    const payload = req.rawBody || req.body;
+    
+    if (!this.webhooksService.verifyStripeSignature(payload, signature)) {
+      throw new BadRequestException('Invalid Stripe signature');
+    }
+
+    await this.webhooksService.handleStripeWebhook(JSON.parse(payload.toString()));
     return { received: true };
   }
 

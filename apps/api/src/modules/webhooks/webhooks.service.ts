@@ -1,11 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class WebhooksService {
   private readonly logger = new Logger(WebhooksService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService,
+  ) {}
 
   async handleMuxWebhook(payload: any) {
     this.logger.log('Processing Mux webhook', payload);
@@ -262,5 +266,24 @@ export class WebhooksService {
   private async handleAccountUpdated(data: any) {
     const { object: account } = data;
     this.logger.log(`Stripe Connect account updated: ${account.id}`);
+  }
+
+  verifyStripeSignature(payload: Buffer | string, signature: string): boolean {
+    try {
+      const stripe = require('stripe')(this.configService.get('STRIPE_SECRET_KEY'));
+      const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET');
+      
+      if (!webhookSecret) {
+        this.logger.warn('STRIPE_WEBHOOK_SECRET not configured');
+        return false;
+      }
+
+      // Verify the webhook signature
+      stripe.webhooks.constructEvent(payload, signature, webhookSecret);
+      return true;
+    } catch (error) {
+      this.logger.error('Stripe signature verification failed', error.message);
+      return false;
+    }
   }
 }
