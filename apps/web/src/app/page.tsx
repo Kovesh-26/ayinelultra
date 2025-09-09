@@ -9,18 +9,11 @@ import {
   Grid,
   Tag,
   VideoCard,
-  StatCard
+  Stat
 } from '@/components/ayinel';
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
-
-  const stats = [
-    { number: '2.1M', label: 'Active Users', icon: '👥' },
-    { number: '1.2K', label: 'Live Streams', icon: '📡' },
-    { number: '45.2B', label: 'Total Views', icon: '📊' },
-    { number: '45K', label: 'Creators', icon: '👑' }
-  ];
 
   const categories = ['Gaming', 'Music', 'Tech', 'Fitness', 'Cooking', 'Travel', 'Education', 'Comedy'];
 
@@ -32,33 +25,51 @@ export default function HomePage() {
           <Sidebar active="Home" />
           <main className="flex-1">
             {/* Hero Section */}
-            <div className="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-indigo-800/40 via-purple-800/30 to-fuchsia-700/40 p-8">
-              <div className="grid gap-8 md:grid-cols-[1fr_auto]">
-                <div>
-                  <h1 className="text-4xl font-bold text-white mb-4">Welcome to Ayinel</h1>
-                  <p className="text-lg text-muted-foreground">
-                    Join the creator revolution. It&apos;s time to shine.
-                  </p>
-                  <div className="flex gap-4">
-                    <button className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-white font-semibold shadow">
-                      Start Watching
-                    </button>
-                    <button className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-white hover:bg-white/10">
-                      Create
-                    </button>
-                    <a 
-                      href="/demo" 
-                      className="rounded-xl border border-indigo-500/50 bg-indigo-500/10 px-6 py-3 text-indigo-300 hover:bg-indigo-500/20"
-                    >
-                      View UI Demo
-                    </a>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {stats.map((stat) => (
-                    <StatCard key={stat.label} label={stat.label} value={stat.number} />
-                  ))}
-                </div>
+            <div className="mb-8 relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-indigo-800/50 via-purple-800/40 to-fuchsia-700/40 p-8">
+              {/* watermark eye */}
+              <svg
+                className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 opacity-20"
+                width="520"
+                height="220"
+                viewBox="0 0 520 220"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="heroEye" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#7dd3fc" />
+                    <stop offset="100%" stopColor="#a78bfa" />
+                  </linearGradient>
+                </defs>
+                <ellipse cx="260" cy="110" rx="240" ry="96" fill="url(#heroEye)" opacity="0.15" />
+                <circle cx="260" cy="110" r="48" fill="url(#heroEye)" opacity="0.35" />
+                <circle cx="260" cy="110" r="18" fill="url(#heroEye)" />
+              </svg>
+
+              <h1 className="text-3xl md:text-4xl font-bold relative">
+                Welcome to{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-fuchsia-400">
+                  Ayinel
+                </span>
+              </h1>
+              <p className="mt-2 text-white/80 relative">
+                Discover amazing content from creators worldwide. Tune-In, Boost, and build your Crew.
+              </p>
+
+              <div className="mt-5 flex gap-3 relative">
+                <button className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-4 py-2 text-sm font-semibold text-white">
+                  Start Watching
+                </button>
+                <button className="rounded-xl bg-black/40 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+                  Create
+                </button>
+              </div>
+
+              {/* four stat cards */}
+              <div className="mt-6 grid gap-4 md:grid-cols-4">
+                <Stat icon={<span>👥</span>} label="Active Users" value="2.1M" />
+                <Stat icon={<span>📡</span>} label="Live Streams" value="1.2K" />
+                <Stat icon={<span>📈</span>} label="Total Views" value="45.2B" />
+                <Stat icon={<span>👑</span>} label="Creators" value="45K" />
               </div>
             </div>
 
