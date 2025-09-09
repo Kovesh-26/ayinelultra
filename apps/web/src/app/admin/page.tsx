@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { countPages, getPageCount, type PageStats } from "../../lib/page-counter";
 
 interface SystemStats {
   totalUsers: number;
@@ -31,6 +32,8 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
+  const [pageStats, setPageStats] = useState<PageStats | null>(null);
+  const [pageCount, setPageCount] = useState<number>(0);
 
   useEffect(() => {
     // TODO: Fetch real data from API
@@ -60,6 +63,11 @@ export default function AdminDashboard() {
         role: 'user'
       }
     ]);
+
+    // Load page statistics
+    const pageStatsData = countPages();
+    setPageStats(pageStatsData);
+    setPageCount(pageStatsData.totalPages);
 
     setLoading(false);
   }, []);
@@ -226,6 +234,64 @@ export default function AdminDashboard() {
       {/* Developer Tab */}
       {activeTab === 'developer' && (
         <div className="space-y-6">
+          {/* Page Statistics Section */}
+          <section className="rounded-2xl border p-4">
+            <h2 className="text-xl font-semibold mb-4">Application Structure</h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-xl border p-4 bg-blue-50">
+                <h3 className="font-medium mb-2 text-blue-800">Total Pages</h3>
+                <p className="text-3xl font-bold text-blue-600">{pageCount}</p>
+                <p className="text-sm text-blue-600 mt-1">Active routes</p>
+              </div>
+              {pageStats && (
+                <>
+                  <div className="rounded-xl border p-4 bg-green-50">
+                    <h3 className="font-medium mb-2 text-green-800">Directories</h3>
+                    <p className="text-3xl font-bold text-green-600">{pageStats.totalDirectories}</p>
+                    <p className="text-sm text-green-600 mt-1">Route folders</p>
+                  </div>
+                  <div className="rounded-xl border p-4 bg-purple-50">
+                    <h3 className="font-medium mb-2 text-purple-800">Layouts</h3>
+                    <p className="text-3xl font-bold text-purple-600">{pageStats.specialFiles.layouts}</p>
+                    <p className="text-sm text-purple-600 mt-1">Layout files</p>
+                  </div>
+                  <div className="rounded-xl border p-4 bg-orange-50">
+                    <h3 className="font-medium mb-2 text-orange-800">Special Files</h3>
+                    <p className="text-3xl font-bold text-orange-600">
+                      {pageStats.specialFiles.loadings + pageStats.specialFiles.errors + pageStats.specialFiles.notFounds}
+                    </p>
+                    <p className="text-sm text-orange-600 mt-1">Loading, Error, 404</p>
+                  </div>
+                </>
+              )}
+            </div>
+            
+            {pageStats && (
+              <div className="mt-6">
+                <h3 className="font-medium mb-3">Recent Routes</h3>
+                <div className="bg-gray-50 rounded-xl p-4 max-h-64 overflow-y-auto">
+                  <div className="grid gap-2">
+                    {pageStats.pages.slice(0, 10).map((page, index) => (
+                      <div key={index} className="flex items-center justify-between py-2 px-3 bg-white rounded-lg border">
+                        <span className="font-mono text-sm">/{page.path}</span>
+                        <div className="flex gap-1">
+                          {page.hasLayout && <span className="px-2 py-1 bg-purple-100 text-purple-600 text-xs rounded">Layout</span>}
+                          {page.hasLoading && <span className="px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded">Loading</span>}
+                          {page.hasError && <span className="px-2 py-1 bg-red-100 text-red-600 text-xs rounded">Error</span>}
+                        </div>
+                      </div>
+                    ))}
+                    {pageStats.pages.length > 10 && (
+                      <div className="text-center py-2 text-gray-500 text-sm">
+                        ... and {pageStats.pages.length - 10} more routes
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+
           <section className="rounded-2xl border p-4">
             <h2 className="text-xl font-semibold mb-4">Developer Tools</h2>
             <div className="grid gap-4 sm:grid-cols-2">
