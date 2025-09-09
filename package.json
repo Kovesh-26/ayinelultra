@@ -4,6 +4,7 @@
   "description": "AYINEL — Next-gen creator platform blending YouTube, Facebook, and MySpace",
   "private": true,
   "scripts": {
+    "postinstall": "node scripts/postinstall.js",
     "dev": "pnpm --parallel dev",
     "dev:api": "pnpm --filter @ayinel/api dev",
     "dev:web": "pnpm --filter @ayinel/web dev",
