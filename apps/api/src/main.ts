@@ -5,9 +5,16 @@ import * as compression from 'compression';
 import * as helmet from 'helmet';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { CustomThrottlerGuard } from './modules/rate-limit/rate-limit.guard';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Serve static files for uploaded images
+  app.useStaticAssets(join(__dirname, '..', '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
 
   // Security middleware
   app.use(helmet.default());
@@ -37,6 +44,7 @@ async function bootstrap() {
   
   console.log(`🚀 AYINEL API server running on port ${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/v1/docs`);
+  console.log(`🖼️ Uploaded images served from: http://localhost:${port}/uploads/`);
 }
 
 bootstrap();

@@ -25,8 +25,17 @@ export class CreateChatRoomDto {
 }
 
 export class SendMessageDto {
+  @IsOptional()
   @IsString()
-  text: string;
+  text?: string;
+
+  @IsOptional()
+  @IsString()
+  attachmentUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  attachmentType?: string;
 
   @IsOptional()
   @IsString()
