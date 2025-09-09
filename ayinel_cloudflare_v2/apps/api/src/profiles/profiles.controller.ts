@@ -1,5 +1,18 @@
-import { Controller, Get, Put, Body, Param, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Put,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ProfilesService } from './profiles.service';
 import { UpdateProfileDto, ProfileResponseDto } from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -25,7 +38,7 @@ export class ProfilesController {
   @ApiResponse({ status: 200, description: 'Profile updated successfully' })
   async updateMyProfile(
     @Req() req,
-    @Body() dto: UpdateProfileDto,
+    @Body() dto: UpdateProfileDto
   ): Promise<ProfileResponseDto> {
     return this.profilesService.updateProfile(req.user.id, dto);
   }
@@ -34,7 +47,9 @@ export class ProfilesController {
   @ApiOperation({ summary: 'Get profile by username' })
   @ApiResponse({ status: 200, description: 'Profile found' })
   @ApiResponse({ status: 404, description: 'Profile not found' })
-  async getProfileByUsername(@Param('username') username: string): Promise<ProfileResponseDto> {
+  async getProfileByUsername(
+    @Param('username') username: string
+  ): Promise<ProfileResponseDto> {
     return this.profilesService.getProfileByUsername(username);
   }
 }

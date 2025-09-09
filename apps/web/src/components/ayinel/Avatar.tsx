@@ -9,7 +9,7 @@ interface AvatarProps {
 
 export function Avatar({ src, label, sub, onClick }: AvatarProps) {
   return (
-    <div 
+    <div
       className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 cursor-pointer hover:bg-white/10 transition-colors"
       onClick={onClick}
     >

@@ -1,4 +1,13 @@
-import { IsString, IsBoolean, IsOptional, IsEnum, IsArray, IsInt, Min, Max } from 'class-validator';
+import {
+  IsString,
+  IsBoolean,
+  IsOptional,
+  IsEnum,
+  IsArray,
+  IsInt,
+  Min,
+  Max,
+} from 'class-validator';
 import { ContentRating, KidAgeGroup } from '@prisma/client';
 
 export class CreateKidProfileDto {

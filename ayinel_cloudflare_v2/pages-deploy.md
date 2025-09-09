@@ -16,6 +16,7 @@
 ## Step 2: Build Configuration
 
 ### Build Settings
+
 - **Framework preset**: Next.js
 - **Build command**: `npm run build:web`
 - **Build output directory**: `.next`
@@ -26,6 +27,7 @@
 Add these environment variables in Cloudflare Pages:
 
 #### Required Variables
+
 ```
 NEXT_PUBLIC_API_URL=https://api.ayinel.com
 NEXT_PUBLIC_BRAND_NAME=Ayinel
@@ -34,6 +36,7 @@ NEXT_PUBLIC_LIVEKIT_URL=wss://your.livekit.host
 ```
 
 #### Optional Variables
+
 ```
 NEXT_PUBLIC_ANALYTICS_ID=your-analytics-id
 NEXT_PUBLIC_SENTRY_DSN=your-sentry-dsn
@@ -58,18 +61,21 @@ NEXT_PUBLIC_SENTRY_DSN=your-sentry-dsn
 In your Cloudflare DNS settings for ayinel.com:
 
 ### For Root Domain (ayinel.com)
+
 - **Type**: A
 - **Name**: @
 - **Content**: 192.0.2.1 (Cloudflare proxy)
 - **Proxy status**: Proxied ✅
 
 ### For www Subdomain
+
 - **Type**: CNAME
 - **Name**: www
 - **Content**: ayinel-web.pages.dev
 - **Proxy status**: Proxied ✅
 
 ### For API Subdomain
+
 - **Type**: CNAME
 - **Name**: api
 - **Content**: your-api-domain.com
@@ -95,11 +101,13 @@ Create page rules for better performance:
 ## Step 8: Environment-Specific Deployments
 
 ### Production
+
 - **Branch**: `main`
 - **Environment**: Production
 - **Domain**: ayinel.com
 
 ### Staging
+
 - **Branch**: `develop`
 - **Environment**: Preview
 - **Domain**: staging.ayinel.com
@@ -113,16 +121,19 @@ Create page rules for better performance:
 ## Troubleshooting
 
 ### Build Failures
+
 - Check build logs in Cloudflare Pages
 - Verify all dependencies are installed
 - Ensure environment variables are set correctly
 
 ### Domain Issues
+
 - Verify DNS propagation (can take 24-48 hours)
 - Check SSL certificate status
 - Ensure domain is properly proxied through Cloudflare
 
 ### Performance Issues
+
 - Enable Cloudflare's CDN
 - Use image optimization
 - Implement proper caching headers
@@ -140,6 +151,7 @@ Create page rules for better performance:
 ## Support
 
 For issues with Cloudflare Pages:
+
 - [Cloudflare Pages Documentation](https://developers.cloudflare.com/pages/)
 - [Cloudflare Community](https://community.cloudflare.com/)
 - [Cloudflare Support](https://support.cloudflare.com/)

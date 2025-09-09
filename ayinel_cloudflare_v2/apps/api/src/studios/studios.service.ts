@@ -1,12 +1,23 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateStudioDto, UpdateStudioDto, StudioResponseDto } from '@ayinel/types';
+import {
+  CreateStudioDto,
+  UpdateStudioDto,
+  StudioResponseDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class StudiosService {
   constructor(private prisma: PrismaService) {}
 
-  async createStudio(ownerId: string, dto: CreateStudioDto): Promise<StudioResponseDto> {
+  async createStudio(
+    ownerId: string,
+    dto: CreateStudioDto
+  ): Promise<StudioResponseDto> {
     // Check if handle is unique
     const existingStudio = await this.prisma.studio.findUnique({
       where: { handle: dto.handle },
@@ -44,7 +55,7 @@ export class StudiosService {
       where: { isCreator: true }, // Only show creator studios
     });
 
-    return studios.map(studio => this.mapToStudioResponse(studio));
+    return studios.map((studio) => this.mapToStudioResponse(studio));
   }
 
   async findById(id: string): Promise<StudioResponseDto> {
@@ -83,7 +94,10 @@ export class StudiosService {
     return this.mapToStudioResponse(studio);
   }
 
-  async updateStudio(id: string, dto: UpdateStudioDto): Promise<StudioResponseDto> {
+  async updateStudio(
+    id: string,
+    dto: UpdateStudioDto
+  ): Promise<StudioResponseDto> {
     const studio = await this.prisma.studio.findUnique({
       where: { id },
     });
@@ -145,7 +159,7 @@ export class StudiosService {
       take: 10,
     });
 
-    return studios.map(studio => this.mapToStudioResponse(studio));
+    return studios.map((studio) => this.mapToStudioResponse(studio));
   }
 
   private mapToStudioResponse(studio: any): StudioResponseDto {

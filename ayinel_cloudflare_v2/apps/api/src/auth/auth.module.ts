@@ -27,12 +27,7 @@ import { EmailService } from '../notifications/email.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    GoogleStrategy,
-    EmailService,
-  ],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, EmailService],
   exports: [AuthService],
 })
 export class AuthModule {}

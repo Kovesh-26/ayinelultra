@@ -1,14 +1,11 @@
 module.exports = {
   root: true,
-  extends: [
-    'eslint:recommended',
-    'prettier'
-  ],
+  extends: ['eslint:recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   env: {
     node: true,
-    es2022: true
+    es2022: true,
   },
   rules: {
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
@@ -16,12 +13,12 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
     'no-unused-vars': 'warn',
-    'react/no-unescaped-entities': 'off'
+    'react/no-unescaped-entities': 'off',
   },
   overrides: [
     {
       files: ['apps/web/**/*'],
-      extends: ['next/core-web-vitals']
-    }
-  ]
+      extends: ['next/core-web-vitals'],
+    },
+  ],
 };

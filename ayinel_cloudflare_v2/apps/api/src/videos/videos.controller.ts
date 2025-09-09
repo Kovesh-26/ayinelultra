@@ -1,7 +1,27 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { VideosService } from './videos.service';
-import { CreateVideoDto, UpdateVideoDto, VideoResponseDto } from '@ayinel/types';
+import {
+  CreateVideoDto,
+  UpdateVideoDto,
+  VideoResponseDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Videos')
@@ -17,7 +37,7 @@ export class VideosController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   async createVideo(
     @Body() dto: CreateVideoDto,
-    @Query('studioId') studioId: string,
+    @Query('studioId') studioId: string
   ): Promise<VideoResponseDto> {
     return this.videosService.createVideo(studioId, dto);
   }
@@ -25,7 +45,9 @@ export class VideosController {
   @Get()
   @ApiOperation({ summary: 'Get all public videos' })
   @ApiResponse({ status: 200, description: 'Videos retrieved successfully' })
-  async findAll(@Query('visibility') visibility?: string): Promise<VideoResponseDto[]> {
+  async findAll(
+    @Query('visibility') visibility?: string
+  ): Promise<VideoResponseDto[]> {
     return this.videosService.findAll(visibility);
   }
 
@@ -53,7 +75,9 @@ export class VideosController {
   @Get('studio/:studioId')
   @ApiOperation({ summary: 'Get videos by studio' })
   @ApiResponse({ status: 200, description: 'Studio videos retrieved' })
-  async findByStudioId(@Param('studioId') studioId: string): Promise<VideoResponseDto[]> {
+  async findByStudioId(
+    @Param('studioId') studioId: string
+  ): Promise<VideoResponseDto[]> {
     return this.videosService.findByStudioId(studioId);
   }
 
@@ -73,7 +97,7 @@ export class VideosController {
   @ApiResponse({ status: 404, description: 'Video not found' })
   async updateVideo(
     @Param('id') id: string,
-    @Body() dto: UpdateVideoDto,
+    @Body() dto: UpdateVideoDto
   ): Promise<VideoResponseDto> {
     return this.videosService.updateVideo(id, dto);
   }

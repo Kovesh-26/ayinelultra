@@ -6,7 +6,11 @@ export const UserStatusSchema = z.enum(['active', 'suspended', 'banned']);
 
 export const CreateUserSchema = z.object({
   email: z.string().email(),
-  username: z.string().min(3).max(30).regex(/^[a-zA-Z0-9_-]+$/),
+  username: z
+    .string()
+    .min(3)
+    .max(30)
+    .regex(/^[a-zA-Z0-9_-]+$/),
   displayName: z.string().min(1).max(50),
   isKid: z.boolean().default(false),
 });
@@ -32,7 +36,11 @@ export const ProfileSchema = z.object({
 // Studio schemas
 export const CreateStudioSchema = z.object({
   name: z.string().min(1).max(100),
-  handle: z.string().min(3).max(30).regex(/^[a-zA-Z0-9_-]+$/),
+  handle: z
+    .string()
+    .min(3)
+    .max(30)
+    .regex(/^[a-zA-Z0-9_-]+$/),
   about: z.string().max(1000).optional(),
   bannerUrl: z.string().url().optional(),
 });
@@ -45,7 +53,12 @@ export const UpdateStudioSchema = z.object({
 
 // Video schemas
 export const VideoVisibilitySchema = z.enum(['public', 'crew', 'private']);
-export const VideoStatusSchema = z.enum(['draft', 'processing', 'ready', 'blocked']);
+export const VideoStatusSchema = z.enum([
+  'draft',
+  'processing',
+  'ready',
+  'blocked',
+]);
 
 export const CreateVideoSchema = z.object({
   title: z.string().min(1).max(100),
@@ -70,7 +83,7 @@ export const TransactionTypeSchema = z.enum([
   'membership',
   'payout',
   'bonus',
-  'refund'
+  'refund',
 ]);
 
 export const CreateTransactionSchema = z.object({
@@ -113,7 +126,7 @@ export const ReportReasonSchema = z.enum([
   'harassment',
   'copyright',
   'violence',
-  'other'
+  'other',
 ]);
 
 export const CreateReportSchema = z.object({

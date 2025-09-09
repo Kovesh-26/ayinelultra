@@ -1,22 +1,22 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Put, 
-  Delete, 
-  Body, 
-  Param, 
-  Query, 
-  UseGuards, 
-  Request 
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { 
-  CreateChatRoomDto, 
-  SendMessageDto, 
-  JoinRoomDto, 
-  LeaveRoomDto 
+import {
+  CreateChatRoomDto,
+  SendMessageDto,
+  JoinRoomDto,
+  LeaveRoomDto,
 } from './dto/chat.dto';
 
 @Controller('api/v1/chat')
@@ -47,9 +47,9 @@ export class ChatController {
     @Query('limit') limit: string = '50'
   ) {
     return this.chatService.getMessages(
-      roomId, 
-      req.user.id, 
-      parseInt(page), 
+      roomId,
+      req.user.id,
+      parseInt(page),
       parseInt(limit)
     );
   }

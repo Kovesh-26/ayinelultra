@@ -11,52 +11,72 @@ export default function CommunityPage() {
     {
       id: '1',
       name: 'Gaming Community',
-      description: 'Discuss your favorite games, share strategies, and find teammates',
+      description:
+        'Discuss your favorite games, share strategies, and find teammates',
       memberCount: 1247,
       isLive: true,
       category: 'Gaming',
-      image: '/api/placeholder/300/200'
+      image: '/api/placeholder/300/200',
     },
     {
       id: '2',
       name: 'Music Producers',
-      description: 'Share your music, get feedback, and collaborate with other artists',
+      description:
+        'Share your music, get feedback, and collaborate with other artists',
       memberCount: 892,
       isLive: false,
       category: 'Music',
-      image: '/api/placeholder/300/200'
+      image: '/api/placeholder/300/200',
     },
     {
       id: '3',
       name: 'Tech Enthusiasts',
-      description: 'Latest tech news, reviews, and discussions about the future of technology',
+      description:
+        'Latest tech news, reviews, and discussions about the future of technology',
       memberCount: 2156,
       isLive: true,
       category: 'Technology',
-      image: '/api/placeholder/300/200'
+      image: '/api/placeholder/300/200',
     },
     {
       id: '4',
       name: 'Fitness & Health',
-      description: 'Workout tips, nutrition advice, and motivation for your fitness journey',
+      description:
+        'Workout tips, nutrition advice, and motivation for your fitness journey',
       memberCount: 743,
       isLive: false,
       category: 'Fitness',
-      image: '/api/placeholder/300/200'
-    }
+      image: '/api/placeholder/300/200',
+    },
   ];
 
   const trendingTopics = [
-    { id: '1', title: 'New Gaming Console Release', posts: 156, category: 'Gaming' },
+    {
+      id: '1',
+      title: 'New Gaming Console Release',
+      posts: 156,
+      category: 'Gaming',
+    },
     { id: '2', title: 'AI in Music Production', posts: 89, category: 'Music' },
-    { id: '3', title: 'Latest Smartphone Reviews', posts: 234, category: 'Technology' },
-    { id: '4', title: 'Summer Workout Challenge', posts: 67, category: 'Fitness' },
+    {
+      id: '3',
+      title: 'Latest Smartphone Reviews',
+      posts: 234,
+      category: 'Technology',
+    },
+    {
+      id: '4',
+      title: 'Summer Workout Challenge',
+      posts: 67,
+      category: 'Fitness',
+    },
   ];
 
-  const filteredRooms = rooms.filter(room =>
-    room.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    room.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    room.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredRooms = rooms.filter(
+    (room) =>
+      room.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      room.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      room.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -65,9 +85,13 @@ export default function CommunityPage() {
       <div className="bg-black bg-opacity-50 backdrop-blur-sm border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-white mb-4">AYINEL Community</h1>
-            <p className="text-xl text-gray-300 mb-8">Connect, share, and grow with creators worldwide</p>
-            
+            <h1 className="text-4xl font-bold text-white mb-4">
+              AYINEL Community
+            </h1>
+            <p className="text-xl text-gray-300 mb-8">
+              Connect, share, and grow with creators worldwide
+            </p>
+
             {/* Search Bar */}
             <div className="max-w-md mx-auto">
               <div className="relative">
@@ -79,8 +103,18 @@ export default function CommunityPage() {
                   className="w-full px-4 py-3 pl-10 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
                   </svg>
                 </div>
               </div>
@@ -132,7 +166,9 @@ export default function CommunityPage() {
         {activeTab === 'rooms' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-white">Popular Community Rooms</h2>
+              <h2 className="text-2xl font-bold text-white">
+                Popular Community Rooms
+              </h2>
               <Link
                 href="/community/create"
                 className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition"
@@ -140,10 +176,13 @@ export default function CommunityPage() {
                 Create Room
               </Link>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredRooms.map((room) => (
-                <div key={room.id} className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg overflow-hidden border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                <div
+                  key={room.id}
+                  className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg overflow-hidden border border-gray-700 hover:border-purple-500 transition-all duration-300"
+                >
                   <div className="relative">
                     <div className="h-48 bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
                       <span className="text-4xl text-white opacity-20">🎮</span>
@@ -162,15 +201,29 @@ export default function CommunityPage() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="p-6">
-                    <h3 className="text-lg font-semibold text-white mb-2">{room.name}</h3>
-                    <p className="text-gray-400 text-sm mb-4">{room.description}</p>
-                    
+                    <h3 className="text-lg font-semibold text-white mb-2">
+                      {room.name}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-4">
+                      {room.description}
+                    </p>
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-gray-400 text-sm">
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                        <svg
+                          className="w-4 h-4 mr-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                          />
                         </svg>
                         {room.memberCount.toLocaleString()} members
                       </div>
@@ -191,13 +244,18 @@ export default function CommunityPage() {
         {activeTab === 'trending' && (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-white">Trending Topics</h2>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               {trendingTopics.map((topic) => (
-                <div key={topic.id} className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                <div
+                  key={topic.id}
+                  className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300"
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-2">{topic.title}</h3>
+                      <h3 className="text-lg font-semibold text-white mb-2">
+                        {topic.title}
+                      </h3>
                       <div className="flex items-center space-x-4 text-sm text-gray-400">
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-800 text-gray-300">
                           {topic.category}
@@ -221,11 +279,16 @@ export default function CommunityPage() {
         {activeTab === 'create' && (
           <div className="max-w-2xl mx-auto">
             <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-bold text-white mb-6">Create a Community Room</h2>
-              
+              <h2 className="text-2xl font-bold text-white mb-6">
+                Create a Community Room
+              </h2>
+
               <form className="space-y-6">
                 <div>
-                  <label htmlFor="roomName" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label
+                    htmlFor="roomName"
+                    className="block text-sm font-medium text-gray-300 mb-2"
+                  >
                     Room Name *
                   </label>
                   <input
@@ -238,7 +301,10 @@ export default function CommunityPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="roomDescription" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label
+                    htmlFor="roomDescription"
+                    className="block text-sm font-medium text-gray-300 mb-2"
+                  >
                     Description
                   </label>
                   <textarea
@@ -250,7 +316,10 @@ export default function CommunityPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="roomCategory" className="block text-sm font-medium text-gray-300 mb-2">
+                  <label
+                    htmlFor="roomCategory"
+                    className="block text-sm font-medium text-gray-300 mb-2"
+                  >
                     Category
                   </label>
                   <select
@@ -283,7 +352,9 @@ export default function CommunityPage() {
                       />
                       <div className="ml-3">
                         <div className="text-white font-medium">Public</div>
-                        <div className="text-gray-400 text-sm">Anyone can join and view</div>
+                        <div className="text-gray-400 text-sm">
+                          Anyone can join and view
+                        </div>
                       </div>
                     </label>
                     <label className="flex items-center">
@@ -295,7 +366,9 @@ export default function CommunityPage() {
                       />
                       <div className="ml-3">
                         <div className="text-white font-medium">Private</div>
-                        <div className="text-gray-400 text-sm">Invite-only access</div>
+                        <div className="text-gray-400 text-sm">
+                          Invite-only access
+                        </div>
                       </div>
                     </label>
                   </div>

@@ -1,11 +1,13 @@
 # 🎵 MUSIC PLAYER IMPLEMENTATION TODO
 
 ## 🎯 Overview
+
 Implement a comprehensive music player with playlists, audio visualization, and music discovery for the Ayinel platform.
 
 ## 🔧 Required Endpoints
 
 ### 1. Music Library
+
 ```typescript
 GET /api/v1/music/tracks
 {
@@ -31,6 +33,7 @@ GET /api/v1/music/tracks
 ```
 
 ### 2. Playlist Management
+
 ```typescript
 POST /api/v1/music/playlists
 {
@@ -53,6 +56,7 @@ GET /api/v1/music/playlists/:id
 ```
 
 ### 3. Search & Discovery
+
 ```typescript
 GET /api/v1/music/search?q=:query&type=:type
 {
@@ -137,6 +141,7 @@ model UserMusicUpload {
 ## 🚀 Implementation Steps
 
 1. **Install Dependencies**
+
    ```bash
    pnpm add howler wavesurfer.js @types/howler
    ```
@@ -160,13 +165,14 @@ model UserMusicUpload {
 ## 🎵 Audio Player Library Choice
 
 ### Option 1: Howler.js (Recommended)
+
 ```typescript
 import { Howl } from 'howler';
 
 const sound = new Howl({
   src: ['audio.mp3'],
   html5: true,
-  preload: true
+  preload: true,
 });
 
 // Playback controls
@@ -177,6 +183,7 @@ sound.volume(0.5);
 ```
 
 ### Option 2: Web Audio API
+
 ```typescript
 // More control but complex
 const audioContext = new AudioContext();
@@ -184,6 +191,7 @@ const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 ```
 
 ### Option 3: HTML5 Audio
+
 ```typescript
 // Simple but limited
 const audio = new Audio('audio.mp3');
@@ -194,6 +202,7 @@ audio.pause();
 ## 🎨 Audio Visualization
 
 ### WaveSurfer.js Integration
+
 ```typescript
 import WaveSurfer from 'wavesurfer.js';
 
@@ -201,7 +210,7 @@ const wavesurfer = WaveSurfer.create({
   container: '#waveform',
   waveColor: '#4F4A85',
   progressColor: '#383351',
-  height: 100
+  height: 100,
 });
 
 wavesurfer.load('audio.mp3');
@@ -222,7 +231,7 @@ const createPlaylist = async (playlistData) => {
   const response = await fetch('/api/v1/music/playlists', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(playlistData)
+    body: JSON.stringify(playlistData),
   });
   return response.json();
 };
@@ -235,7 +244,7 @@ const createPlaylist = async (playlistData) => {
 const searchMusic = async (query: string, type?: string) => {
   const params = new URLSearchParams({ q: query });
   if (type) params.append('type', type);
-  
+
   const response = await fetch(`/api/v1/music/search?${params}`);
   return response.json();
 };

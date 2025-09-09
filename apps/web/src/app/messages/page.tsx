@@ -18,7 +18,7 @@ export default function MessagesPage() {
       lastMessage: 'Hey! How are you doing?',
       timestamp: '2 min ago',
       unread: 2,
-      online: true
+      online: true,
     },
     {
       id: '2',
@@ -27,7 +27,7 @@ export default function MessagesPage() {
       lastMessage: 'Thanks for the video recommendation!',
       timestamp: '1 hour ago',
       unread: 0,
-      online: false
+      online: false,
     },
     {
       id: '3',
@@ -36,7 +36,7 @@ export default function MessagesPage() {
       lastMessage: 'Can you help me with the upload process?',
       timestamp: '3 hours ago',
       unread: 1,
-      online: true
+      online: true,
     },
     {
       id: '4',
@@ -45,7 +45,7 @@ export default function MessagesPage() {
       lastMessage: 'Great content as always!',
       timestamp: '1 day ago',
       unread: 0,
-      online: false
+      online: false,
     },
     {
       id: '5',
@@ -54,33 +54,77 @@ export default function MessagesPage() {
       lastMessage: 'Looking forward to your next stream!',
       timestamp: '2 days ago',
       unread: 0,
-      online: false
-    }
+      online: false,
+    },
   ];
 
   const messages = {
     '1': [
-      { id: 1, sender: 'them', content: 'Hey! How are you doing?', timestamp: '2:30 PM' },
-      { id: 2, sender: 'me', content: 'I\'m doing great! Just finished editing my latest video.', timestamp: '2:32 PM' },
-      { id: 3, sender: 'them', content: 'That sounds awesome! Can\'t wait to see it.', timestamp: '2:33 PM' },
-      { id: 4, sender: 'them', content: 'What\'s it about?', timestamp: '2:33 PM' },
+      {
+        id: 1,
+        sender: 'them',
+        content: 'Hey! How are you doing?',
+        timestamp: '2:30 PM',
+      },
+      {
+        id: 2,
+        sender: 'me',
+        content: "I'm doing great! Just finished editing my latest video.",
+        timestamp: '2:32 PM',
+      },
+      {
+        id: 3,
+        sender: 'them',
+        content: "That sounds awesome! Can't wait to see it.",
+        timestamp: '2:33 PM',
+      },
+      {
+        id: 4,
+        sender: 'them',
+        content: "What's it about?",
+        timestamp: '2:33 PM',
+      },
     ],
     '2': [
-      { id: 1, sender: 'them', content: 'Thanks for the video recommendation!', timestamp: '1:15 PM' },
-      { id: 2, sender: 'me', content: 'You\'re welcome! I thought you\'d like it.', timestamp: '1:20 PM' },
+      {
+        id: 1,
+        sender: 'them',
+        content: 'Thanks for the video recommendation!',
+        timestamp: '1:15 PM',
+      },
+      {
+        id: 2,
+        sender: 'me',
+        content: "You're welcome! I thought you'd like it.",
+        timestamp: '1:20 PM',
+      },
     ],
     '3': [
-      { id: 1, sender: 'them', content: 'Can you help me with the upload process?', timestamp: '11:30 AM' },
-      { id: 2, sender: 'me', content: 'Of course! What specific issue are you having?', timestamp: '11:35 AM' },
-    ]
+      {
+        id: 1,
+        sender: 'them',
+        content: 'Can you help me with the upload process?',
+        timestamp: '11:30 AM',
+      },
+      {
+        id: 2,
+        sender: 'me',
+        content: 'Of course! What specific issue are you having?',
+        timestamp: '11:35 AM',
+      },
+    ],
   };
 
-  const filteredChats = chats.filter(chat => 
+  const filteredChats = chats.filter((chat) =>
     chat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const selectedChatData = selectedChat ? chats.find(chat => chat.id === selectedChat) : null;
-  const selectedMessages = selectedChat ? messages[selectedChat as keyof typeof messages] || [] : [];
+  const selectedChatData = selectedChat
+    ? chats.find((chat) => chat.id === selectedChat)
+    : null;
+  const selectedMessages = selectedChat
+    ? messages[selectedChat as keyof typeof messages] || []
+    : [];
 
   const handleSendMessage = () => {
     if (message.trim() && selectedChat) {
@@ -101,7 +145,9 @@ export default function MessagesPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Please log in to access messages</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">
+            Please log in to access messages
+          </h1>
           <p className="text-gray-300">Connect with other creators and fans</p>
         </div>
       </div>
@@ -124,8 +170,18 @@ export default function MessagesPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2 pl-10 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
-              <svg className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <svg
+                className="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
             </div>
           </div>
@@ -153,10 +209,16 @@ export default function MessagesPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-white font-medium truncate">{chat.name}</h3>
-                      <span className="text-xs text-gray-400">{chat.timestamp}</span>
+                      <h3 className="text-white font-medium truncate">
+                        {chat.name}
+                      </h3>
+                      <span className="text-xs text-gray-400">
+                        {chat.timestamp}
+                      </span>
                     </div>
-                    <p className="text-gray-300 text-sm truncate">{chat.lastMessage}</p>
+                    <p className="text-gray-300 text-sm truncate">
+                      {chat.lastMessage}
+                    </p>
                   </div>
                   {chat.unread > 0 && (
                     <div className="bg-purple-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -187,7 +249,9 @@ export default function MessagesPage() {
                     )}
                   </div>
                   <div>
-                    <h2 className="text-white font-semibold">{selectedChatData?.name}</h2>
+                    <h2 className="text-white font-semibold">
+                      {selectedChatData?.name}
+                    </h2>
                     <p className="text-gray-400 text-sm">
                       {selectedChatData?.online ? 'Online' : 'Offline'}
                     </p>
@@ -210,9 +274,13 @@ export default function MessagesPage() {
                       }`}
                     >
                       <p className="text-sm">{msg.content}</p>
-                      <p className={`text-xs mt-1 ${
-                        msg.sender === 'me' ? 'text-purple-200' : 'text-gray-400'
-                      }`}>
+                      <p
+                        className={`text-xs mt-1 ${
+                          msg.sender === 'me'
+                            ? 'text-purple-200'
+                            : 'text-gray-400'
+                        }`}
+                      >
                         {msg.timestamp}
                       </p>
                     </div>
@@ -238,8 +306,18 @@ export default function MessagesPage() {
                     disabled={!message.trim()}
                     className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -250,12 +328,26 @@ export default function MessagesPage() {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">Select a conversation</h3>
-                <p className="text-gray-400">Choose a chat from the list to start messaging</p>
+                <h3 className="text-lg font-medium text-white mb-2">
+                  Select a conversation
+                </h3>
+                <p className="text-gray-400">
+                  Choose a chat from the list to start messaging
+                </p>
               </div>
             </div>
           )}

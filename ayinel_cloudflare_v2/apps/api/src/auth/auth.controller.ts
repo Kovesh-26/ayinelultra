@@ -1,7 +1,18 @@
 import { Controller, Post, Body, UseGuards, Get, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { MagicLinkDto, GoogleAuthDto, VerifyTokenDto, RefreshTokenDto, LogoutDto } from '@ayinel/types';
+import {
+  MagicLinkDto,
+  GoogleAuthDto,
+  VerifyTokenDto,
+  RefreshTokenDto,
+  LogoutDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('Authentication')

@@ -8,14 +8,14 @@ export enum TransactionType {
   MEMBERSHIP = 'MEMBERSHIP',
   PAYOUT = 'PAYOUT',
   BONUS = 'BONUS',
-  REFUND = 'REFUND'
+  REFUND = 'REFUND',
 }
 
 export enum TransactionStatus {
   PENDING = 'PENDING',
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export class PurchaseTokensDto {

@@ -11,7 +11,9 @@ export function Tag({ children, active, onClick }: TagProps) {
     <button
       onClick={onClick}
       className={`rounded-full border px-3 py-1 text-sm ${
-        active ? "border-indigo-400 bg-indigo-500/10 text-indigo-300" : "border-white/10 bg-white/5 text-white/70 hover:text-white"
+        active
+          ? 'border-indigo-400 bg-indigo-500/10 text-indigo-300'
+          : 'border-white/10 bg-white/5 text-white/70 hover:text-white'
       }`}
     >
       {children}

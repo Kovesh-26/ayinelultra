@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsBoolean, IsEnum, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+} from 'class-validator';
 
 // Tune-In (Follow) DTOs
 export class TuneInDto {

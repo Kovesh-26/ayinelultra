@@ -22,23 +22,21 @@ interface HeroBannerProps {
   }>;
 }
 
-export default function HeroBanner({ 
-  title, 
-  subtitle, 
-  primaryAction, 
-  secondaryAction, 
-  stats 
+export default function HeroBanner({
+  title,
+  subtitle,
+  primaryAction,
+  secondaryAction,
+  stats,
 }: HeroBannerProps) {
   return (
     <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-8 mb-8 shadow-xl">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">
-          {title}
-        </h1>
+        <h1 className="text-4xl font-bold mb-4">{title}</h1>
         <p className="text-xl text-gray-200 mb-6 max-w-3xl mx-auto">
           {subtitle}
         </p>
-        
+
         {/* CTA Buttons */}
         <div className="flex justify-center space-x-4">
           {primaryAction && (
@@ -49,7 +47,7 @@ export default function HeroBanner({
               {primaryAction.label}
             </Link>
           )}
-          
+
           {secondaryAction && (
             <Link
               href={secondaryAction.href}
@@ -60,12 +58,15 @@ export default function HeroBanner({
           )}
         </div>
       </div>
-      
+
       {/* Stats */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
-            <div key={index} className="bg-gray-800 bg-opacity-50 rounded-lg p-6 backdrop-blur-sm border border-gray-700">
+            <div
+              key={index}
+              className="bg-gray-800 bg-opacity-50 rounded-lg p-6 backdrop-blur-sm border border-gray-700"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-2xl font-bold">{stat.number}</p>

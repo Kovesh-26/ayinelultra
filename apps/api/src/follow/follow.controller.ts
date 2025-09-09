@@ -6,12 +6,18 @@ export class FollowController {
   constructor(private follow: FollowService) {}
 
   @Post(':followerId/:followeeId')
-  tuneIn(@Param('followerId') followerId: string, @Param('followeeId') followeeId: string) {
+  tuneIn(
+    @Param('followerId') followerId: string,
+    @Param('followeeId') followeeId: string
+  ) {
     return this.follow.tuneIn(followerId, followeeId);
   }
 
   @Delete(':followerId/:followeeId')
-  unTuneIn(@Param('followerId') followerId: string, @Param('followeeId') followeeId: string) {
+  unTuneIn(
+    @Param('followerId') followerId: string,
+    @Param('followeeId') followeeId: string
+  ) {
     return this.follow.unTuneIn(followerId, followeeId);
   }
 
@@ -31,7 +37,10 @@ export class FollowController {
   }
 
   @Get(':followerId/following/:followeeId')
-  isFollowing(@Param('followerId') followerId: string, @Param('followeeId') followeeId: string) {
+  isFollowing(
+    @Param('followerId') followerId: string,
+    @Param('followeeId') followeeId: string
+  ) {
     return this.follow.isFollowing(followerId, followeeId);
   }
 }

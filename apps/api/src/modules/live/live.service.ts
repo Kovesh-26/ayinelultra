@@ -27,7 +27,7 @@ export class LiveService {
     try {
       // Generate unique stream ID
       const streamId = `stream_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       // Create stream record
       const stream = await this.prisma.liveStream.create({
         data: {
@@ -40,8 +40,8 @@ export class LiveService {
           status: 'OFFLINE',
           rtmpUrl: `rtmp://live.ayinel.com/live/${streamId}`,
           streamKey: `key_${Math.random().toString(36).substr(2, 16)}`,
-          playbackUrl: `https://stream.ayinel.com/${streamId}/index.m3u8`
-        }
+          playbackUrl: `https://stream.ayinel.com/${streamId}/index.m3u8`,
+        },
       });
 
       this.logger.log(`Stream created: ${streamId} for user: ${userId}`);
@@ -55,7 +55,7 @@ export class LiveService {
   async startStream(streamId: string, userId: string) {
     try {
       const stream = await this.prisma.liveStream.findFirst({
-        where: { streamId, userId }
+        where: { streamId, userId },
       });
 
       if (!stream) {
@@ -66,8 +66,8 @@ export class LiveService {
         where: { id: stream.id },
         data: {
           status: 'LIVE',
-          startTime: new Date()
-        }
+          startTime: new Date(),
+        },
       });
 
       this.logger.log(`Stream started: ${streamId}`);
@@ -81,14 +81,14 @@ export class LiveService {
   async endStream(streamId: string, userId: string) {
     try {
       const stream = await this.prisma.liveStream.findFirst({
-        where: { streamId, userId }
+        where: { streamId, userId },
       });
 
       if (!stream) {
         throw new Error('Stream not found or unauthorized');
       }
 
-      const duration = stream.startTime 
+      const duration = stream.startTime
         ? Math.floor((Date.now() - stream.startTime.getTime()) / 1000)
         : 0;
 
@@ -96,8 +96,8 @@ export class LiveService {
         where: { id: stream.id },
         data: {
           status: 'ENDED',
-          endTime: new Date()
-        }
+          endTime: new Date(),
+        },
       });
 
       this.logger.log(`Stream ended: ${streamId}, duration: ${duration}s`);
@@ -111,16 +111,17 @@ export class LiveService {
   async getStreamStatus(streamId: string): Promise<StreamStatus> {
     try {
       const stream = await this.prisma.liveStream.findUnique({
-        where: { streamId }
+        where: { streamId },
       });
 
       if (!stream) {
         throw new Error('Stream not found');
       }
 
-      const duration = stream.startTime && stream.status === 'LIVE'
-        ? Math.floor((Date.now() - stream.startTime.getTime()) / 1000)
-        : 0;
+      const duration =
+        stream.startTime && stream.status === 'LIVE'
+          ? Math.floor((Date.now() - stream.startTime.getTime()) / 1000)
+          : 0;
 
       return {
         streamId: stream.streamId,
@@ -128,7 +129,7 @@ export class LiveService {
         viewerCount: stream.peakViewers,
         startTime: stream.startTime,
         duration,
-        quality: stream.quality
+        quality: stream.quality,
       };
     } catch (error) {
       this.logger.error(`Failed to get stream status: ${error.message}`);
@@ -142,8 +143,8 @@ export class LiveService {
         where: { streamId },
         data: {
           peakViewers: Math.max(count, 0),
-          totalViews: { increment: count > 0 ? 1 : 0 }
-        }
+          totalViews: { increment: count > 0 ? 1 : 0 },
+        },
       });
     } catch (error) {
       this.logger.error(`Failed to update viewer count: ${error.message}`);
@@ -157,9 +158,9 @@ export class LiveService {
         include: {
           chatMessages: {
             orderBy: { timestamp: 'desc' },
-            take: 100
-          }
-        }
+            take: 100,
+          },
+        },
       });
 
       if (!stream) {
@@ -172,7 +173,7 @@ export class LiveService {
         totalViews: stream.totalViews,
         averageWatchTime: stream.totalViews > 0 ? 300 : 0, // Placeholder
         topRegions: ['US', 'CA', 'UK'], // Placeholder
-        deviceTypes: { mobile: 60, desktop: 30, tablet: 10 } // Placeholder
+        deviceTypes: { mobile: 60, desktop: 30, tablet: 10 }, // Placeholder
       };
     } catch (error) {
       this.logger.error(`Failed to get stream analytics: ${error.message}`);

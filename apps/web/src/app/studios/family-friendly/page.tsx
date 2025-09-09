@@ -27,7 +27,8 @@ export default function FamilyFriendlyStudiosPage() {
               KidZone Verified
             </h3>
             <p className="text-blue-700 dark:text-blue-300">
-              All studios on this page are verified as family-friendly and safe for children.
+              All studios on this page are verified as family-friendly and safe
+              for children.
             </p>
           </div>
         </div>

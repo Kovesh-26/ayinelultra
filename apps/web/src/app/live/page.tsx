@@ -1,5 +1,5 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState } from 'react';
 
 export default function LivePage() {
   const [isLive, setIsLive] = useState(true);
@@ -8,7 +8,7 @@ export default function LivePage() {
     <main className="mx-auto max-w-7xl p-4 space-y-4">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Broadcast</h1>
-        <div className="text-sm opacity-70">{isLive ? "Live" : "Offline"}</div>
+        <div className="text-sm opacity-70">{isLive ? 'Live' : 'Offline'}</div>
       </header>
 
       <section className="grid gap-4 md:grid-cols-[2fr,1fr]">
@@ -18,8 +18,11 @@ export default function LivePage() {
             <span>Stream Player</span>
           </div>
           <div className="mt-3 flex items-center gap-3">
-            <button className="rounded-xl border px-3 py-2" onClick={() => setIsLive(!isLive)}>
-              {isLive ? "End Stream" : "Go Live"}
+            <button
+              className="rounded-xl border px-3 py-2"
+              onClick={() => setIsLive(!isLive)}
+            >
+              {isLive ? 'End Stream' : 'Go Live'}
             </button>
             <button className="rounded-xl border px-3 py-2">Quality</button>
             <button className="rounded-xl border px-3 py-2">Share</button>
@@ -32,7 +35,10 @@ export default function LivePage() {
             <div className="opacity-70">Welcome to the chat…</div>
           </div>
           <div className="mt-2 flex gap-2">
-            <input className="flex-1 rounded-xl border px-3 py-2" placeholder="Type a message…" />
+            <input
+              className="flex-1 rounded-xl border px-3 py-2"
+              placeholder="Type a message…"
+            />
             <button className="rounded-xl border px-3 py-2">Send</button>
           </div>
         </aside>

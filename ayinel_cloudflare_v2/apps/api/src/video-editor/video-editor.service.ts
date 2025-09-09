@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { 
-  CreateVideoProjectDto, 
-  UpdateVideoProjectDto, 
+import {
+  CreateVideoProjectDto,
+  UpdateVideoProjectDto,
   VideoProjectResponseDto,
   AddVideoClipDto,
   AddAudioTrackDto,
@@ -11,7 +15,7 @@ import {
   ExportVideoDto,
   VideoProjectTimelineDto,
   CreateVideoTemplateDto,
-  VideoTemplateDto
+  VideoTemplateDto,
 } from '@ayinel/types';
 
 @Injectable()
@@ -19,7 +23,10 @@ export class VideoEditorService {
   constructor(private prisma: PrismaService) {}
 
   // Video Project Management
-  async createVideoProject(userId: string, dto: CreateVideoProjectDto): Promise<VideoProjectResponseDto> {
+  async createVideoProject(
+    userId: string,
+    dto: CreateVideoProjectDto
+  ): Promise<VideoProjectResponseDto> {
     // Check if user is in KidZone and enforce restrictions
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -59,10 +66,13 @@ export class VideoEditorService {
       orderBy: { updatedAt: 'desc' },
     });
 
-    return projects.map(project => this.mapToVideoProjectResponse(project));
+    return projects.map((project) => this.mapToVideoProjectResponse(project));
   }
 
-  async getVideoProject(id: string, userId: string): Promise<VideoProjectResponseDto> {
+  async getVideoProject(
+    id: string,
+    userId: string
+  ): Promise<VideoProjectResponseDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id, userId },
     });
@@ -74,7 +84,11 @@ export class VideoEditorService {
     return this.mapToVideoProjectResponse(project);
   }
 
-  async updateVideoProject(id: string, userId: string, dto: UpdateVideoProjectDto): Promise<VideoProjectResponseDto> {
+  async updateVideoProject(
+    id: string,
+    userId: string,
+    dto: UpdateVideoProjectDto
+  ): Promise<VideoProjectResponseDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id, userId },
     });
@@ -105,7 +119,10 @@ export class VideoEditorService {
     });
   }
 
-  async publishVideoProject(id: string, userId: string): Promise<VideoProjectResponseDto> {
+  async publishVideoProject(
+    id: string,
+    userId: string
+  ): Promise<VideoProjectResponseDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id, userId },
     });
@@ -123,7 +140,10 @@ export class VideoEditorService {
   }
 
   // Timeline Management
-  async getProjectTimeline(projectId: string, userId: string): Promise<VideoProjectTimelineDto> {
+  async getProjectTimeline(
+    projectId: string,
+    userId: string
+  ): Promise<VideoProjectTimelineDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -153,7 +173,7 @@ export class VideoEditorService {
     });
 
     return {
-      clips: clips.map(clip => ({
+      clips: clips.map((clip) => ({
         id: clip.id,
         videoUrl: clip.videoUrl,
         startTime: clip.startTime,
@@ -161,14 +181,14 @@ export class VideoEditorService {
         position: clip.position,
         duration: clip.endTime - clip.startTime,
       })),
-      audioTracks: audioTracks.map(track => ({
+      audioTracks: audioTracks.map((track) => ({
         id: track.id,
         audioUrl: track.audioUrl,
         startTime: track.startTime,
         volume: track.volume,
         duration: track.duration,
       })),
-      textOverlays: textOverlays.map(overlay => ({
+      textOverlays: textOverlays.map((overlay) => ({
         id: overlay.id,
         text: overlay.text,
         startTime: overlay.startTime,
@@ -177,7 +197,7 @@ export class VideoEditorService {
         positionX: overlay.positionX,
         positionY: overlay.positionY,
       })),
-      transitions: transitions.map(transition => ({
+      transitions: transitions.map((transition) => ({
         id: transition.id,
         type: transition.type,
         startTime: transition.startTime,
@@ -188,7 +208,11 @@ export class VideoEditorService {
   }
 
   // Video Clips
-  async addVideoClip(projectId: string, userId: string, dto: AddVideoClipDto): Promise<any> {
+  async addVideoClip(
+    projectId: string,
+    userId: string,
+    dto: AddVideoClipDto
+  ): Promise<any> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -210,7 +234,11 @@ export class VideoEditorService {
     return clip;
   }
 
-  async updateVideoClip(clipId: string, userId: string, dto: Partial<AddVideoClipDto>): Promise<any> {
+  async updateVideoClip(
+    clipId: string,
+    userId: string,
+    dto: Partial<AddVideoClipDto>
+  ): Promise<any> {
     const clip = await this.prisma.videoClip.findFirst({
       where: { id: clipId },
       include: { project: true },
@@ -244,7 +272,11 @@ export class VideoEditorService {
   }
 
   // Audio Tracks
-  async addAudioTrack(projectId: string, userId: string, dto: AddAudioTrackDto): Promise<any> {
+  async addAudioTrack(
+    projectId: string,
+    userId: string,
+    dto: AddAudioTrackDto
+  ): Promise<any> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -266,7 +298,11 @@ export class VideoEditorService {
     return track;
   }
 
-  async updateAudioTrack(trackId: string, userId: string, dto: Partial<AddAudioTrackDto>): Promise<any> {
+  async updateAudioTrack(
+    trackId: string,
+    userId: string,
+    dto: Partial<AddAudioTrackDto>
+  ): Promise<any> {
     const track = await this.prisma.audioTrack.findFirst({
       where: { id: trackId },
       include: { project: true },
@@ -300,7 +336,11 @@ export class VideoEditorService {
   }
 
   // Text Overlays
-  async addTextOverlay(projectId: string, userId: string, dto: AddTextOverlayDto): Promise<any> {
+  async addTextOverlay(
+    projectId: string,
+    userId: string,
+    dto: AddTextOverlayDto
+  ): Promise<any> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -324,7 +364,11 @@ export class VideoEditorService {
     return overlay;
   }
 
-  async updateTextOverlay(overlayId: string, userId: string, dto: Partial<AddTextOverlayDto>): Promise<any> {
+  async updateTextOverlay(
+    overlayId: string,
+    userId: string,
+    dto: Partial<AddTextOverlayDto>
+  ): Promise<any> {
     const overlay = await this.prisma.textOverlay.findFirst({
       where: { id: overlayId },
       include: { project: true },
@@ -358,7 +402,11 @@ export class VideoEditorService {
   }
 
   // Transitions
-  async addTransition(projectId: string, userId: string, dto: AddTransitionDto): Promise<any> {
+  async addTransition(
+    projectId: string,
+    userId: string,
+    dto: AddTransitionDto
+  ): Promise<any> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -380,7 +428,11 @@ export class VideoEditorService {
     return transition;
   }
 
-  async updateTransition(transitionId: string, userId: string, dto: Partial<AddTransitionDto>): Promise<any> {
+  async updateTransition(
+    transitionId: string,
+    userId: string,
+    dto: Partial<AddTransitionDto>
+  ): Promise<any> {
     const transition = await this.prisma.transition.findFirst({
       where: { id: transitionId },
       include: { project: true },
@@ -471,13 +523,13 @@ export class VideoEditorService {
   // Video Templates
   async getVideoTemplates(category?: string): Promise<VideoTemplateDto[]> {
     const where = category ? { category, isPublic: true } : { isPublic: true };
-    
+
     const templates = await this.prisma.videoTemplate.findMany({
       where,
       orderBy: { createdAt: 'desc' },
     });
 
-    return templates.map(template => ({
+    return templates.map((template) => ({
       id: template.id,
       name: template.name,
       description: template.description,
@@ -489,7 +541,10 @@ export class VideoEditorService {
     }));
   }
 
-  async createVideoTemplate(userId: string, dto: CreateVideoTemplateDto): Promise<VideoTemplateDto> {
+  async createVideoTemplate(
+    userId: string,
+    dto: CreateVideoTemplateDto
+  ): Promise<VideoTemplateDto> {
     const template = await this.prisma.videoTemplate.create({
       data: {
         userId,
@@ -514,7 +569,11 @@ export class VideoEditorService {
     };
   }
 
-  async applyTemplate(projectId: string, userId: string, templateId: string): Promise<VideoProjectResponseDto> {
+  async applyTemplate(
+    projectId: string,
+    userId: string,
+    templateId: string
+  ): Promise<VideoProjectResponseDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -625,7 +684,10 @@ export class VideoEditorService {
   }
 
   // Censored/Uncensored Content Management
-  async toggleCensoredStatus(projectId: string, userId: string): Promise<VideoProjectResponseDto> {
+  async toggleCensoredStatus(
+    projectId: string,
+    userId: string
+  ): Promise<VideoProjectResponseDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -644,9 +706,11 @@ export class VideoEditorService {
     return this.mapToVideoProjectResponse(updatedProject);
   }
 
-  async getCensoredProjects(userId: string): Promise<VideoProjectResponseDto[]> {
+  async getCensoredProjects(
+    userId: string
+  ): Promise<VideoProjectResponseDto[]> {
     const projects = await this.prisma.videoProject.findMany({
-      where: { 
+      where: {
         userId,
         isCensored: true,
         isInappropriate: false,
@@ -654,10 +718,12 @@ export class VideoEditorService {
       orderBy: { updatedAt: 'desc' },
     });
 
-    return projects.map(project => this.mapToVideoProjectResponse(project));
+    return projects.map((project) => this.mapToVideoProjectResponse(project));
   }
 
-  async getUncensoredProjects(userId: string): Promise<VideoProjectResponseDto[]> {
+  async getUncensoredProjects(
+    userId: string
+  ): Promise<VideoProjectResponseDto[]> {
     // Check if user is in KidZone - if so, deny access
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -665,11 +731,13 @@ export class VideoEditorService {
     });
 
     if (user?.profile?.isKidZone) {
-      throw new BadRequestException('KidZone users cannot access uncensored content');
+      throw new BadRequestException(
+        'KidZone users cannot access uncensored content'
+      );
     }
 
     const projects = await this.prisma.videoProject.findMany({
-      where: { 
+      where: {
         userId,
         isCensored: false,
         isInappropriate: false,
@@ -677,10 +745,14 @@ export class VideoEditorService {
       orderBy: { updatedAt: 'desc' },
     });
 
-    return projects.map(project => this.mapToVideoProjectResponse(project));
+    return projects.map((project) => this.mapToVideoProjectResponse(project));
   }
 
-  async markAsInappropriate(projectId: string, userId: string, reason: string): Promise<VideoProjectResponseDto> {
+  async markAsInappropriate(
+    projectId: string,
+    userId: string,
+    reason: string
+  ): Promise<VideoProjectResponseDto> {
     const project = await this.prisma.videoProject.findFirst({
       where: { id: projectId, userId },
     });
@@ -736,8 +808,6 @@ export class VideoEditorService {
       },
     };
   }
-
-
 
   private mapToVideoProjectResponse(project: any): VideoProjectResponseDto {
     return {

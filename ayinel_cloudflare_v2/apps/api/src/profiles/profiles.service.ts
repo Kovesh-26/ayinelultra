@@ -19,7 +19,10 @@ export class ProfilesService {
     return this.mapToProfileResponse(profile);
   }
 
-  async updateProfile(userId: string, dto: UpdateProfileDto): Promise<ProfileResponseDto> {
+  async updateProfile(
+    userId: string,
+    dto: UpdateProfileDto
+  ): Promise<ProfileResponseDto> {
     const profile = await this.prisma.profile.findUnique({
       where: { userId },
     });
@@ -60,7 +63,9 @@ export class ProfilesService {
     return this.mapToProfileResponse(user.profile);
   }
 
-  private async createDefaultProfile(userId: string): Promise<ProfileResponseDto> {
+  private async createDefaultProfile(
+    userId: string
+  ): Promise<ProfileResponseDto> {
     const profile = await this.prisma.profile.create({
       data: {
         userId,

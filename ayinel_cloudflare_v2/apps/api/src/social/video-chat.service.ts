@@ -1,12 +1,23 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateVideoChatDto, UpdateVideoChatDto, VideoChatResponseDto } from '@ayinel/types';
+import {
+  CreateVideoChatDto,
+  UpdateVideoChatDto,
+  VideoChatResponseDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class VideoChatService {
   constructor(private prisma: PrismaService) {}
 
-  async createVideoChat(userId: string, dto: CreateVideoChatDto): Promise<VideoChatResponseDto> {
+  async createVideoChat(
+    userId: string,
+    dto: CreateVideoChatDto
+  ): Promise<VideoChatResponseDto> {
     // Check if video exists
     const video = await this.prisma.video.findUnique({
       where: { id: dto.videoId },
@@ -48,13 +59,19 @@ export class VideoChatService {
     return this.mapToVideoChatResponse(chat);
   }
 
-  async updateVideoChat(chatId: string, userId: string, dto: UpdateVideoChatDto): Promise<VideoChatResponseDto> {
+  async updateVideoChat(
+    chatId: string,
+    userId: string,
+    dto: UpdateVideoChatDto
+  ): Promise<VideoChatResponseDto> {
     const chat = await this.prisma.videoChat.findFirst({
       where: { id: chatId, userId },
     });
 
     if (!chat) {
-      throw new NotFoundException('Video chat not found or you do not have permission to edit it');
+      throw new NotFoundException(
+        'Video chat not found or you do not have permission to edit it'
+      );
     }
 
     const updatedChat = await this.prisma.videoChat.update({
@@ -83,7 +100,9 @@ export class VideoChatService {
     });
 
     if (!chat) {
-      throw new NotFoundException('Video chat not found or you do not have permission to delete it');
+      throw new NotFoundException(
+        'Video chat not found or you do not have permission to delete it'
+      );
     }
 
     await this.prisma.videoChat.delete({
@@ -91,7 +110,10 @@ export class VideoChatService {
     });
   }
 
-  async getVideoChats(videoId: string, parentId?: string): Promise<VideoChatResponseDto[]> {
+  async getVideoChats(
+    videoId: string,
+    parentId?: string
+  ): Promise<VideoChatResponseDto[]> {
     const chats = await this.prisma.videoChat.findMany({
       where: { videoId, parentId: parentId || null },
       include: {
@@ -117,7 +139,7 @@ export class VideoChatService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return chats.map(chat => this.mapToVideoChatResponse(chat));
+    return chats.map((chat) => this.mapToVideoChatResponse(chat));
   }
 
   async getUserVideoChats(userId: string): Promise<VideoChatResponseDto[]> {
@@ -148,7 +170,7 @@ export class VideoChatService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return chats.map(chat => this.mapToVideoChatResponse(chat));
+    return chats.map((chat) => this.mapToVideoChatResponse(chat));
   }
 
   async getVideoChatCount(videoId: string): Promise<number> {
@@ -167,12 +189,16 @@ export class VideoChatService {
       isEdited: chat.isEdited,
       createdAt: chat.createdAt,
       updatedAt: chat.updatedAt,
-      user: chat.user ? {
-        id: chat.user.id,
-        username: chat.user.username,
-        displayName: chat.user.displayName,
-      } : undefined,
-      replies: chat.replies ? chat.replies.map((reply: any) => this.mapToVideoChatResponse(reply)) : undefined,
+      user: chat.user
+        ? {
+            id: chat.user.id,
+            username: chat.user.username,
+            displayName: chat.user.displayName,
+          }
+        : undefined,
+      replies: chat.replies
+        ? chat.replies.map((reply: any) => this.mapToVideoChatResponse(reply))
+        : undefined,
     };
   }
 }

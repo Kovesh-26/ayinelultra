@@ -7,6 +7,6 @@ import { PrismaModule } from '../prisma/prisma.module';
   imports: [PrismaModule],
   controllers: [LiveController],
   providers: [LiveService],
-  exports: [LiveService]
+  exports: [LiveService],
 })
 export class LiveModule {}

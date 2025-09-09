@@ -8,11 +8,11 @@ services:
       POSTGRES_USER: ayinelusers
       POSTGRES_PASSWORD: 12345
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ayinelusers -d ayineldb"]
+      test: ['CMD-SHELL', 'pg_isready -U ayinelusers -d ayineldb']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,9 +20,9 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5

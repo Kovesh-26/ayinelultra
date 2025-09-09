@@ -16,17 +16,17 @@ This component library provides all the building blocks needed to create the Ayi
 ### Layout Components
 
 #### `Container`
+
 Responsive container with consistent max-width and padding.
 
 ```tsx
 import { Container } from '@/components/ayinel';
 
-<Container className="additional-classes">
-  {/* Your content */}
-</Container>
+<Container className="additional-classes">{/* Your content */}</Container>;
 ```
 
 #### `Section`
+
 Section wrapper with title and optional right-side content.
 
 ```tsx
@@ -34,127 +34,128 @@ import { Section } from '@/components/ayinel';
 
 <Section title="Section Title" right={<button>Action</button>}>
   {/* Section content */}
-</Section>
+</Section>;
 ```
 
 ### Navigation Components
 
 #### `TopNav`
+
 Main navigation bar with Ayinel branding, search, and action buttons.
 
 ```tsx
 import { TopNav } from '@/components/ayinel';
 
-<TopNav />
+<TopNav />;
 ```
 
 #### `Sidebar`
+
 Left sidebar navigation with active state management.
 
 ```tsx
 import { Sidebar } from '@/components/ayinel';
 
-<Sidebar active="Explore" />
+<Sidebar active="Explore" />;
 ```
 
 ### Content Components
 
 #### `Grid`
+
 Responsive grid layout for content cards.
 
 ```tsx
 import { Grid } from '@/components/ayinel';
 
-<Grid>
-  {/* Grid items */}
-</Grid>
+<Grid>{/* Grid items */}</Grid>;
 ```
 
 #### `VideoCard`
+
 Video content card with thumbnail, title, and metadata.
 
 ```tsx
 import { VideoCard } from '@/components/ayinel';
 
-<VideoCard 
+<VideoCard
   title="Video Title"
   channel="Creator Name"
   duration="6:28"
   badge="BOOSTED"
   live={true}
   onClick={() => handleClick()}
-/>
+/>;
 ```
 
 #### `Avatar`
+
 User avatar component with name and optional metadata.
 
 ```tsx
 import { Avatar } from '@/components/ayinel';
 
-<Avatar 
+<Avatar
   label="User Name"
   sub="Additional info"
   onClick={() => handleClick()}
-/>
+/>;
 ```
 
 #### `StatCard`
+
 Statistics display card.
 
 ```tsx
 import { StatCard } from '@/components/ayinel';
 
-<StatCard label="Crew" value="530" />
+<StatCard label="Crew" value="530" />;
 ```
 
 ### Interactive Components
 
 #### `Tag`
+
 Filter/tag component with active states.
 
 ```tsx
 import { Tag } from '@/components/ayinel';
 
-<Tag 
-  active={isActive}
-  onClick={() => handleClick()}
->
+<Tag active={isActive} onClick={() => handleClick()}>
   Tag Label
-</Tag>
+</Tag>;
 ```
 
 #### `PlaylistPlayer`
+
 Music player component with controls.
 
 ```tsx
 import { PlaylistPlayer } from '@/components/ayinel';
 
-<PlaylistPlayer 
-  title="Playlist Name"
-  artist="Artist Name"
-  progress={32}
-/>
+<PlaylistPlayer title="Playlist Name" artist="Artist Name" progress={32} />;
 ```
 
 ### Utility Components
 
 #### `PhotoGrid`
+
 Photo gallery grid layout.
 
 ```tsx
 import { PhotoGrid } from '@/components/ayinel';
 
-<PhotoGrid count={6} />
+<PhotoGrid count={6} />;
 ```
 
 #### `FriendsList`
+
 Friends/connections list component.
 
 ```tsx
 import { FriendsList } from '@/components/ayinel';
 
-<FriendsList friends={["Sarah", "David", "Jessica"]} />
+<FriendsList friends={['Sarah', 'David', 'Jessica']} />;
 ```
 
 ## Usage Examples
@@ -168,7 +169,7 @@ import {
   TopNav,
   Sidebar,
   Grid,
-  VideoCard
+  VideoCard,
 } from '@/components/ayinel';
 
 export default function MyPage() {
@@ -201,17 +202,17 @@ import { Tag } from '@/components/ayinel';
 
 export function FilterExample() {
   const [activeFilter, setActiveFilter] = useState('Videos');
-  
+
   return (
     <div className="flex items-center gap-2">
-      <Tag 
-        active={activeFilter === 'Videos'} 
+      <Tag
+        active={activeFilter === 'Videos'}
         onClick={() => setActiveFilter('Videos')}
       >
         Videos
       </Tag>
-      <Tag 
-        active={activeFilter === 'Flips'} 
+      <Tag
+        active={activeFilter === 'Flips'}
         onClick={() => setActiveFilter('Flips')}
       >
         Flips

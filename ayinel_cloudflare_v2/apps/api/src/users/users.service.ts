@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from '@ayinel/types';
 
@@ -9,15 +13,14 @@ export class UsersService {
   async createUser(dto: CreateUserDto): Promise<UserResponseDto> {
     const existingUser = await this.prisma.user.findFirst({
       where: {
-        OR: [
-          { email: dto.email },
-          { username: dto.username },
-        ],
+        OR: [{ email: dto.email }, { username: dto.username }],
       },
     });
 
     if (existingUser) {
-      throw new BadRequestException('User with this email or username already exists');
+      throw new BadRequestException(
+        'User with this email or username already exists'
+      );
     }
 
     const user = await this.prisma.user.create({
@@ -37,7 +40,7 @@ export class UsersService {
       where: { status: 'ACTIVE' },
     });
 
-    return users.map(user => this.mapToUserResponse(user));
+    return users.map((user) => this.mapToUserResponse(user));
   }
 
   async findById(id: string): Promise<UserResponseDto> {
@@ -116,7 +119,7 @@ export class UsersService {
       take: 10,
     });
 
-    return users.map(user => this.mapToUserResponse(user));
+    return users.map((user) => this.mapToUserResponse(user));
   }
 
   private mapToUserResponse(user: any): UserResponseDto {

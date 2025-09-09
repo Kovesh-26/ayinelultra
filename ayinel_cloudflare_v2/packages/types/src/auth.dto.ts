@@ -8,7 +8,7 @@ export class LoginDto {
 export class MagicLinkDto {
   @IsEmail()
   email: string;
-  
+
   @IsOptional()
   @IsString()
   redirectUrl?: string;

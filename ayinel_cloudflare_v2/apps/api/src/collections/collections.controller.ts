@@ -1,7 +1,28 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { CollectionsService } from './collections.service';
-import { CreateCollectionDto, UpdateCollectionDto, AddToCollectionDto, CollectionResponseDto } from '@ayinel/types';
+import {
+  CreateCollectionDto,
+  UpdateCollectionDto,
+  AddToCollectionDto,
+  CollectionResponseDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Collections')
@@ -17,15 +38,20 @@ export class CollectionsController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   async createCollection(
     @Req() req,
-    @Body() dto: CreateCollectionDto,
+    @Body() dto: CreateCollectionDto
   ): Promise<CollectionResponseDto> {
     return this.collectionsService.createCollection(req.user.id, dto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all public collections' })
-  @ApiResponse({ status: 200, description: 'Collections retrieved successfully' })
-  async findAll(@Query('ownerId') ownerId?: string): Promise<CollectionResponseDto[]> {
+  @ApiResponse({
+    status: 200,
+    description: 'Collections retrieved successfully',
+  })
+  async findAll(
+    @Query('ownerId') ownerId?: string
+  ): Promise<CollectionResponseDto[]> {
     return this.collectionsService.findAll(ownerId);
   }
 
@@ -41,7 +67,9 @@ export class CollectionsController {
   @Get('search')
   @ApiOperation({ summary: 'Search collections' })
   @ApiResponse({ status: 200, description: 'Collections found' })
-  async searchCollections(@Query('q') query: string): Promise<CollectionResponseDto[]> {
+  async searchCollections(
+    @Query('q') query: string
+  ): Promise<CollectionResponseDto[]> {
     return this.collectionsService.searchCollections(query);
   }
 
@@ -61,7 +89,7 @@ export class CollectionsController {
   @ApiResponse({ status: 404, description: 'Collection not found' })
   async updateCollection(
     @Param('id') id: string,
-    @Body() dto: UpdateCollectionDto,
+    @Body() dto: UpdateCollectionDto
   ): Promise<CollectionResponseDto> {
     return this.collectionsService.updateCollection(id, dto);
   }
@@ -84,7 +112,7 @@ export class CollectionsController {
   @ApiResponse({ status: 404, description: 'Collection or video not found' })
   async addToCollection(
     @Param('id') collectionId: string,
-    @Body() dto: AddToCollectionDto,
+    @Body() dto: AddToCollectionDto
   ): Promise<void> {
     return this.collectionsService.addToCollection(collectionId, dto);
   }
@@ -97,7 +125,7 @@ export class CollectionsController {
   @ApiResponse({ status: 404, description: 'Collection or video not found' })
   async removeFromCollection(
     @Param('id') collectionId: string,
-    @Param('videoId') videoId: string,
+    @Param('videoId') videoId: string
   ): Promise<void> {
     return this.collectionsService.removeFromCollection(collectionId, videoId);
   }

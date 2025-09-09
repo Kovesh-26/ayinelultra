@@ -16,8 +16,8 @@ export class HealthController {
       services: {
         database: 'unknown',
         redis: 'unknown',
-        externalServices: 'unknown'
-      }
+        externalServices: 'unknown',
+      },
     };
 
     try {
@@ -43,18 +43,18 @@ export class HealthController {
     try {
       // Check if the application is ready to serve traffic
       await this.prisma.$queryRaw`SELECT 1`;
-      
+
       return {
         status: 'ready',
         timestamp: new Date().toISOString(),
-        message: 'Application is ready to serve traffic'
+        message: 'Application is ready to serve traffic',
       };
     } catch (error) {
       return {
         status: 'not_ready',
         timestamp: new Date().toISOString(),
         message: 'Application is not ready to serve traffic',
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -65,7 +65,7 @@ export class HealthController {
     return {
       status: 'alive',
       timestamp: new Date().toISOString(),
-      message: 'Application is alive and running'
+      message: 'Application is alive and running',
     };
   }
 }

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 
-
 export default function StudioCustomizePage() {
   const [activeTab, setActiveTab] = useState('colors');
   const [theme, setTheme] = useState({
@@ -33,27 +32,28 @@ export default function StudioCustomizePage() {
   ];
 
   const handleColorChange = (property: string, value: string) => {
-    setTheme(prev => ({
+    setTheme((prev) => ({
       ...prev,
-      [property]: value
+      [property]: value,
     }));
   };
 
   const applyPreset = (preset: { primary: string; secondary: string }) => {
-    setTheme(prev => ({
+    setTheme((prev) => ({
       ...prev,
       primaryColor: preset.primary,
-      secondaryColor: preset.secondary
+      secondaryColor: preset.secondary,
     }));
   };
 
-  const getPreviewStyles = () => ({
-    '--primary-color': theme.primaryColor,
-    '--secondary-color': theme.secondaryColor,
-    '--background-color': theme.backgroundColor,
-    '--text-color': theme.textColor,
-    '--accent-color': theme.accentColor,
-  } as React.CSSProperties);
+  const getPreviewStyles = () =>
+    ({
+      '--primary-color': theme.primaryColor,
+      '--secondary-color': theme.secondaryColor,
+      '--background-color': theme.backgroundColor,
+      '--text-color': theme.textColor,
+      '--accent-color': theme.accentColor,
+    }) as React.CSSProperties;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
@@ -62,8 +62,12 @@ export default function StudioCustomizePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white">Studio Customization</h1>
-              <p className="text-gray-300 mt-1">Make your studio uniquely yours</p>
+              <h1 className="text-3xl font-bold text-white">
+                Studio Customization
+              </h1>
+              <p className="text-gray-300 mt-1">
+                Make your studio uniquely yours
+              </p>
             </div>
             <div className="flex space-x-4">
               <button
@@ -129,7 +133,9 @@ export default function StudioCustomizePage() {
               {activeTab === 'colors' && (
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Color Presets</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Color Presets
+                    </h3>
                     <div className="grid grid-cols-2 gap-3">
                       {colorPresets.map((preset, index) => (
                         <button
@@ -138,9 +144,17 @@ export default function StudioCustomizePage() {
                           className="p-3 rounded-lg border border-gray-600 hover:border-purple-500 transition-colors"
                         >
                           <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 rounded" style={{ backgroundColor: preset.primary }}></div>
-                            <div className="w-4 h-4 rounded" style={{ backgroundColor: preset.secondary }}></div>
-                            <span className="text-sm text-gray-300">{preset.name}</span>
+                            <div
+                              className="w-4 h-4 rounded"
+                              style={{ backgroundColor: preset.primary }}
+                            ></div>
+                            <div
+                              className="w-4 h-4 rounded"
+                              style={{ backgroundColor: preset.secondary }}
+                            ></div>
+                            <span className="text-sm text-gray-300">
+                              {preset.name}
+                            </span>
                           </div>
                         </button>
                       ))}
@@ -148,57 +162,83 @@ export default function StudioCustomizePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Custom Colors</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Custom Colors
+                    </h3>
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Primary Color</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Primary Color
+                        </label>
                         <div className="flex items-center space-x-3">
                           <input
                             type="color"
                             value={theme.primaryColor}
-                            onChange={(e) => handleColorChange('primaryColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange('primaryColor', e.target.value)
+                            }
                             className="w-12 h-10 rounded border border-gray-600 cursor-pointer"
                           />
                           <input
                             type="text"
                             value={theme.primaryColor}
-                            onChange={(e) => handleColorChange('primaryColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange('primaryColor', e.target.value)
+                            }
                             className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white text-sm"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Secondary Color</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Secondary Color
+                        </label>
                         <div className="flex items-center space-x-3">
                           <input
                             type="color"
                             value={theme.secondaryColor}
-                            onChange={(e) => handleColorChange('secondaryColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange(
+                                'secondaryColor',
+                                e.target.value
+                              )
+                            }
                             className="w-12 h-10 rounded border border-gray-600 cursor-pointer"
                           />
                           <input
                             type="text"
                             value={theme.secondaryColor}
-                            onChange={(e) => handleColorChange('secondaryColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange(
+                                'secondaryColor',
+                                e.target.value
+                              )
+                            }
                             className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white text-sm"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Accent Color</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Accent Color
+                        </label>
                         <div className="flex items-center space-x-3">
                           <input
                             type="color"
                             value={theme.accentColor}
-                            onChange={(e) => handleColorChange('accentColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange('accentColor', e.target.value)
+                            }
                             className="w-12 h-10 rounded border border-gray-600 cursor-pointer"
                           />
                           <input
                             type="text"
                             value={theme.accentColor}
-                            onChange={(e) => handleColorChange('accentColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange('accentColor', e.target.value)
+                            }
                             className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white text-sm"
                           />
                         </div>
@@ -212,20 +252,31 @@ export default function StudioCustomizePage() {
               {activeTab === 'backgrounds' && (
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Background Presets</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Background Presets
+                    </h3>
                     <div className="grid grid-cols-2 gap-3">
                       {backgroundPresets.map((preset, index) => (
                         <button
                           key={index}
-                          onClick={() => handleColorChange('backgroundColor', preset.value)}
+                          onClick={() =>
+                            handleColorChange('backgroundColor', preset.value)
+                          }
                           className="p-3 rounded-lg border border-gray-600 hover:border-purple-500 transition-colors"
                         >
                           <div className="flex items-center space-x-2">
-                            <div 
-                              className="w-4 h-4 rounded" 
-                              style={{ backgroundColor: preset.value === 'custom' ? '#1F2937' : preset.value }}
+                            <div
+                              className="w-4 h-4 rounded"
+                              style={{
+                                backgroundColor:
+                                  preset.value === 'custom'
+                                    ? '#1F2937'
+                                    : preset.value,
+                              }}
                             ></div>
-                            <span className="text-sm text-gray-300">{preset.name}</span>
+                            <span className="text-sm text-gray-300">
+                              {preset.name}
+                            </span>
                           </div>
                         </button>
                       ))}
@@ -233,28 +284,44 @@ export default function StudioCustomizePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Custom Background</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Custom Background
+                    </h3>
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Background Color</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Background Color
+                        </label>
                         <div className="flex items-center space-x-3">
                           <input
                             type="color"
                             value={theme.backgroundColor}
-                            onChange={(e) => handleColorChange('backgroundColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange(
+                                'backgroundColor',
+                                e.target.value
+                              )
+                            }
                             className="w-12 h-10 rounded border border-gray-600 cursor-pointer"
                           />
                           <input
                             type="text"
                             value={theme.backgroundColor}
-                            onChange={(e) => handleColorChange('backgroundColor', e.target.value)}
+                            onChange={(e) =>
+                              handleColorChange(
+                                'backgroundColor',
+                                e.target.value
+                              )
+                            }
                             className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white text-sm"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Background Image URL</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Background Image URL
+                        </label>
                         <input
                           type="text"
                           placeholder="https://example.com/image.jpg"
@@ -270,13 +337,18 @@ export default function StudioCustomizePage() {
               {activeTab === 'advanced' && (
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Custom CSS</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Custom CSS
+                    </h3>
                     <p className="text-sm text-gray-400 mb-4">
-                      Add your own CSS to completely customize your studio&apos;s appearance
+                      Add your own CSS to completely customize your
+                      studio&apos;s appearance
                     </p>
                     <textarea
                       value={theme.customCSS}
-                      onChange={(e) => handleColorChange('customCSS', e.target.value)}
+                      onChange={(e) =>
+                        handleColorChange('customCSS', e.target.value)
+                      }
                       rows={8}
                       className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white text-sm font-mono resize-none"
                       placeholder="/* Your custom CSS here */"
@@ -284,19 +356,36 @@ export default function StudioCustomizePage() {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Layout Options</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Layout Options
+                    </h3>
                     <div className="space-y-3">
                       <label className="flex items-center">
-                        <input type="checkbox" className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800" />
-                        <span className="ml-2 text-gray-300">Enable sidebar</span>
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800"
+                        />
+                        <span className="ml-2 text-gray-300">
+                          Enable sidebar
+                        </span>
                       </label>
                       <label className="flex items-center">
-                        <input type="checkbox" className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800" />
-                        <span className="ml-2 text-gray-300">Show featured content</span>
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800"
+                        />
+                        <span className="ml-2 text-gray-300">
+                          Show featured content
+                        </span>
                       </label>
                       <label className="flex items-center">
-                        <input type="checkbox" className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800" />
-                        <span className="ml-2 text-gray-300">Enable animations</span>
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800"
+                        />
+                        <span className="ml-2 text-gray-300">
+                          Enable animations
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -307,29 +396,35 @@ export default function StudioCustomizePage() {
 
           {/* Preview Area */}
           <div className="lg:col-span-2">
-            <div 
+            <div
               className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 border border-gray-700"
               style={getPreviewStyles()}
             >
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-white mb-2">Studio Preview</h2>
-                <p className="text-gray-300">See how your customizations will look</p>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Studio Preview
+                </h2>
+                <p className="text-gray-300">
+                  See how your customizations will look
+                </p>
               </div>
 
               {/* Mock Studio Layout */}
               <div className="space-y-6">
                 {/* Header */}
-                <div 
+                <div
                   className="p-6 rounded-lg"
                   style={{ backgroundColor: theme.primaryColor }}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-white">My Awesome Studio</h3>
+                      <h3 className="text-xl font-bold text-white">
+                        My Awesome Studio
+                      </h3>
                       <p className="text-white opacity-80">@myawesome</p>
                     </div>
                     <div className="flex space-x-2">
-                      <button 
+                      <button
                         className="px-4 py-2 rounded text-white text-sm"
                         style={{ backgroundColor: theme.secondaryColor }}
                       >
@@ -344,19 +439,23 @@ export default function StudioCustomizePage() {
 
                 {/* Content Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div 
+                  <div
                     className="p-4 rounded-lg"
                     style={{ backgroundColor: theme.backgroundColor }}
                   >
-                    <h4 className="font-semibold text-white mb-2">Latest Video</h4>
-                    <div 
+                    <h4 className="font-semibold text-white mb-2">
+                      Latest Video
+                    </h4>
+                    <div
                       className="w-full h-32 rounded mb-3"
                       style={{ backgroundColor: theme.accentColor }}
                     ></div>
-                    <p className="text-gray-300 text-sm">Amazing content that showcases your creativity!</p>
+                    <p className="text-gray-300 text-sm">
+                      Amazing content that showcases your creativity!
+                    </p>
                   </div>
 
-                  <div 
+                  <div
                     className="p-4 rounded-lg"
                     style={{ backgroundColor: theme.backgroundColor }}
                   >
@@ -380,19 +479,19 @@ export default function StudioCustomizePage() {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-4">
-                  <button 
+                  <button
                     className="px-6 py-3 rounded-lg text-white font-medium"
                     style={{ backgroundColor: theme.primaryColor }}
                   >
                     Upload Video
                   </button>
-                  <button 
+                  <button
                     className="px-6 py-3 rounded-lg text-white font-medium"
                     style={{ backgroundColor: theme.secondaryColor }}
                   >
                     Go Live
                   </button>
-                  <button 
+                  <button
                     className="px-6 py-3 rounded-lg text-white font-medium"
                     style={{ backgroundColor: theme.accentColor }}
                   >

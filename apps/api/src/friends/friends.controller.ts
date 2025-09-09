@@ -27,7 +27,10 @@ export class FriendsController {
   }
 
   @Post(':userId/block/:targetUserId')
-  block(@Param('userId') userId: string, @Param('targetUserId') targetUserId: string) {
+  block(
+    @Param('userId') userId: string,
+    @Param('targetUserId') targetUserId: string
+  ) {
     return this.friends.block(userId, targetUserId);
   }
 }

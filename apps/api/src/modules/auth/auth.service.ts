@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
@@ -10,15 +14,26 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private usersService: UsersService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
-  async validateUser(email: string, password: string): Promise<{ id: string; email: string; username: string; handle: string; displayName: string; avatar?: string; role: string } | null> {
+  async validateUser(
+    email: string,
+    password: string
+  ): Promise<{
+    id: string;
+    email: string;
+    username: string;
+    handle: string;
+    displayName: string;
+    avatar?: string;
+    role: string;
+  } | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
     });
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       const { password: _password, ...result } = user;
       return result;
     }
@@ -27,7 +42,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<AuthResponse> {
     const { email, password } = loginDto;
-    
+
     const user = await this.validateUser(email, password);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -56,16 +71,14 @@ export class AuthService {
     // Check if user already exists
     const existingUser = await this.prisma.user.findFirst({
       where: {
-        OR: [
-          { email },
-          { username },
-          { handle },
-        ],
+        OR: [{ email }, { username }, { handle }],
       },
     });
 
     if (existingUser) {
-      throw new ConflictException('User already exists with this email, username, or handle');
+      throw new ConflictException(
+        'User already exists with this email, username, or handle'
+      );
     }
 
     // Hash password
@@ -114,7 +127,9 @@ export class AuthService {
     return { accessToken };
   }
 
-  async verifyToken(token: string): Promise<{ email: string; sub: string; iat: number; exp: number }> {
+  async verifyToken(
+    token: string
+  ): Promise<{ email: string; sub: string; iat: number; exp: number }> {
     try {
       const payload = this.jwtService.verify(token);
       return payload;

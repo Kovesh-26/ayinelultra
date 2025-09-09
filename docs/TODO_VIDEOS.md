@@ -1,11 +1,13 @@
 # 🎬 VIDEO GRID IMPLEMENTATION TODO
 
 ## 🎯 Overview
+
 Implement a comprehensive video browsing experience with grid layout, advanced filtering, search, and infinite scroll for the Ayinel platform.
 
 ## 🔧 Required Endpoints
 
 ### 1. Video Discovery
+
 ```typescript
 GET /api/v1/videos
 {
@@ -38,6 +40,7 @@ GET /api/v1/videos
 ```
 
 ### 2. Video Search & Filters
+
 ```typescript
 GET /api/v1/videos/search?q=:query&category=:category&duration=:duration&sort=:sort
 {
@@ -52,6 +55,7 @@ GET /api/v1/videos/search?q=:query&category=:category&duration=:duration&sort=:s
 ```
 
 ### 3. Video Categories
+
 ```typescript
 GET /api/v1/videos/categories
 {
@@ -172,7 +176,7 @@ model VideoLike {
 const fetchVideos = async (page: number = 1, filters?: VideoFilters) => {
   const params = new URLSearchParams({
     page: page.toString(),
-    limit: '20'
+    limit: '20',
   });
 
   if (filters?.category) params.append('category', filters.category);
@@ -198,14 +202,14 @@ interface VideoFilters {
 // Filter component
 const FilterSidebar = () => {
   const [filters, setFilters] = useState<VideoFilters>({});
-  
+
   return (
     <aside className="w-64 space-y-4">
       {/* Category Filter */}
       <div>
         <h3 className="font-medium mb-2">Category</h3>
-        <select 
-          value={filters.category || ''} 
+        <select
+          value={filters.category || ''}
           onChange={(e) => setFilters({...filters, category: e.target.value})}
         >
           <option value="">All Categories</option>
@@ -218,8 +222,8 @@ const FilterSidebar = () => {
       {/* Duration Filter */}
       <div>
         <h3 className="font-medium mb-2">Duration</h3>
-        <select 
-          value={filters.duration || ''} 
+        <select
+          value={filters.duration || ''}
           onChange={(e) => setFilters({...filters, duration: e.target.value})}
         >
           <option value="">Any Duration</option>
@@ -232,8 +236,8 @@ const FilterSidebar = () => {
       {/* Sort Options */}
       <div>
         <h3 className="font-medium mb-2">Sort By</h3>
-        <select 
-          value={filters.sort || 'newest'} 
+        <select
+          value={filters.sort || 'newest'}
           onChange={(e) => setFilters({...filters, sort: e.target.value})}
         >
           <option value="newest">Newest First</option>
@@ -258,12 +262,12 @@ const useInfiniteScroll = (fetchFunction: Function, filters?: VideoFilters) => {
 
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
     try {
       const response = await fetchFunction(page, filters);
       const newVideos = response.videos;
-      
+
       setVideos(prev => [...prev, ...newVideos]);
       setHasMore(response.pagination.hasMore);
       setPage(prev => prev + 1);
@@ -277,13 +281,13 @@ const useInfiniteScroll = (fetchFunction: Function, filters?: VideoFilters) => {
   // Intersection Observer for infinite scroll
   const observerRef = useCallback((node: HTMLDivElement) => {
     if (loading) return;
-    
+
     const observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         loadMore();
       }
     });
-    
+
     if (node) observer.observe(node);
   }, [loading, hasMore, loadMore]);
 
@@ -293,20 +297,20 @@ const useInfiniteScroll = (fetchFunction: Function, filters?: VideoFilters) => {
 // Usage in component
 const VideoGrid = () => {
   const { videos, loading, hasMore, observerRef } = useInfiniteScroll(fetchVideos);
-  
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {videos.map((video, index) => (
         <VideoCard key={video.id} video={video} />
       ))}
-      
+
       {/* Loading indicator */}
       {loading && (
         <div className="col-span-full flex justify-center p-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
       )}
-      
+
       {/* Intersection observer target */}
       {hasMore && <div ref={observerRef} className="h-4" />}
     </div>
@@ -333,8 +337,8 @@ const VideoCard = ({ video }: { video: Video }) => {
   return (
     <article className="rounded-2xl border overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative aspect-video bg-zinc-900">
-        <img 
-          src={video.thumbnailUrl} 
+        <img
+          src={video.thumbnailUrl}
           alt={video.title}
           className="w-full h-full object-cover"
         />
@@ -342,12 +346,12 @@ const VideoCard = ({ video }: { video: Video }) => {
           {formatDuration(video.duration)}
         </div>
       </div>
-      
+
       <div className="p-3">
         <h3 className="font-medium line-clamp-2 text-sm">{video.title}</h3>
         <div className="flex items-center gap-2 mt-2">
-          <img 
-            src={video.creator.avatarUrl} 
+          <img
+            src={video.creator.avatarUrl}
             alt={video.creator.name}
             className="w-6 h-6 rounded-full"
           />

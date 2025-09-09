@@ -1,6 +1,15 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCollectionDto, UpdateCollectionDto, AddVideoToCollectionDto, RemoveVideoFromCollectionDto } from './dto/collections.dto';
+import {
+  CreateCollectionDto,
+  UpdateCollectionDto,
+  AddVideoToCollectionDto,
+  RemoveVideoFromCollectionDto,
+} from './dto/collections.dto';
 
 @Injectable()
 export class CollectionsService {
@@ -12,10 +21,11 @@ export class CollectionsService {
         userId,
         ...dto,
         items: {
-          create: dto.videoIds?.map(videoId => ({
-            videoId
-          })) || []
-        }
+          create:
+            dto.videoIds?.map((videoId) => ({
+              videoId,
+            })) || [],
+        },
       },
       include: {
         items: {
@@ -27,14 +37,14 @@ export class CollectionsService {
                     id: true,
                     username: true,
                     displayName: true,
-                    avatarUrl: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
 
     return collection;
@@ -42,14 +52,11 @@ export class CollectionsService {
 
   async findAll(userId?: string, visibility?: string) {
     const where: any = {};
-    
+
     if (visibility === 'public') {
       where.visibility = 'PUBLIC';
     } else if (userId) {
-      where.OR = [
-        { visibility: 'PUBLIC' },
-        { userId }
-      ];
+      where.OR = [{ visibility: 'PUBLIC' }, { userId }];
     } else {
       where.visibility = 'PUBLIC';
     }
@@ -62,8 +69,8 @@ export class CollectionsService {
             id: true,
             username: true,
             displayName: true,
-            avatarUrl: true
-          }
+            avatarUrl: true,
+          },
         },
         items: {
           include: {
@@ -74,22 +81,22 @@ export class CollectionsService {
                     id: true,
                     username: true,
                     displayName: true,
-                    avatarUrl: true
-                  }
-                }
-              }
-            }
-          }
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
+          },
         },
         _count: {
           select: {
-            items: true
-          }
-        }
+            items: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -102,8 +109,8 @@ export class CollectionsService {
             id: true,
             username: true,
             displayName: true,
-            avatarUrl: true
-          }
+            avatarUrl: true,
+          },
         },
         items: {
           include: {
@@ -114,14 +121,14 @@ export class CollectionsService {
                     id: true,
                     username: true,
                     displayName: true,
-                    avatarUrl: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!collection) {
@@ -138,7 +145,7 @@ export class CollectionsService {
 
   async update(id: string, userId: string, dto: UpdateCollectionDto) {
     const collection = await this.prisma.collection.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!collection) {
@@ -162,20 +169,20 @@ export class CollectionsService {
                     id: true,
                     username: true,
                     displayName: true,
-                    avatarUrl: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
   }
 
   async remove(id: string, userId: string) {
     const collection = await this.prisma.collection.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!collection) {
@@ -187,13 +194,13 @@ export class CollectionsService {
     }
 
     return this.prisma.collection.delete({
-      where: { id }
+      where: { id },
     });
   }
 
   async addVideo(id: string, userId: string, dto: AddVideoToCollectionDto) {
     const collection = await this.prisma.collection.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!collection) {
@@ -206,7 +213,7 @@ export class CollectionsService {
 
     // Check if video exists
     const video = await this.prisma.video.findUnique({
-      where: { id: dto.videoId }
+      where: { id: dto.videoId },
     });
 
     if (!video) {
@@ -218,9 +225,9 @@ export class CollectionsService {
       where: {
         collectionId_videoId: {
           collectionId: id,
-          videoId: dto.videoId
-        }
-      }
+          videoId: dto.videoId,
+        },
+      },
     });
 
     if (existingItem) {
@@ -230,7 +237,7 @@ export class CollectionsService {
     return this.prisma.collectionItem.create({
       data: {
         collectionId: id,
-        videoId: dto.videoId
+        videoId: dto.videoId,
       },
       include: {
         video: {
@@ -240,18 +247,22 @@ export class CollectionsService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
-        }
-      }
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
-  async removeVideo(id: string, userId: string, dto: RemoveVideoFromCollectionDto) {
+  async removeVideo(
+    id: string,
+    userId: string,
+    dto: RemoveVideoFromCollectionDto
+  ) {
     const collection = await this.prisma.collection.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!collection) {
@@ -266,9 +277,9 @@ export class CollectionsService {
       where: {
         collectionId_videoId: {
           collectionId: id,
-          videoId: dto.videoId
-        }
-      }
+          videoId: dto.videoId,
+        },
+      },
     });
 
     if (!item) {
@@ -279,20 +290,20 @@ export class CollectionsService {
       where: {
         collectionId_videoId: {
           collectionId: id,
-          videoId: dto.videoId
-        }
-      }
+          videoId: dto.videoId,
+        },
+      },
     });
   }
 
   async findByUser(userId: string, targetUserId?: string) {
     const where: any = {};
-    
+
     if (targetUserId) {
       where.userId = targetUserId;
       where.OR = [
         { visibility: 'PUBLIC' },
-        { userId: userId } // User can see their own private collections
+        { userId: userId }, // User can see their own private collections
       ];
     } else {
       where.userId = userId;
@@ -310,22 +321,22 @@ export class CollectionsService {
                     id: true,
                     username: true,
                     displayName: true,
-                    avatarUrl: true
-                  }
-                }
-              }
-            }
-          }
+                    avatarUrl: true,
+                  },
+                },
+              },
+            },
+          },
         },
         _count: {
           select: {
-            items: true
-          }
-        }
+            items: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: 'desc',
+      },
     });
   }
 }

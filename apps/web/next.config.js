@@ -16,8 +16,10 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
   },
   env: {
-    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3001',
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    NEXT_PUBLIC_API_BASE:
+      process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3001',
+    NEXT_PUBLIC_APP_URL:
+      process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   },
   async headers() {
     return [
@@ -65,4 +67,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

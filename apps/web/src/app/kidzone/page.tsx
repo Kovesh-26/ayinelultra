@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 
-
 export default function KidZonePage() {
   const [selectedAge, setSelectedAge] = useState('5-8');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -28,75 +27,81 @@ export default function KidZonePage() {
   const videos = [
     {
       id: 1,
-      title: "Fun with Colors - Learning for Kids",
-      creator: "Happy Learning",
-      thumbnail: "https://via.placeholder.com/320x180/ff6b6b/ffffff?text=Colors",
-      duration: "8:32",
-      views: "12K",
-      ageGroup: "5-8",
-      category: "educational",
-      rating: "G"
+      title: 'Fun with Colors - Learning for Kids',
+      creator: 'Happy Learning',
+      thumbnail:
+        'https://via.placeholder.com/320x180/ff6b6b/ffffff?text=Colors',
+      duration: '8:32',
+      views: '12K',
+      ageGroup: '5-8',
+      category: 'educational',
+      rating: 'G',
     },
     {
       id: 2,
-      title: "Animal Sounds - Educational Video",
-      creator: "Kids World",
-      thumbnail: "https://via.placeholder.com/320x180/4ecdc4/ffffff?text=Animals",
-      duration: "6:15",
-      views: "8K",
-      ageGroup: "2-4",
-      category: "educational",
-      rating: "G"
+      title: 'Animal Sounds - Educational Video',
+      creator: 'Kids World',
+      thumbnail:
+        'https://via.placeholder.com/320x180/4ecdc4/ffffff?text=Animals',
+      duration: '6:15',
+      views: '8K',
+      ageGroup: '2-4',
+      category: 'educational',
+      rating: 'G',
     },
     {
       id: 3,
-      title: "Easy Drawing Tutorial for Kids",
-      creator: "Art for Kids",
-      thumbnail: "https://via.placeholder.com/320x180/45b7d1/ffffff?text=Drawing",
-      duration: "12:45",
-      views: "15K",
-      ageGroup: "9-12",
-      category: "art",
-      rating: "G"
+      title: 'Easy Drawing Tutorial for Kids',
+      creator: 'Art for Kids',
+      thumbnail:
+        'https://via.placeholder.com/320x180/45b7d1/ffffff?text=Drawing',
+      duration: '12:45',
+      views: '15K',
+      ageGroup: '9-12',
+      category: 'art',
+      rating: 'G',
     },
     {
       id: 4,
-      title: "Fun Science Experiments",
-      creator: "Science Kids",
-      thumbnail: "https://via.placeholder.com/320x180/96ceb4/ffffff?text=Science",
-      duration: "10:20",
-      views: "20K",
-      ageGroup: "9-12",
-      category: "science",
-      rating: "G"
+      title: 'Fun Science Experiments',
+      creator: 'Science Kids',
+      thumbnail:
+        'https://via.placeholder.com/320x180/96ceb4/ffffff?text=Science',
+      duration: '10:20',
+      views: '20K',
+      ageGroup: '9-12',
+      category: 'science',
+      rating: 'G',
     },
     {
       id: 5,
-      title: "Nursery Rhymes Collection",
-      creator: "Music Time",
-      thumbnail: "https://via.placeholder.com/320x180/ffeaa7/ffffff?text=Music",
-      duration: "15:30",
-      views: "25K",
-      ageGroup: "2-4",
-      category: "music",
-      rating: "G"
+      title: 'Nursery Rhymes Collection',
+      creator: 'Music Time',
+      thumbnail: 'https://via.placeholder.com/320x180/ffeaa7/ffffff?text=Music',
+      duration: '15:30',
+      views: '25K',
+      ageGroup: '2-4',
+      category: 'music',
+      rating: 'G',
     },
     {
       id: 6,
-      title: "Outdoor Adventure Stories",
-      creator: "Nature Kids",
-      thumbnail: "https://via.placeholder.com/320x180/55a3ff/ffffff?text=Nature",
-      duration: "18:45",
-      views: "10K",
-      ageGroup: "5-8",
-      category: "nature",
-      rating: "G"
-    }
+      title: 'Outdoor Adventure Stories',
+      creator: 'Nature Kids',
+      thumbnail:
+        'https://via.placeholder.com/320x180/55a3ff/ffffff?text=Nature',
+      duration: '18:45',
+      views: '10K',
+      ageGroup: '5-8',
+      category: 'nature',
+      rating: 'G',
+    },
   ];
 
-  const filteredVideos = videos.filter(video => {
+  const filteredVideos = videos.filter((video) => {
     const ageMatch = selectedAge === 'all' || video.ageGroup === selectedAge;
-    const categoryMatch = selectedCategory === 'all' || video.category === selectedCategory;
+    const categoryMatch =
+      selectedCategory === 'all' || video.category === selectedCategory;
     return ageMatch && categoryMatch;
   });
 
@@ -119,8 +124,18 @@ export default function KidZonePage() {
               onClick={() => setShowParentalControls(!showParentalControls)}
               className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
               </svg>
               <span>Parental Controls</span>
             </button>
@@ -133,17 +148,29 @@ export default function KidZonePage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-gray-900">Parental Controls</h3>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Parental Controls
+              </h3>
               <button
                 onClick={() => setShowParentalControls(false)}
                 className="text-gray-400 hover:text-gray-600"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -156,7 +183,7 @@ export default function KidZonePage() {
                   maxLength={4}
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Daily Time Limit
@@ -168,7 +195,7 @@ export default function KidZonePage() {
                   <option>No limit</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Content Restrictions
@@ -176,20 +203,26 @@ export default function KidZonePage() {
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input type="checkbox" className="mr-2" />
-                    <span className="text-sm text-gray-700">Block music videos</span>
+                    <span className="text-sm text-gray-700">
+                      Block music videos
+                    </span>
                   </label>
                   <label className="flex items-center">
                     <input type="checkbox" className="mr-2" />
-                    <span className="text-sm text-gray-700">Block gaming content</span>
+                    <span className="text-sm text-gray-700">
+                      Block gaming content
+                    </span>
                   </label>
                   <label className="flex items-center">
                     <input type="checkbox" className="mr-2" />
-                    <span className="text-sm text-gray-700">Educational content only</span>
+                    <span className="text-sm text-gray-700">
+                      Educational content only
+                    </span>
                   </label>
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-6 flex space-x-3">
               <button
                 onClick={() => setShowParentalControls(false)}
@@ -211,7 +244,9 @@ export default function KidZonePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Age Group Filter */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Age Group</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Age Group
+              </h3>
               <div className="flex space-x-3">
                 {ageGroups.map((age) => (
                   <button
@@ -231,7 +266,9 @@ export default function KidZonePage() {
 
             {/* Category Filter */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Category</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Category
+              </h3>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
@@ -251,15 +288,29 @@ export default function KidZonePage() {
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-6 h-6 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-blue-900">Kid-Safe Content</h3>
+              <h3 className="text-sm font-medium text-blue-900">
+                Kid-Safe Content
+              </h3>
               <p className="text-sm text-blue-700 mt-1">
-                All content in KidZone is carefully curated and filtered to ensure it&apos;s appropriate for children. 
-                Our content is regularly reviewed and updated to maintain the highest safety standards.
+                All content in KidZone is carefully curated and filtered to
+                ensure it&apos;s appropriate for children. Our content is
+                regularly reviewed and updated to maintain the highest safety
+                standards.
               </p>
             </div>
           </div>
@@ -268,7 +319,10 @@ export default function KidZonePage() {
         {/* Video Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredVideos.map((video) => (
-            <div key={video.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition">
+            <div
+              key={video.id}
+              className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition"
+            >
               <div className="relative">
                 <img
                   src={video.thumbnail}
@@ -282,7 +336,7 @@ export default function KidZonePage() {
                   {video.rating}
                 </div>
               </div>
-              
+
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 mb-2">
                   {video.title}
@@ -303,41 +357,65 @@ export default function KidZonePage() {
         {filteredVideos.length === 0 && (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              <svg
+                className="w-8 h-8 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No videos found</h3>
-            <p className="text-gray-500">Try adjusting your filters to see more content.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No videos found
+            </h3>
+            <p className="text-gray-500">
+              Try adjusting your filters to see more content.
+            </p>
           </div>
         )}
 
         {/* Featured Activities */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Activities</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Featured Activities
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg p-6 text-white">
               <div className="text-4xl mb-4">🎨</div>
               <h3 className="text-xl font-semibold mb-2">Art & Crafts</h3>
-              <p className="text-pink-100 mb-4">Fun and creative activities for kids</p>
+              <p className="text-pink-100 mb-4">
+                Fun and creative activities for kids
+              </p>
               <button className="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition">
                 Explore
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg p-6 text-white">
               <div className="text-4xl mb-4">🔬</div>
-              <h3 className="text-xl font-semibold mb-2">Science Experiments</h3>
-              <p className="text-blue-100 mb-4">Learn through hands-on experiments</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Science Experiments
+              </h3>
+              <p className="text-blue-100 mb-4">
+                Learn through hands-on experiments
+              </p>
               <button className="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition">
                 Explore
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg p-6 text-white">
               <div className="text-4xl mb-4">🌿</div>
               <h3 className="text-xl font-semibold mb-2">Nature & Outdoors</h3>
-              <p className="text-green-100 mb-4">Discover the world around us</p>
+              <p className="text-green-100 mb-4">
+                Discover the world around us
+              </p>
               <button className="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition">
                 Explore
               </button>

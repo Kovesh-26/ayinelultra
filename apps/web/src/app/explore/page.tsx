@@ -8,13 +8,22 @@ import {
   Sidebar,
   Grid,
   Tag,
-  VideoCard
+  VideoCard,
 } from '@/components/ayinel';
 
 export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['Gaming', 'Music', 'Tech', 'Fitness', 'Cooking', 'Travel', 'Education', 'Comedy'];
+  const categories = [
+    'Gaming',
+    'Music',
+    'Tech',
+    'Fitness',
+    'Cooking',
+    'Travel',
+    'Education',
+    'Comedy',
+  ];
 
   return (
     <div className="min-h-screen bg-[#0a0f14] text-white">
@@ -26,15 +35,15 @@ export default function ExplorePage() {
             <Section title="Categories">
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => (
-                  <Tag 
+                  <Tag
                     key={category}
                     active={selectedCategory === category}
                     onClick={() => setSelectedCategory(category)}
                   >
                     {category}
                   </Tag>
-          ))}
-        </div>
+                ))}
+              </div>
             </Section>
 
             <Section title="Trending Studios">
@@ -48,12 +57,12 @@ export default function ExplorePage() {
             <Section title="Popular Now">
               <Grid>
                 {[
-                  { title: "Beyond the Galaxy", badge: "BOOSTED" },
-                  { title: "The Future of AI" },
-                  { title: "Epic Adventure" },
-                  { title: "Conversation", live: true },
-                  { title: "Top 10 Gadgets" },
-                  { title: "Travel Tips" },
+                  { title: 'Beyond the Galaxy', badge: 'BOOSTED' },
+                  { title: 'The Future of AI' },
+                  { title: 'Epic Adventure' },
+                  { title: 'Conversation', live: true },
+                  { title: 'Top 10 Gadgets' },
+                  { title: 'Travel Tips' },
                 ].map((video) => (
                   <VideoCard key={video.title} {...video} />
                 ))}

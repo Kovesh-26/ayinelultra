@@ -1,7 +1,24 @@
-import { Controller, Get, Post, Delete, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
-import { NotificationResponseDto, MarkNotificationReadDto } from '@ayinel/types';
+import {
+  NotificationResponseDto,
+  MarkNotificationReadDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Notifications')
@@ -19,7 +36,11 @@ export class NotificationsController {
     @Query('limit') limit?: number,
     @Query('offset') offset?: number
   ): Promise<NotificationResponseDto[]> {
-    return this.notificationsService.getUserNotifications(req.user.id, limit, offset);
+    return this.notificationsService.getUserNotifications(
+      req.user.id,
+      limit,
+      offset
+    );
   }
 
   @Get('unread')
@@ -36,8 +57,14 @@ export class NotificationsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Mark notification as read' })
   @ApiResponse({ status: 200, description: 'Notification marked as read' })
-  async markNotificationAsRead(@Req() req, @Param('notificationId') notificationId: string): Promise<NotificationResponseDto> {
-    return this.notificationsService.markNotificationAsRead(req.user.id, notificationId);
+  async markNotificationAsRead(
+    @Req() req,
+    @Param('notificationId') notificationId: string
+  ): Promise<NotificationResponseDto> {
+    return this.notificationsService.markNotificationAsRead(
+      req.user.id,
+      notificationId
+    );
   }
 
   @Post('read-all')
@@ -45,8 +72,14 @@ export class NotificationsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Mark all notifications as read' })
   @ApiResponse({ status: 200, description: 'All notifications marked as read' })
-  async markAllNotificationsAsRead(@Req() req, @Query('type') type?: string): Promise<void> {
-    return this.notificationsService.markAllNotificationsAsRead(req.user.id, type);
+  async markAllNotificationsAsRead(
+    @Req() req,
+    @Query('type') type?: string
+  ): Promise<void> {
+    return this.notificationsService.markAllNotificationsAsRead(
+      req.user.id,
+      type
+    );
   }
 
   @Delete(':notificationId')
@@ -54,8 +87,14 @@ export class NotificationsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete notification' })
   @ApiResponse({ status: 200, description: 'Notification deleted' })
-  async deleteNotification(@Req() req, @Param('notificationId') notificationId: string): Promise<void> {
-    return this.notificationsService.deleteNotification(req.user.id, notificationId);
+  async deleteNotification(
+    @Req() req,
+    @Param('notificationId') notificationId: string
+  ): Promise<void> {
+    return this.notificationsService.deleteNotification(
+      req.user.id,
+      notificationId
+    );
   }
 
   @Get('count')
@@ -63,7 +102,9 @@ export class NotificationsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get notification count' })
   @ApiResponse({ status: 200, description: 'Notification count' })
-  async getNotificationCount(@Req() req): Promise<{ total: number; unread: number }> {
+  async getNotificationCount(
+    @Req() req
+  ): Promise<{ total: number; unread: number }> {
     return this.notificationsService.getNotificationCount(req.user.id);
   }
 }

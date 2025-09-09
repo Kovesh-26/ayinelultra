@@ -1,21 +1,21 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Put, 
-  Body, 
-  Param, 
-  Query, 
-  UseGuards, 
-  Request 
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { KidzoneService } from './kidzone.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { 
-  CreateKidProfileDto, 
-  UpdateKidSettingsDto, 
-  GuardianConsentDto, 
-  AgeVerificationDto 
+import {
+  CreateKidProfileDto,
+  UpdateKidSettingsDto,
+  GuardianConsentDto,
+  AgeVerificationDto,
 } from './dto/kidzone.dto';
 import { KidAgeGroup } from '@prisma/client';
 
@@ -42,10 +42,7 @@ export class KidzoneController {
   // Create kid profile (guardian only)
   @Post('profiles')
   @UseGuards(JwtAuthGuard)
-  async createKidProfile(
-    @Request() req,
-    @Body() dto: CreateKidProfileDto
-  ) {
+  async createKidProfile(@Request() req, @Body() dto: CreateKidProfileDto) {
     return this.kidzoneService.createKidProfile(req.user.id, dto);
   }
 
@@ -59,10 +56,7 @@ export class KidzoneController {
   // Update kid settings
   @Put('settings')
   @UseGuards(JwtAuthGuard)
-  async updateKidSettings(
-    @Request() req,
-    @Body() dto: UpdateKidSettingsDto
-  ) {
+  async updateKidSettings(@Request() req, @Body() dto: UpdateKidSettingsDto) {
     return this.kidzoneService.updateKidSettings(req.user.id, dto);
   }
 
@@ -76,10 +70,7 @@ export class KidzoneController {
   // Age verification
   @Post('verify-age')
   @UseGuards(JwtAuthGuard)
-  async verifyAge(
-    @Request() req,
-    @Body() dto: AgeVerificationDto
-  ) {
+  async verifyAge(@Request() req, @Body() dto: AgeVerificationDto) {
     return this.kidzoneService.verifyAge(req.user.id, dto);
   }
 
@@ -96,21 +87,18 @@ export class KidzoneController {
   // Verify guardian consent
   @Post('verify-guardian-consent')
   @UseGuards(JwtAuthGuard)
-  async verifyGuardianConsent(
-    @Request() req,
-    @Body() body: { token: string }
-  ) {
+  async verifyGuardianConsent(@Request() req, @Body() body: { token: string }) {
     return this.kidzoneService.verifyGuardianConsent(req.user.id, body.token);
   }
 
   // Check if content is safe for kid
   @Get('content/:videoId/safe')
-  async isContentSafe(
-    @Param('videoId') videoId: string,
-    @Request() req?: any
-  ) {
+  async isContentSafe(@Param('videoId') videoId: string, @Request() req?: any) {
     const userId = req?.user?.id;
-    const isSafe = await this.kidzoneService.isContentSafeForKid(videoId, userId);
+    const isSafe = await this.kidzoneService.isContentSafeForKid(
+      videoId,
+      userId
+    );
     return { isSafe };
   }
 }

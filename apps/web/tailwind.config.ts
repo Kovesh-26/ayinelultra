@@ -72,9 +72,11 @@ const config: Config = {
         xs: '2px',
       },
       boxShadow: {
-        'ayinel': '0 4px 6px -1px rgba(102, 126, 234, 0.1), 0 2px 4px -1px rgba(102, 126, 234, 0.06)',
-        'ayinel-lg': '0 10px 15px -3px rgba(102, 126, 234, 0.1), 0 4px 6px -2px rgba(102, 126, 234, 0.05)',
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+        ayinel:
+          '0 4px 6px -1px rgba(102, 126, 234, 0.1), 0 2px 4px -1px rgba(102, 126, 234, 0.06)',
+        'ayinel-lg':
+          '0 10px 15px -3px rgba(102, 126, 234, 0.1), 0 4px 6px -2px rgba(102, 126, 234, 0.05)',
+        glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
       },
       borderRadius: {
         '2xl': '1rem',

@@ -1,5 +1,20 @@
-import { Controller, Post, Get, Put, Delete, Body, Param, UseGuards, Request, Query } from '@nestjs/common';
-import { MusicService, CreateTrackDto, CreatePlaylistDto } from './music.service';
+import {
+  Controller,
+  Post,
+  Get,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
+import {
+  MusicService,
+  CreateTrackDto,
+  CreatePlaylistDto,
+} from './music.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('api/v1/music')
@@ -40,10 +55,7 @@ export class MusicController {
   }
 
   @Get('search')
-  async searchMusic(
-    @Query('q') query: string,
-    @Query('type') type?: string
-  ) {
+  async searchMusic(@Query('q') query: string, @Query('type') type?: string) {
     return this.musicService.searchMusic(query, type);
   }
 

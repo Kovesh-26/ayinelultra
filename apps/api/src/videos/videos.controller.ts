@@ -17,7 +17,10 @@ export class VideosController {
   }
 
   @Get()
-  list(@Query('type') type?: 'FLIP' | 'BROADCAST', @Query('limit') limit?: string) {
+  list(
+    @Query('type') type?: 'FLIP' | 'BROADCAST',
+    @Query('limit') limit?: string
+  ) {
     return this.videos.list({
       type,
       limit: limit ? parseInt(limit) : undefined,

@@ -1,12 +1,24 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCollectionDto, UpdateCollectionDto, AddToCollectionDto, CollectionResponseDto } from '@ayinel/types';
+import {
+  CreateCollectionDto,
+  UpdateCollectionDto,
+  AddToCollectionDto,
+  CollectionResponseDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class CollectionsService {
   constructor(private prisma: PrismaService) {}
 
-  async createCollection(ownerId: string, dto: CreateCollectionDto): Promise<CollectionResponseDto> {
+  async createCollection(
+    ownerId: string,
+    dto: CreateCollectionDto
+  ): Promise<CollectionResponseDto> {
     const collection = await this.prisma.collection.create({
       data: {
         ownerId,
@@ -19,9 +31,7 @@ export class CollectionsService {
   }
 
   async findAll(ownerId?: string): Promise<CollectionResponseDto[]> {
-    const where = ownerId 
-      ? { ownerId }
-      : { isPublic: true };
+    const where = ownerId ? { ownerId } : { isPublic: true };
 
     const collections = await this.prisma.collection.findMany({
       where,
@@ -35,7 +45,9 @@ export class CollectionsService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return collections.map(collection => this.mapToCollectionResponse(collection));
+    return collections.map((collection) =>
+      this.mapToCollectionResponse(collection)
+    );
   }
 
   async findById(id: string): Promise<CollectionResponseDto> {
@@ -58,7 +70,10 @@ export class CollectionsService {
     return this.mapToCollectionResponse(collection);
   }
 
-  async updateCollection(id: string, dto: UpdateCollectionDto): Promise<CollectionResponseDto> {
+  async updateCollection(
+    id: string,
+    dto: UpdateCollectionDto
+  ): Promise<CollectionResponseDto> {
     const collection = await this.prisma.collection.findUnique({
       where: { id },
     });
@@ -89,7 +104,10 @@ export class CollectionsService {
     });
   }
 
-  async addToCollection(collectionId: string, dto: AddToCollectionDto): Promise<void> {
+  async addToCollection(
+    collectionId: string,
+    dto: AddToCollectionDto
+  ): Promise<void> {
     const collection = await this.prisma.collection.findUnique({
       where: { id: collectionId },
     });
@@ -123,7 +141,10 @@ export class CollectionsService {
     });
   }
 
-  async removeFromCollection(collectionId: string, videoId: string): Promise<void> {
+  async removeFromCollection(
+    collectionId: string,
+    videoId: string
+  ): Promise<void> {
     const collectionItem = await this.prisma.collectionItem.findUnique({
       where: {
         collectionId_videoId: {
@@ -170,9 +191,7 @@ export class CollectionsService {
         AND: [
           { isPublic: true },
           {
-            OR: [
-              { title: { contains: query, mode: 'insensitive' } },
-            ],
+            OR: [{ title: { contains: query, mode: 'insensitive' } }],
           },
         ],
       },
@@ -186,7 +205,9 @@ export class CollectionsService {
       take: 10,
     });
 
-    return collections.map(collection => this.mapToCollectionResponse(collection));
+    return collections.map((collection) =>
+      this.mapToCollectionResponse(collection)
+    );
   }
 
   private mapToCollectionResponse(collection: any): CollectionResponseDto {

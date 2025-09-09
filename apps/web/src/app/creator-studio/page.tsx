@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export default function CreatorStudio() {
   return (
@@ -26,7 +26,9 @@ export default function CreatorStudio() {
               <article key={i} className="rounded-xl border p-3">
                 <div className="aspect-video rounded-lg bg-zinc-900 mb-2" />
                 <div className="font-medium">Video #{i + 1}</div>
-                <div className="text-xs opacity-70">Status: Ready · Boosts: —</div>
+                <div className="text-xs opacity-70">
+                  Status: Ready · Boosts: —
+                </div>
               </article>
             ))}
           </div>

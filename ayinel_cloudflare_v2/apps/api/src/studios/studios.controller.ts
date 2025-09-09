@@ -1,7 +1,26 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { StudiosService } from './studios.service';
-import { CreateStudioDto, UpdateStudioDto, StudioResponseDto } from '@ayinel/types';
+import {
+  CreateStudioDto,
+  UpdateStudioDto,
+  StudioResponseDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Studios')
@@ -17,7 +36,7 @@ export class StudiosController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   async createStudio(
     @Req() req,
-    @Body() dto: CreateStudioDto,
+    @Body() dto: CreateStudioDto
   ): Promise<StudioResponseDto> {
     return this.studiosService.createStudio(req.user.id, dto);
   }
@@ -58,7 +77,9 @@ export class StudiosController {
   @ApiOperation({ summary: 'Get studio by handle' })
   @ApiResponse({ status: 200, description: 'Studio found' })
   @ApiResponse({ status: 404, description: 'Studio not found' })
-  async findByHandle(@Param('handle') handle: string): Promise<StudioResponseDto> {
+  async findByHandle(
+    @Param('handle') handle: string
+  ): Promise<StudioResponseDto> {
     return this.studiosService.findByHandle(handle);
   }
 
@@ -70,7 +91,7 @@ export class StudiosController {
   @ApiResponse({ status: 404, description: 'Studio not found' })
   async updateStudio(
     @Param('id') id: string,
-    @Body() dto: UpdateStudioDto,
+    @Body() dto: UpdateStudioDto
   ): Promise<StudioResponseDto> {
     return this.studiosService.updateStudio(id, dto);
   }

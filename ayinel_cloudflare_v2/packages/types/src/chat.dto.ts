@@ -3,7 +3,7 @@ import { IsString, IsOptional, IsEnum, IsArray } from 'class-validator';
 export enum ConversationType {
   DM = 'DM',
   GROUP = 'GROUP',
-  KID = 'KID'
+  KID = 'KID',
 }
 
 export class CreateConversationDto {

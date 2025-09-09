@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { StudiosService } from './studios.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateStudioDto, UpdateStudioDto } from './dto';
@@ -31,7 +42,11 @@ export class StudiosController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  updateStudio(@Param('id') id: string, @Request() req, @Body() updateStudioDto: UpdateStudioDto) {
+  updateStudio(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() updateStudioDto: UpdateStudioDto
+  ) {
     return this.studiosService.update(id, req.user.id, updateStudioDto);
   }
 

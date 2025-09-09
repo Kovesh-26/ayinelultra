@@ -5,6 +5,7 @@ A comprehensive video streaming platform built with Next.js 14, NestJS, and Clou
 ## 🌟 Features
 
 ### Core Platform
+
 - **Users & Profiles**: Customizable profiles with fonts, palettes, wallpapers, music, photo albums
 - **Creator Studios**: Full studio management with analytics, uploads, and monetization
 - **Video Streaming**: Cloudflare Stream integration with processing and delivery
@@ -12,6 +13,7 @@ A comprehensive video streaming platform built with Next.js 14, NestJS, and Clou
 - **Social Features**: Friendships, DMs, group chats, and real-time messaging
 
 ### Advanced Features
+
 - **KidZone**: Child-safe environment with guardian consent and content filtering
 - **Live Calls**: WebRTC-based video calls using LiveKit
 - **Token Economy**: Complete token system for tips, boosts, memberships, and store purchases
@@ -19,6 +21,7 @@ A comprehensive video streaming platform built with Next.js 14, NestJS, and Clou
 - **Admin Console**: Full moderation suite with user management and analytics
 
 ### Monetization
+
 - **Stripe Integration**: Payment processing for tokens and memberships
 - **Creator Payouts**: Stripe Connect for creator earnings
 - **Multiple Payment Methods**: Stripe, PayPal, and Cash App support
@@ -58,7 +61,7 @@ ayinel_cloudflare_v2/
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - PostgreSQL database
 - Redis (for queues and caching)
 - Cloudflare account with:
@@ -78,6 +81,7 @@ npm install
 ### 2. Environment Setup
 
 #### API Environment
+
 ```bash
 cd apps/api
 cp env.example .env
@@ -85,6 +89,7 @@ cp env.example .env
 ```
 
 #### Web Environment
+
 ```bash
 cd apps/web
 cp .env.example .env.local
@@ -147,12 +152,14 @@ npm run start:web        # Start Web in production mode
 ### Project Structure
 
 #### Frontend (Next.js 14)
+
 - **App Router**: Modern Next.js routing
 - **Tailwind CSS**: Utility-first styling
 - **shadcn/ui**: High-quality components
 - **TypeScript**: Full type safety
 
 #### Backend (NestJS)
+
 - **Modular Architecture**: Feature-based modules
 - **Prisma ORM**: Type-safe database access
 - **WebSocket Gateway**: Real-time features
@@ -161,6 +168,7 @@ npm run start:web        # Start Web in production mode
 - **Queue System**: Background processing
 
 #### Database (PostgreSQL)
+
 - **Comprehensive Schema**: All platform features
 - **Relationships**: Proper foreign keys
 - **Indexes**: Optimized queries
@@ -178,6 +186,7 @@ npm run start:web        # Start Web in production mode
    - Root directory: `apps/web`
 
 3. **Set Environment Variables**:
+
    ```
    NEXT_PUBLIC_API_URL=https://api.ayinel.com
    NEXT_PUBLIC_BRAND_NAME=Ayinel
@@ -190,6 +199,7 @@ npm run start:web        # Start Web in production mode
 ### API Deployment
 
 Deploy the NestJS API to your preferred hosting:
+
 - **Railway**: Easy deployment with PostgreSQL
 - **Heroku**: Traditional hosting
 - **DigitalOcean**: App Platform
@@ -198,6 +208,7 @@ Deploy the NestJS API to your preferred hosting:
 ### Domain Setup
 
 Follow the [Domain Setup Guide](./domain-setup.md) to configure `ayinel.com` with:
+
 - DNS configuration
 - SSL certificates
 - Performance optimization
@@ -208,12 +219,14 @@ Follow the [Domain Setup Guide](./domain-setup.md) to configure `ayinel.com` wit
 ### Required Services
 
 #### Cloudflare Services
+
 - **Pages**: Frontend hosting
 - **R2**: File storage
 - **Stream**: Video processing
 - **Workers**: Edge functions (optional)
 
 #### Third-Party Services
+
 - **Stripe**: Payments and payouts
 - **PayPal**: Alternative payments
 - **LiveKit**: Video calls
@@ -227,24 +240,28 @@ See [API Environment](./apps/api/env.example) and [Web Environment](./apps/web/.
 ## 📊 Features Overview
 
 ### User Experience
+
 - **Customizable Profiles**: Fonts, colors, wallpapers, music
 - **Social Features**: Friends, messaging, video calls
 - **Content Discovery**: Recommendations, trending, categories
 - **Mobile-First**: Responsive design
 
 ### Creator Tools
+
 - **Studio Dashboard**: Analytics, uploads, settings
 - **Video Editor**: Basic trimming and thumbnails
 - **Monetization**: Memberships, tips, store items
 - **Analytics**: Views, engagement, earnings
 
 ### KidZone Safety
+
 - **Age Verification**: Guardian consent required
 - **Content Filtering**: Safe discovery only
 - **Kid-Only Features**: Isolated chat and calls
 - **Learning Content**: Educational tiles and games
 
 ### Admin Features
+
 - **User Management**: Ban, suspend, moderate
 - **Content Moderation**: Reports, takedowns
 - **Analytics**: Platform metrics and insights
@@ -316,6 +333,7 @@ This project is proprietary software. All rights reserved.
 ## 🆘 Support
 
 For support and questions:
+
 - Check the documentation
 - Review deployment guides
 - Contact the development team

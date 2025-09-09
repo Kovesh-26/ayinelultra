@@ -11,12 +11,17 @@ interface AppShellProps {
   className?: string;
 }
 
-export default function AppShell({ sidebar, rightRail, children, className }: AppShellProps) {
+export default function AppShell({
+  sidebar,
+  rightRail,
+  children,
+  className,
+}: AppShellProps) {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Top Navigation */}
       <Navigation />
-      
+
       <div className="flex">
         {/* Left Sidebar */}
         {sidebar && (
@@ -24,24 +29,20 @@ export default function AppShell({ sidebar, rightRail, children, className }: Ap
             {sidebar}
           </aside>
         )}
-        
+
         {/* Main Content */}
-        <main className={cn(
-          "flex-1 p-6",
-          rightRail ? "lg:grid lg:grid-cols-4 lg:gap-6" : "",
-          className
-        )}>
-          <div className={cn(
-            rightRail ? "lg:col-span-3" : ""
-          )}>
-            {children}
-          </div>
-          
+        <main
+          className={cn(
+            'flex-1 p-6',
+            rightRail ? 'lg:grid lg:grid-cols-4 lg:gap-6' : '',
+            className
+          )}
+        >
+          <div className={cn(rightRail ? 'lg:col-span-3' : '')}>{children}</div>
+
           {/* Right Rail */}
           {rightRail && (
-            <aside className="lg:col-span-1 space-y-6">
-              {rightRail}
-            </aside>
+            <aside className="lg:col-span-1 space-y-6">{rightRail}</aside>
           )}
         </main>
       </div>

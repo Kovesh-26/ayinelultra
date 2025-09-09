@@ -15,29 +15,35 @@ This guide provides step-by-step instructions for deploying the Ayinel platform 
 ## 🎯 **DEPLOYMENT OPTIONS**
 
 ### **Option 1: Complete Fresh Deployment**
+
 Use when setting up a new server from scratch.
 
 ### **Option 2: Quick Setup**
+
 Use when files are already migrated to the server.
 
 ### **Option 3: File Migration + Setup**
+
 Use when you need to migrate files first, then set up.
 
 ## 🖥️ **SERVER REQUIREMENTS**
 
 ### **Minimum Specifications**
+
 - **CPU**: 2 cores
 - **RAM**: 4GB
 - **Storage**: 20GB SSD
 - **OS**: Ubuntu 20.04+ or Debian 11+
 
 ### **Recommended Specifications**
+
 - **CPU**: 4+ cores
 - **RAM**: 8GB+
 - **Storage**: 50GB+ SSD
 - **OS**: Ubuntu 22.04 LTS
 
 ### **Network Requirements**
+
 - **Ports**: 22 (SSH), 80 (HTTP), 443 (HTTPS)
 - **Domain**: `ayinel.com` and `api.ayinel.com`
 - **SSL**: Let's Encrypt certificates
@@ -45,6 +51,7 @@ Use when you need to migrate files first, then set up.
 ## 📦 **DEPLOYMENT SCRIPTS**
 
 ### **1. Complete Production Deployment**
+
 ```bash
 # Make script executable
 chmod +x scripts/deploy-production.sh
@@ -54,6 +61,7 @@ sudo ./scripts/deploy-production.sh
 ```
 
 **What it does:**
+
 - Updates system packages
 - Installs all dependencies (Node.js, pnpm, PM2)
 - Sets up Nginx web server
@@ -67,6 +75,7 @@ sudo ./scripts/deploy-production.sh
 - Sets up PM2 process management
 
 ### **2. Quick Setup (Files Already Migrated)**
+
 ```bash
 # Make script executable
 chmod +x scripts/quick-setup.sh
@@ -76,6 +85,7 @@ sudo ./scripts/quick-setup.sh
 ```
 
 **What it does:**
+
 - Installs application dependencies
 - Sets up environment variables
 - Runs database migrations
@@ -84,6 +94,7 @@ sudo ./scripts/quick-setup.sh
 - Performs health checks
 
 ### **3. File Migration + Setup**
+
 ```bash
 # Make script executable
 chmod +x scripts/migrate-files.sh
@@ -96,6 +107,7 @@ sudo ./scripts/quick-setup.sh
 ```
 
 **What it does:**
+
 - Creates backup of existing installation
 - Migrates all files to `/var/www/ayinel`
 - Sets up environment variables
@@ -108,6 +120,7 @@ sudo ./scripts/quick-setup.sh
 If you prefer to set up manually or need to troubleshoot:
 
 ### **Step 1: System Preparation**
+
 ```bash
 # Update system
 sudo apt update && sudo apt upgrade -y
@@ -119,6 +132,7 @@ sudo apt install -y curl wget git unzip software-properties-common \
 ```
 
 ### **Step 2: Install Node.js and pnpm**
+
 ```bash
 # Install Node.js 18.x
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo bash -
@@ -132,6 +146,7 @@ sudo npm install -g pm2
 ```
 
 ### **Step 3: Install and Configure PostgreSQL**
+
 ```bash
 # Install PostgreSQL
 sudo apt install -y postgresql postgresql-contrib
@@ -151,6 +166,7 @@ EOF
 ```
 
 ### **Step 4: Install and Configure Redis**
+
 ```bash
 # Install Redis
 sudo apt install -y redis-server
@@ -164,6 +180,7 @@ sudo systemctl enable redis-server
 ```
 
 ### **Step 5: Install and Configure Nginx**
+
 ```bash
 # Install Nginx
 sudo apt install -y nginx
@@ -184,6 +201,7 @@ sudo systemctl enable nginx
 ```
 
 ### **Step 6: Setup SSL Certificates**
+
 ```bash
 # Install Certbot
 sudo apt install -y certbot python3-certbot-nginx
@@ -197,6 +215,7 @@ echo "0 12 * * * /usr/bin/certbot renew --quiet" | sudo crontab -
 ```
 
 ### **Step 7: Application Setup**
+
 ```bash
 # Create application directory
 sudo mkdir -p /var/www/ayinel
@@ -219,12 +238,14 @@ pnpm --filter @ayinel/api build
 ```
 
 ### **Step 8: Environment Configuration**
+
 ```bash
 # Create environment file
 sudo nano /var/www/ayinel/.env
 ```
 
 **Environment Variables:**
+
 ```env
 NODE_ENV=production
 DATABASE_URL="postgresql://ayinel_user:your_password@localhost:5432/ayinel_prod?schema=public"
@@ -242,6 +263,7 @@ WEB_URL="https://ayinel.com"
 ```
 
 ### **Step 9: Database Setup**
+
 ```bash
 # Navigate to API directory
 cd /var/www/ayinel/apps/api
@@ -254,6 +276,7 @@ npx prisma generate
 ```
 
 ### **Step 10: PM2 Process Management**
+
 ```bash
 # Navigate to application directory
 cd /var/www/ayinel
@@ -263,6 +286,7 @@ nano ecosystem.config.js
 ```
 
 **PM2 Configuration:**
+
 ```javascript
 module.exports = {
   apps: [
@@ -274,7 +298,7 @@ module.exports = {
       exec_mode: 'cluster',
       env: {
         NODE_ENV: 'production',
-        PORT: 3001
+        PORT: 3001,
       },
       error_file: '/var/www/ayinel/logs/api-error.log',
       out_file: '/var/www/ayinel/logs/api-out.log',
@@ -282,7 +306,7 @@ module.exports = {
       time: true,
       max_memory_restart: '1G',
       restart_delay: 4000,
-      max_restarts: 10
+      max_restarts: 10,
     },
     {
       name: 'ayinel-web',
@@ -293,7 +317,7 @@ module.exports = {
       exec_mode: 'cluster',
       env: {
         NODE_ENV: 'production',
-        PORT: 3000
+        PORT: 3000,
       },
       error_file: '/var/www/ayinel/logs/web-error.log',
       out_file: '/var/www/ayinel/logs/web-out.log',
@@ -301,9 +325,9 @@ module.exports = {
       time: true,
       max_memory_restart: '1G',
       restart_delay: 4000,
-      max_restarts: 10
-    }
-  ]
+      max_restarts: 10,
+    },
+  ],
 };
 ```
 
@@ -317,6 +341,7 @@ pm2 startup
 ## 🔍 **VERIFICATION & TESTING**
 
 ### **Health Checks**
+
 ```bash
 # Check PM2 status
 pm2 status
@@ -335,6 +360,7 @@ sudo systemctl status redis-server
 ```
 
 ### **Test Endpoints**
+
 ```bash
 # Test frontend
 curl http://localhost:3000
@@ -352,6 +378,7 @@ redis-cli -a your_redis_password ping
 ## 🛠️ **MANAGEMENT COMMANDS**
 
 ### **Application Management**
+
 ```bash
 # PM2 commands
 pm2 status          # Check status
@@ -374,6 +401,7 @@ sudo -u postgres psql -d ayinel_prod    # Connect to database
 ```
 
 ### **Log Management**
+
 ```bash
 # View application logs
 pm2 logs
@@ -389,6 +417,7 @@ sudo journalctl -u redis-server -f
 ```
 
 ### **Backup and Restore**
+
 ```bash
 # Manual backup
 sudo /var/www/ayinel/scripts/backup.sh
@@ -403,6 +432,7 @@ sudo -u postgres psql -d ayinel_prod < backup.sql
 ## 🔐 **SECURITY CONSIDERATIONS**
 
 ### **Firewall Configuration**
+
 ```bash
 # Install UFW
 sudo apt install -y ufw
@@ -421,12 +451,14 @@ sudo ufw --force enable
 ```
 
 ### **SSL Configuration**
+
 - Let's Encrypt certificates auto-renew
 - HTTP to HTTPS redirects
 - Security headers configured
 - HSTS enabled
 
 ### **File Permissions**
+
 - Application files: 755
 - Environment file: 600
 - Uploads directory: 755
@@ -435,6 +467,7 @@ sudo ufw --force enable
 ## 📊 **MONITORING & MAINTENANCE**
 
 ### **Performance Monitoring**
+
 ```bash
 # System resources
 htop
@@ -447,12 +480,14 @@ pm2 status
 ```
 
 ### **Log Rotation**
+
 - Automatic log rotation configured
 - Logs compressed after rotation
 - 52 weeks of log retention
 - PM2 log reload after rotation
 
 ### **Backup Schedule**
+
 - Daily automated backups at 2 AM
 - Database, application, and uploads backed up
 - 7 days of backup retention
@@ -463,6 +498,7 @@ pm2 status
 ### **Common Issues**
 
 #### **Application Not Starting**
+
 ```bash
 # Check PM2 logs
 pm2 logs
@@ -475,6 +511,7 @@ ls -la /var/www/ayinel/
 ```
 
 #### **Database Connection Issues**
+
 ```bash
 # Check PostgreSQL status
 sudo systemctl status postgresql
@@ -487,6 +524,7 @@ grep DATABASE_URL /var/www/ayinel/.env
 ```
 
 #### **Nginx Configuration Issues**
+
 ```bash
 # Test configuration
 sudo nginx -t
@@ -499,6 +537,7 @@ sudo cat /etc/nginx/sites-enabled/ayinel
 ```
 
 #### **SSL Certificate Issues**
+
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -528,6 +567,7 @@ sudo ls -la /etc/letsencrypt/live/ayinel.com/
 ## 🆘 **SUPPORT & RESOURCES**
 
 ### **Documentation**
+
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Prisma Documentation](https://www.prisma.io/docs/)
@@ -535,12 +575,14 @@ sudo ls -la /etc/letsencrypt/live/ayinel.com/
 - [Nginx Documentation](https://nginx.org/en/docs/)
 
 ### **Logs and Debugging**
+
 - Application logs: `pm2 logs`
 - Nginx logs: `/var/log/nginx/`
 - System logs: `journalctl`
 - PM2 logs: `/var/www/ayinel/logs/`
 
 ### **Emergency Contacts**
+
 - Server provider support
 - Domain registrar support
 - SSL certificate provider (Let's Encrypt)

@@ -8,7 +8,7 @@ import {
   Grid,
   VideoCard,
   StatCard,
-  FriendsList
+  FriendsList,
 } from '@/components/ayinel';
 
 export default function StudioDashboardPage() {
@@ -21,19 +21,25 @@ export default function StudioDashboardPage() {
         <div className="grid gap-6 pt-6 lg:grid-cols-[220px_1fr]">
           {/* Studio sidebar */}
           <aside className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="mb-3 text-sm font-semibold text-white/90">Studio</div>
+            <div className="mb-3 text-sm font-semibold text-white/90">
+              Studio
+            </div>
             <div className="space-y-1">
-              {["Dashboard", "Profile", "Security", "Notifications"].map((tab, i) => (
-                <div 
-                  key={tab} 
-                  className={`rounded-lg px-3 py-2 text-sm cursor-pointer ${
-                    activeTab === tab ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
-                  }`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
-                </div>
-              ))}
+              {['Dashboard', 'Profile', 'Security', 'Notifications'].map(
+                (tab, i) => (
+                  <div
+                    key={tab}
+                    className={`rounded-lg px-3 py-2 text-sm cursor-pointer ${
+                      activeTab === tab
+                        ? 'bg-white/10 text-white'
+                        : 'text-white/70 hover:bg-white/5'
+                    }`}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab}
+                  </div>
+                )
+              )}
             </div>
           </aside>
 

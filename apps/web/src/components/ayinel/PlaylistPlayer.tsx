@@ -6,7 +6,11 @@ interface PlaylistPlayerProps {
   progress?: number;
 }
 
-export function PlaylistPlayer({ title = "Chill Vibes", artist = "Artist Name", progress = 32 }: PlaylistPlayerProps) {
+export function PlaylistPlayer({
+  title = 'Chill Vibes',
+  artist = 'Artist Name',
+  progress = 32,
+}: PlaylistPlayerProps) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
       <div className="mb-3 flex items-center gap-3">
@@ -17,13 +21,24 @@ export function PlaylistPlayer({ title = "Chill Vibes", artist = "Artist Name", 
         </div>
       </div>
       <div className="mb-3 h-2 w-full overflow-hidden rounded bg-white/10">
-        <div className="h-full bg-indigo-500" style={{ width: `${progress}%` }} />
+        <div
+          className="h-full bg-indigo-500"
+          style={{ width: `${progress}%` }}
+        />
       </div>
       <div className="flex items-center gap-2">
-        <button className="rounded-full bg-white/10 px-3 py-1 text-sm text-white">⏮</button>
-        <button className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-black">▶</button>
-        <button className="rounded-full bg-white/10 px-3 py-1 text-sm text-white">⏭</button>
-        <button className="ml-auto rounded-full bg-white/10 px-3 py-1 text-sm text-white">♡</button>
+        <button className="rounded-full bg-white/10 px-3 py-1 text-sm text-white">
+          ⏮
+        </button>
+        <button className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-black">
+          ▶
+        </button>
+        <button className="rounded-full bg-white/10 px-3 py-1 text-sm text-white">
+          ⏭
+        </button>
+        <button className="ml-auto rounded-full bg-white/10 px-3 py-1 text-sm text-white">
+          ♡
+        </button>
       </div>
     </div>
   );

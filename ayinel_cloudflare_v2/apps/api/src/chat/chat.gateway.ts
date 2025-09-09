@@ -1,4 +1,10 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
@@ -12,19 +18,28 @@ export class ChatGateway {
   server: Server;
 
   @SubscribeMessage('joinRoom')
-  handleJoinRoom(@MessageBody() data: { roomId: string }, @ConnectedSocket() client: Socket) {
+  handleJoinRoom(
+    @MessageBody() data: { roomId: string },
+    @ConnectedSocket() client: Socket
+  ) {
     client.join(data.roomId);
     return { event: 'joinedRoom', roomId: data.roomId };
   }
 
   @SubscribeMessage('leaveRoom')
-  handleLeaveRoom(@MessageBody() data: { roomId: string }, @ConnectedSocket() client: Socket) {
+  handleLeaveRoom(
+    @MessageBody() data: { roomId: string },
+    @ConnectedSocket() client: Socket
+  ) {
     client.leave(data.roomId);
     return { event: 'leftRoom', roomId: data.roomId };
   }
 
   @SubscribeMessage('sendMessage')
-  handleMessage(@MessageBody() data: { roomId: string; message: string }, @ConnectedSocket() client: Socket) {
+  handleMessage(
+    @MessageBody() data: { roomId: string; message: string },
+    @ConnectedSocket() client: Socket
+  ) {
     this.server.to(data.roomId).emit('newMessage', {
       roomId: data.roomId,
       message: data.message,
@@ -35,7 +50,10 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('typing')
-  handleTyping(@MessageBody() data: { roomId: string; isTyping: boolean }, @ConnectedSocket() client: Socket) {
+  handleTyping(
+    @MessageBody() data: { roomId: string; isTyping: boolean },
+    @ConnectedSocket() client: Socket
+  ) {
     client.to(data.roomId).emit('userTyping', {
       roomId: data.roomId,
       userId: client.id,

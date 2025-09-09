@@ -1,9 +1,9 @@
-import React from 'react';
-import { Inter } from 'next/font/google';
+import type { ReactNode } from 'react';
 import './globals.css';
 import { AuthProvider } from '../contexts/AuthContext';
 
-const inter = Inter({ subsets: ['latin'] });
+// Use system fonts to avoid network dependency during build
+const fontClass = 'font-sans';
 
 export const metadata = {
   title: 'Ayinel',
@@ -15,13 +15,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body className={fontClass} suppressHydrationWarning={true}>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

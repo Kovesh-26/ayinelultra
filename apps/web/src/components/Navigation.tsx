@@ -1,6 +1,6 @@
-"use client";
-import { Bell, Upload, Search } from "lucide-react";
-import Logo from "@/components/Logo";
+'use client';
+import { Bell, Upload, Search } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 export default function Navigation() {
   return (

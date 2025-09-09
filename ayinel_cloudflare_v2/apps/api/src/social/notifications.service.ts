@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { NotificationResponseDto, MarkNotificationReadDto } from '@ayinel/types';
+import {
+  NotificationResponseDto,
+  MarkNotificationReadDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class NotificationsService {
@@ -26,7 +29,11 @@ export class NotificationsService {
     return this.mapToNotificationResponse(notification);
   }
 
-  async getUserNotifications(userId: string, limit = 50, offset = 0): Promise<NotificationResponseDto[]> {
+  async getUserNotifications(
+    userId: string,
+    limit = 50,
+    offset = 0
+  ): Promise<NotificationResponseDto[]> {
     const notifications = await this.prisma.notification.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
@@ -34,19 +41,28 @@ export class NotificationsService {
       skip: offset,
     });
 
-    return notifications.map(notification => this.mapToNotificationResponse(notification));
+    return notifications.map((notification) =>
+      this.mapToNotificationResponse(notification)
+    );
   }
 
-  async getUnreadNotifications(userId: string): Promise<NotificationResponseDto[]> {
+  async getUnreadNotifications(
+    userId: string
+  ): Promise<NotificationResponseDto[]> {
     const notifications = await this.prisma.notification.findMany({
       where: { userId, isRead: false },
       orderBy: { createdAt: 'desc' },
     });
 
-    return notifications.map(notification => this.mapToNotificationResponse(notification));
+    return notifications.map((notification) =>
+      this.mapToNotificationResponse(notification)
+    );
   }
 
-  async markNotificationAsRead(userId: string, notificationId: string): Promise<NotificationResponseDto> {
+  async markNotificationAsRead(
+    userId: string,
+    notificationId: string
+  ): Promise<NotificationResponseDto> {
     const notification = await this.prisma.notification.findFirst({
       where: { id: notificationId, userId },
     });
@@ -63,7 +79,10 @@ export class NotificationsService {
     return this.mapToNotificationResponse(updatedNotification);
   }
 
-  async markAllNotificationsAsRead(userId: string, type?: string): Promise<void> {
+  async markAllNotificationsAsRead(
+    userId: string,
+    type?: string
+  ): Promise<void> {
     const where: any = { userId, isRead: false };
     if (type) {
       where.type = type;
@@ -75,7 +94,10 @@ export class NotificationsService {
     });
   }
 
-  async deleteNotification(userId: string, notificationId: string): Promise<void> {
+  async deleteNotification(
+    userId: string,
+    notificationId: string
+  ): Promise<void> {
     const notification = await this.prisma.notification.findFirst({
       where: { id: notificationId, userId },
     });
@@ -89,7 +111,9 @@ export class NotificationsService {
     });
   }
 
-  async getNotificationCount(userId: string): Promise<{ total: number; unread: number }> {
+  async getNotificationCount(
+    userId: string
+  ): Promise<{ total: number; unread: number }> {
     const [total, unread] = await Promise.all([
       this.prisma.notification.count({
         where: { userId },
@@ -103,7 +127,10 @@ export class NotificationsService {
   }
 
   // Helper methods for creating specific types of notifications
-  async createTuneInNotification(followerId: string, followedId: string): Promise<void> {
+  async createTuneInNotification(
+    followerId: string,
+    followedId: string
+  ): Promise<void> {
     const follower = await this.prisma.user.findUnique({
       where: { id: followerId },
       select: { displayName: true },
@@ -125,7 +152,11 @@ export class NotificationsService {
     }
   }
 
-  async createBoostNotification(userId: string, videoId: string, boosterId: string): Promise<void> {
+  async createBoostNotification(
+    userId: string,
+    videoId: string,
+    boosterId: string
+  ): Promise<void> {
     const booster = await this.prisma.user.findUnique({
       where: { id: boosterId },
       select: { displayName: true },
@@ -147,7 +178,11 @@ export class NotificationsService {
     }
   }
 
-  async createChatNotification(userId: string, videoId: string, chatterId: string): Promise<void> {
+  async createChatNotification(
+    userId: string,
+    videoId: string,
+    chatterId: string
+  ): Promise<void> {
     const chatter = await this.prisma.user.findUnique({
       where: { id: chatterId },
       select: { displayName: true },
@@ -169,7 +204,10 @@ export class NotificationsService {
     }
   }
 
-  async createBroadcastNotification(userId: string, studioId: string): Promise<void> {
+  async createBroadcastNotification(
+    userId: string,
+    studioId: string
+  ): Promise<void> {
     const studio = await this.prisma.studio.findUnique({
       where: { id: studioId },
       select: { name: true },
@@ -186,7 +224,9 @@ export class NotificationsService {
     }
   }
 
-  private mapToNotificationResponse(notification: any): NotificationResponseDto {
+  private mapToNotificationResponse(
+    notification: any
+  ): NotificationResponseDto {
     return {
       id: notification.id,
       userId: notification.userId,

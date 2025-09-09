@@ -1,11 +1,31 @@
 import js from '@eslint/js';
 import nextPlugin from '@next/eslint-plugin-next';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.{ts,tsx}'],
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'dist/**',
+      'build/**',
+      'out/**',
+      'coverage/**',
+    ],
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         window: 'readonly',
         document: 'readonly',
@@ -25,6 +45,10 @@ export default [
         requestAnimationFrame: 'readonly',
         cancelAnimationFrame: 'readonly',
         alert: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        ReadableStream: 'readonly',
+        TransformStream: 'readonly',
         HTMLCanvasElement: 'readonly',
         HTMLInputElement: 'readonly',
         HTMLTextAreaElement: 'readonly',
@@ -35,22 +59,15 @@ export default [
         FormData: 'readonly',
         MouseEvent: 'readonly',
       },
-      parserOptions: {
-        ecmaVersion: 2022,
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
     },
     plugins: {
       '@next/next': nextPlugin,
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
       ...nextPlugin.configs.recommended.rules,
       'no-unused-vars': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
-      'react/no-unescaped-entities': 'error',
       'no-undef': 'error',
     },
   },
