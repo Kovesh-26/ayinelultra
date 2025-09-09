@@ -38,14 +38,13 @@ export class UsersService {
 
   async findByHandle(handle: string) {
     return this._prisma.user.findUnique({
-      where: { handle },
+      where: { username: handle },
       select: {
         id: true,
         username: true,
-        handle: true,
         displayName: true,
-        avatar: true,
         bio: true,
+        avatarUrl: true,
         role: true,
         createdAt: true,
         updatedAt: true,
