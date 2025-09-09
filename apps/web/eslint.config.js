@@ -49,8 +49,6 @@ export default [
     rules: {
       ...nextPlugin.configs.recommended.rules,
       'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'react/no-unescaped-entities': 'error',
       'no-undef': 'error',
     },
   },

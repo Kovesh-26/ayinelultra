@@ -1,15 +1,15 @@
 import React from 'react';
 
-interface StatCardProps {
+interface StatProps {
+  icon: React.ReactNode;
   label: string;
   value: string;
-  icon?: React.ReactNode;
 }
 
-export function StatCard({ label, value, icon }: StatCardProps) {
+export function Stat({ icon, label, value }: StatProps) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-      {icon && <div className="mb-2 text-lg">{icon}</div>}
+      <div className="mb-2 text-lg">{icon}</div>
       <div className="text-xs uppercase tracking-wide text-white/60">{label}</div>
       <div className="mt-1 text-2xl font-semibold text-white">{value}</div>
     </div>
