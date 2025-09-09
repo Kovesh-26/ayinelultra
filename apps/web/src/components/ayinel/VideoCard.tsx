@@ -12,22 +12,48 @@ interface VideoCardProps {
 export function VideoCard({ title, channel = "Creator", duration = "6:28", badge, live, onClick }: VideoCardProps) {
   return (
     <div 
-      className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors"
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 cursor-pointer transition-all duration-300 hover:border-indigo-500/30 hover:bg-white/10 hover:shadow-2xl hover:shadow-indigo-500/20 hover:scale-[1.02]"
       onClick={onClick}
     >
-      <div className="relative h-40 w-full bg-gradient-to-br from-indigo-600/40 to-fuchsia-600/30">
+      {/* Enhanced thumbnail with better gradient and overlay effects */}
+      <div className="relative h-40 w-full overflow-hidden bg-gradient-to-br from-indigo-600/50 via-purple-600/40 to-fuchsia-600/50">
+        {/* Animated background pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] transition-transform duration-1000 group-hover:translate-x-[100%]" />
+        
+        {/* Live badge with pulse animation */}
         {live && (
-          <span className="absolute left-2 top-2 rounded bg-red-600 px-2 py-0.5 text-xs font-semibold text-white">LIVE</span>
+          <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+            <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
+            LIVE
+          </span>
         )}
+        
+        {/* Enhanced badge */}
         {badge && (
-          <span className="absolute right-2 top-2 rounded bg-indigo-600/80 px-2 py-0.5 text-xs font-semibold text-white">{badge}</span>
+          <span className="absolute right-3 top-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-1 text-xs font-semibold text-white shadow-lg backdrop-blur-sm">{badge}</span>
         )}
-        <span className="absolute bottom-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-xs text-white">{duration}</span>
+        
+        {/* Duration with better styling */}
+        <span className="absolute bottom-3 right-3 rounded-lg bg-black/80 px-2 py-1 text-xs font-medium text-white shadow-lg backdrop-blur-sm">{duration}</span>
+        
+        {/* Play button overlay on hover */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+            <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+        </div>
       </div>
-      <div className="space-y-1 p-3">
-        <h3 className="line-clamp-1 font-medium text-white">{title}</h3>
-        <p className="text-xs text-white/60">{channel}</p>
+      
+      {/* Enhanced content area */}
+      <div className="space-y-2 p-4">
+        <h3 className="line-clamp-2 font-semibold text-white transition-colors duration-300 group-hover:text-indigo-300">{title}</h3>
+        <p className="text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90">{channel}</p>
       </div>
+      
+      {/* Subtle glow effect on hover */}
+      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-fuchsia-600/20 opacity-0 blur transition-opacity duration-300 group-hover:opacity-100" />
     </div>
   );
 }
