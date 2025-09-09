@@ -30,7 +30,7 @@ export default function WatchPageClient({ id }: { id: string }) {
   ]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   // Mock video data
   const video = {

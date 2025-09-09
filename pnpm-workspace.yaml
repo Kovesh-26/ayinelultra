@@ -5,3 +5,14 @@ packages:
 
 ignoredBuiltDependencies:
   - '@prisma/client'
+
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@prisma/engines'
+  - '@swc/core'
+  - aws-sdk
+  - ffmpeg-static
+  - msgpackr-extract
+  - prisma
+  - sharp
+  - unrs-resolver
