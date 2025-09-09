@@ -1,16 +1,22 @@
-import { IsEmail, IsString, IsOptional, IsBoolean, IsEnum } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsEnum,
+} from 'class-validator';
 
 export enum UserRole {
   USER = 'USER',
   CREATOR = 'CREATOR',
   ADMIN = 'ADMIN',
-  OWNER = 'OWNER'
+  OWNER = 'OWNER',
 }
 
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
   SUSPENDED = 'SUSPENDED',
-  BANNED = 'BANNED'
+  BANNED = 'BANNED',
 }
 
 export class CreateUserDto {

@@ -11,7 +11,8 @@ export class FriendsService {
     }
 
     // Ensure stable ordering to avoid duplicates
-    const [aId, bId] = userId < targetUserId ? [userId, targetUserId] : [targetUserId, userId];
+    const [aId, bId] =
+      userId < targetUserId ? [userId, targetUserId] : [targetUserId, userId];
 
     return this.prisma.friendship.upsert({
       where: { aId_bId: { aId, bId } },
@@ -40,7 +41,7 @@ export class FriendsService {
 
   async accept(aId: string, bId: string) {
     const [x, y] = aId < bId ? [aId, bId] : [bId, aId];
-    
+
     return this.prisma.friendship.update({
       where: { aId_bId: { aId: x, bId: y } },
       data: { status: 'ACCEPTED' },
@@ -116,7 +117,8 @@ export class FriendsService {
       throw new BadRequestException('Cannot block yourself');
     }
 
-    const [aId, bId] = userId < targetUserId ? [userId, targetUserId] : [targetUserId, userId];
+    const [aId, bId] =
+      userId < targetUserId ? [userId, targetUserId] : [targetUserId, userId];
 
     return this.prisma.friendship.upsert({
       where: { aId_bId: { aId, bId } },

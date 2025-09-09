@@ -1,11 +1,13 @@
 # 🎥 LIVE BROADCASTING IMPLEMENTATION TODO
 
 ## 🎯 Overview
+
 Implement live streaming capabilities with real-time chat, viewer stats, and stream management for the Ayinel platform.
 
 ## 🔧 Required Endpoints
 
 ### 1. Stream Management
+
 ```typescript
 POST /api/v1/live/start
 {
@@ -25,6 +27,7 @@ Response:
 ```
 
 ### 2. Stream Status
+
 ```typescript
 GET /api/v1/live/status/:streamId
 {
@@ -38,6 +41,7 @@ GET /api/v1/live/status/:streamId
 ```
 
 ### 3. Viewer Analytics
+
 ```typescript
 GET /api/v1/live/analytics/:streamId
 {
@@ -106,6 +110,7 @@ enum StreamStatus {
 ## 🚀 Implementation Steps
 
 1. **Install Dependencies**
+
    ```bash
    pnpm add @cloudflare/stream-client socket.io-client
    ```
@@ -150,6 +155,7 @@ enum StreamStatus {
 ## 🎯 Player API Integration
 
 ### Cloudflare Stream
+
 ```typescript
 // Frontend integration
 import { Player } from '@cloudflare/stream-react';
@@ -163,6 +169,7 @@ import { Player } from '@cloudflare/stream-react';
 ```
 
 ### Mux
+
 ```typescript
 // Frontend integration
 import { Player } from '@mux/mux-player-react';
@@ -188,7 +195,7 @@ socket.on('message', (message) => {
 
 socket.emit('send-message', {
   streamId: 'stream-123',
-  message: 'Hello everyone!'
+  message: 'Hello everyone!',
 });
 ```
 

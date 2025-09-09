@@ -1,4 +1,11 @@
-import { IsString, IsOptional, IsBoolean, IsObject, IsArray, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsObject,
+  IsArray,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateVideoProjectDto {
   @IsString()

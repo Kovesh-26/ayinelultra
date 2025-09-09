@@ -54,11 +54,13 @@ export class MarketplaceService {
           tags: dto.tags,
           category: dto.category,
           sellerId: userId,
-          status: 'PENDING_REVIEW'
-        }
+          status: 'PENDING_REVIEW',
+        },
       });
 
-      this.logger.log(`Customization created: ${customization.name} by user: ${userId}`);
+      this.logger.log(
+        `Customization created: ${customization.name} by user: ${userId}`
+      );
       return customization;
     } catch (error) {
       this.logger.error(`Failed to create customization: ${error.message}`);
@@ -77,21 +79,22 @@ export class MarketplaceService {
   ) {
     try {
       const skip = (page - 1) * limit;
-      
+
       const where: any = {
-        status: 'APPROVED'
+        status: 'APPROVED',
       };
 
       if (category) where.category = category;
       if (type) where.type = type;
       if (minPrice !== undefined) where.price = { gte: minPrice };
-      if (maxPrice !== undefined) where.price = { ...where.price, lte: maxPrice };
-      
+      if (maxPrice !== undefined)
+        where.price = { ...where.price, lte: maxPrice };
+
       if (search) {
         where.OR = [
           { name: { contains: search, mode: 'insensitive' } },
           { description: { contains: search, mode: 'insensitive' } },
-          { tags: { hasSome: [search] } }
+          { tags: { hasSome: [search] } },
         ];
       }
 
@@ -106,13 +109,13 @@ export class MarketplaceService {
                 id: true,
                 name: true,
                 handle: true,
-                rating: true
-              }
-            }
+                rating: true,
+              },
+            },
           },
-          orderBy: { createdAt: 'desc' }
+          orderBy: { createdAt: 'desc' },
         }),
-        this.prisma.profileCustomization.count({ where })
+        this.prisma.profileCustomization.count({ where }),
       ]);
 
       return {
@@ -121,8 +124,8 @@ export class MarketplaceService {
           page,
           limit,
           total,
-          pages: Math.ceil(total / limit)
-        }
+          pages: Math.ceil(total / limit),
+        },
       };
     } catch (error) {
       this.logger.error(`Failed to get customizations: ${error.message}`);
@@ -141,8 +144,8 @@ export class MarketplaceService {
               name: true,
               handle: true,
               rating: true,
-              bio: true
-            }
+              bio: true,
+            },
           },
           reviews: {
             include: {
@@ -150,14 +153,14 @@ export class MarketplaceService {
                 select: {
                   id: true,
                   name: true,
-                  handle: true
-                }
-              }
+                  handle: true,
+                },
+              },
             },
             orderBy: { createdAt: 'desc' },
-            take: 10
-          }
-        }
+            take: 10,
+          },
+        },
       });
 
       if (!customization) {
@@ -174,12 +177,13 @@ export class MarketplaceService {
   async purchaseCustomization(userId: string, customizationId: string) {
     try {
       // Check if user already owns this customization
-      const existingPurchase = await this.prisma.customizationPurchase.findFirst({
-        where: {
-          userId,
-          customizationId
-        }
-      });
+      const existingPurchase =
+        await this.prisma.customizationPurchase.findFirst({
+          where: {
+            userId,
+            customizationId,
+          },
+        });
 
       if (existingPurchase) {
         throw new Error('User already owns this customization');
@@ -187,7 +191,7 @@ export class MarketplaceService {
 
       const customization = await this.prisma.profileCustomization.findUnique({
         where: { id: customizationId },
-        include: { seller: true }
+        include: { seller: true },
       });
 
       if (!customization) {
@@ -201,27 +205,29 @@ export class MarketplaceService {
           userId,
           customizationId,
           price: customization.price,
-          status: 'COMPLETED'
-        }
+          status: 'COMPLETED',
+        },
       });
 
       // Update seller's earnings
       await this.prisma.user.update({
         where: { id: customization.sellerId },
         data: {
-          totalEarnings: { increment: customization.price * 0.8 } // 80% to seller, 20% platform fee
-        }
+          totalEarnings: { increment: customization.price * 0.8 }, // 80% to seller, 20% platform fee
+        },
       });
 
       // Update customization sales count
       await this.prisma.profileCustomization.update({
         where: { id: customizationId },
         data: {
-          sales: { increment: 1 }
-        }
+          sales: { increment: 1 },
+        },
       });
 
-      this.logger.log(`Customization purchased: ${customizationId} by user: ${userId}`);
+      this.logger.log(
+        `Customization purchased: ${customizationId} by user: ${userId}`
+      );
       return purchase;
     } catch (error) {
       this.logger.error(`Failed to purchase customization: ${error.message}`);
@@ -240,11 +246,11 @@ export class MarketplaceService {
               name: true,
               type: true,
               previewUrl: true,
-              category: true
-            }
-          }
+              category: true,
+            },
+          },
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       return purchases;
@@ -258,7 +264,7 @@ export class MarketplaceService {
     try {
       const sales = await this.prisma.customizationPurchase.findMany({
         where: {
-          customization: { sellerId: userId }
+          customization: { sellerId: userId },
         },
         include: {
           customization: {
@@ -266,18 +272,18 @@ export class MarketplaceService {
               id: true,
               name: true,
               type: true,
-              price: true
-            }
+              price: true,
+            },
           },
           user: {
             select: {
               id: true,
               name: true,
-              handle: true
-            }
-          }
+              handle: true,
+            },
+          },
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       return sales;
@@ -295,14 +301,15 @@ export class MarketplaceService {
           { name: { contains: query, mode: 'insensitive' } },
           { description: { contains: query, mode: 'insensitive' } },
           { tags: { hasSome: [query] } },
-          { category: { contains: query, mode: 'insensitive' } }
-        ]
+          { category: { contains: query, mode: 'insensitive' } },
+        ],
       };
 
       if (filters?.type) where.type = filters.type;
       if (filters?.category) where.category = filters.category;
       if (filters?.minPrice) where.price = { gte: filters.minPrice };
-      if (filters?.maxPrice) where.price = { ...where.price, lte: filters.maxPrice };
+      if (filters?.maxPrice)
+        where.price = { ...where.price, lte: filters.maxPrice };
 
       const customizations = await this.prisma.profileCustomization.findMany({
         where,
@@ -312,12 +319,12 @@ export class MarketplaceService {
               id: true,
               name: true,
               handle: true,
-              rating: true
-            }
-          }
+              rating: true,
+            },
+          },
         },
         orderBy: { sales: 'desc' },
-        take: 20
+        take: 20,
       });
 
       return customizations;
@@ -332,16 +339,16 @@ export class MarketplaceService {
       const categories = await this.prisma.profileCustomization.groupBy({
         by: ['category'],
         _count: {
-          category: true
+          category: true,
         },
         where: {
-          status: 'APPROVED'
-        }
+          status: 'APPROVED',
+        },
       });
 
-      return categories.map(cat => ({
+      return categories.map((cat) => ({
         name: cat.category,
-        count: cat._count.category
+        count: cat._count.category,
       }));
     } catch (error) {
       this.logger.error(`Failed to get categories: ${error.message}`);
@@ -355,9 +362,9 @@ export class MarketplaceService {
         where: {
           profileCustomizations: {
             some: {
-              status: 'APPROVED'
-            }
-          }
+              status: 'APPROVED',
+            },
+          },
         },
         select: {
           id: true,
@@ -368,13 +375,13 @@ export class MarketplaceService {
           _count: {
             select: {
               profileCustomizations: {
-                where: { status: 'APPROVED' }
-              }
-            }
-          }
+                where: { status: 'APPROVED' },
+              },
+            },
+          },
         },
         orderBy: { totalEarnings: 'desc' },
-        take: 10
+        take: 10,
       });
 
       return topSellers;

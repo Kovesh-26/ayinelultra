@@ -1,12 +1,24 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateConversationDto, SendMessageDto, ConversationResponseDto, MessageResponseDto } from '@ayinel/types';
+import {
+  CreateConversationDto,
+  SendMessageDto,
+  ConversationResponseDto,
+  MessageResponseDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class ChatService {
   constructor(private prisma: PrismaService) {}
 
-  async createConversation(createdById: string, dto: CreateConversationDto): Promise<ConversationResponseDto> {
+  async createConversation(
+    createdById: string,
+    dto: CreateConversationDto
+  ): Promise<ConversationResponseDto> {
     // Validate that all members exist
     const members = await this.prisma.user.findMany({
       where: { id: { in: dto.memberIds } },
@@ -22,7 +34,7 @@ export class ChatService {
         title: dto.title,
         createdById,
         members: {
-          create: dto.memberIds.map(memberId => ({
+          create: dto.memberIds.map((memberId) => ({
             userId: memberId,
           })),
         },
@@ -62,10 +74,15 @@ export class ChatService {
       orderBy: { updatedAt: 'desc' },
     });
 
-    return conversations.map(conversation => this.mapToConversationResponse(conversation));
+    return conversations.map((conversation) =>
+      this.mapToConversationResponse(conversation)
+    );
   }
 
-  async getConversation(id: string, userId: string): Promise<ConversationResponseDto> {
+  async getConversation(
+    id: string,
+    userId: string
+  ): Promise<ConversationResponseDto> {
     const conversation = await this.prisma.conversation.findFirst({
       where: {
         id,
@@ -94,7 +111,11 @@ export class ChatService {
     return this.mapToConversationResponse(conversation);
   }
 
-  async sendMessage(conversationId: string, senderId: string, dto: SendMessageDto): Promise<MessageResponseDto> {
+  async sendMessage(
+    conversationId: string,
+    senderId: string,
+    dto: SendMessageDto
+  ): Promise<MessageResponseDto> {
     // Check if user is member of conversation
     const membership = await this.prisma.conversationMember.findUnique({
       where: {
@@ -106,7 +127,9 @@ export class ChatService {
     });
 
     if (!membership) {
-      throw new BadRequestException('You are not a member of this conversation');
+      throw new BadRequestException(
+        'You are not a member of this conversation'
+      );
     }
 
     const message = await this.prisma.message.create({
@@ -127,7 +150,12 @@ export class ChatService {
     return this.mapToMessageResponse(message);
   }
 
-  async getMessages(conversationId: string, userId: string, limit: number = 50, offset: number = 0): Promise<MessageResponseDto[]> {
+  async getMessages(
+    conversationId: string,
+    userId: string,
+    limit: number = 50,
+    offset: number = 0
+  ): Promise<MessageResponseDto[]> {
     // Check if user is member of conversation
     const membership = await this.prisma.conversationMember.findUnique({
       where: {
@@ -139,7 +167,9 @@ export class ChatService {
     });
 
     if (!membership) {
-      throw new BadRequestException('You are not a member of this conversation');
+      throw new BadRequestException(
+        'You are not a member of this conversation'
+      );
     }
 
     const messages = await this.prisma.message.findMany({
@@ -149,10 +179,16 @@ export class ChatService {
       skip: offset,
     });
 
-    return messages.reverse().map(message => this.mapToMessageResponse(message));
+    return messages
+      .reverse()
+      .map((message) => this.mapToMessageResponse(message));
   }
 
-  async addMemberToConversation(conversationId: string, userId: string, newMemberId: string): Promise<void> {
+  async addMemberToConversation(
+    conversationId: string,
+    userId: string,
+    newMemberId: string
+  ): Promise<void> {
     // Check if user is member of conversation
     const membership = await this.prisma.conversationMember.findUnique({
       where: {
@@ -164,7 +200,9 @@ export class ChatService {
     });
 
     if (!membership) {
-      throw new BadRequestException('You are not a member of this conversation');
+      throw new BadRequestException(
+        'You are not a member of this conversation'
+      );
     }
 
     // Check if new member already exists
@@ -178,7 +216,9 @@ export class ChatService {
     });
 
     if (existingMembership) {
-      throw new BadRequestException('User is already a member of this conversation');
+      throw new BadRequestException(
+        'User is already a member of this conversation'
+      );
     }
 
     await this.prisma.conversationMember.create({
@@ -189,7 +229,11 @@ export class ChatService {
     });
   }
 
-  async removeMemberFromConversation(conversationId: string, userId: string, memberId: string): Promise<void> {
+  async removeMemberFromConversation(
+    conversationId: string,
+    userId: string,
+    memberId: string
+  ): Promise<void> {
     // Check if user is member of conversation
     const membership = await this.prisma.conversationMember.findUnique({
       where: {
@@ -201,7 +245,9 @@ export class ChatService {
     });
 
     if (!membership) {
-      throw new BadRequestException('You are not a member of this conversation');
+      throw new BadRequestException(
+        'You are not a member of this conversation'
+      );
     }
 
     await this.prisma.conversationMember.delete({
@@ -214,14 +260,18 @@ export class ChatService {
     });
   }
 
-  private mapToConversationResponse(conversation: any): ConversationResponseDto {
+  private mapToConversationResponse(
+    conversation: any
+  ): ConversationResponseDto {
     return {
       id: conversation.id,
       type: conversation.type,
       title: conversation.title,
       createdById: conversation.createdById,
-      members: conversation.members.map(member => member.userId),
-      lastMessage: conversation.messages?.[0] ? this.mapToMessageResponse(conversation.messages[0]) : undefined,
+      members: conversation.members.map((member) => member.userId),
+      lastMessage: conversation.messages?.[0]
+        ? this.mapToMessageResponse(conversation.messages[0])
+        : undefined,
       createdAt: conversation.createdAt,
       updatedAt: conversation.updatedAt,
     };

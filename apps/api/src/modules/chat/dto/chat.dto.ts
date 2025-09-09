@@ -3,7 +3,7 @@ import { IsString, IsOptional, IsEnum, IsArray } from 'class-validator';
 export enum ChatRoomKind {
   DM = 'dm',
   FAN = 'fan',
-  BROADCAST = 'broadcast'
+  BROADCAST = 'broadcast',
 }
 
 export class CreateChatRoomDto {

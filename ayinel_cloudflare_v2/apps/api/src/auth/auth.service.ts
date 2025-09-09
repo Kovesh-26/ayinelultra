@@ -1,8 +1,17 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailService } from '../notifications/email.service';
-import { MagicLinkDto, GoogleAuthDto, VerifyTokenDto, RefreshTokenDto } from '@ayinel/types';
+import {
+  MagicLinkDto,
+  GoogleAuthDto,
+  VerifyTokenDto,
+  RefreshTokenDto,
+} from '@ayinel/types';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcryptjs';
 
@@ -11,7 +20,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private emailService: EmailService,
+    private emailService: EmailService
   ) {}
 
   async sendMagicLink(dto: MagicLinkDto) {

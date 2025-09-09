@@ -1,5 +1,5 @@
-"use client";
-import { useState, useEffect } from "react";
+'use client';
+import { useState, useEffect } from 'react';
 
 interface SystemStats {
   totalUsers: number;
@@ -44,8 +44,8 @@ export default function AdminDashboard() {
       systemHealth: {
         database: 'healthy',
         redis: 'healthy',
-        externalServices: 'healthy'
-      }
+        externalServices: 'healthy',
+      },
     });
 
     setUsers([
@@ -57,8 +57,8 @@ export default function AdminDashboard() {
         createdAt: '2024-01-15',
         lastLoginAt: '2024-01-20',
         isActive: true,
-        role: 'user'
-      }
+        role: 'user',
+      },
     ]);
 
     setLoading(false);
@@ -78,25 +78,29 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         <div className="flex gap-2">
           <button className="rounded-xl border px-3 py-2">System Config</button>
-          <button className="rounded-xl border px-3 py-2">Maintenance Mode</button>
+          <button className="rounded-xl border px-3 py-2">
+            Maintenance Mode
+          </button>
         </div>
       </header>
 
       {/* Navigation Tabs */}
       <nav className="flex gap-2 border-b">
-        {['overview', 'users', 'content', 'analytics', 'developer'].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-t-lg capitalize ${
-              activeTab === tab
-                ? 'bg-blue-500 text-white'
-                : 'hover:bg-gray-100'
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+        {['overview', 'users', 'content', 'analytics', 'developer'].map(
+          (tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-t-lg capitalize ${
+                activeTab === tab
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-100'
+              }`}
+            >
+              {tab}
+            </button>
+          )
+        )}
       </nav>
 
       {/* Overview Tab */}
@@ -106,19 +110,27 @@ export default function AdminDashboard() {
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-2xl border p-4">
               <div className="text-sm opacity-70">Total Users</div>
-              <div className="mt-1 text-2xl font-semibold">{stats?.totalUsers.toLocaleString()}</div>
+              <div className="mt-1 text-2xl font-semibold">
+                {stats?.totalUsers.toLocaleString()}
+              </div>
             </div>
             <div className="rounded-2xl border p-4">
               <div className="text-sm opacity-70">Total Videos</div>
-              <div className="mt-1 text-2xl font-semibold">{stats?.totalVideos.toLocaleString()}</div>
+              <div className="mt-1 text-2xl font-semibold">
+                {stats?.totalVideos.toLocaleString()}
+              </div>
             </div>
             <div className="rounded-2xl border p-4">
               <div className="text-sm opacity-70">Total Music</div>
-              <div className="mt-1 text-2xl font-semibold">{stats?.totalMusic.toLocaleString()}</div>
+              <div className="mt-1 text-2xl font-semibold">
+                {stats?.totalMusic.toLocaleString()}
+              </div>
             </div>
             <div className="rounded-2xl border p-4">
               <div className="text-sm opacity-70">Total Revenue</div>
-              <div className="mt-1 text-2xl font-semibold">${stats?.totalRevenue.toLocaleString()}</div>
+              <div className="mt-1 text-2xl font-semibold">
+                ${stats?.totalRevenue.toLocaleString()}
+              </div>
             </div>
           </section>
 
@@ -126,15 +138,18 @@ export default function AdminDashboard() {
           <section className="rounded-2xl border p-4">
             <h2 className="text-xl font-semibold mb-4">System Health</h2>
             <div className="grid gap-4 sm:grid-cols-3">
-              {stats && Object.entries(stats.systemHealth).map(([service, status]) => (
-                <div key={service} className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${
-                    status === 'healthy' ? 'bg-green-500' : 'bg-red-500'
-                  }`} />
-                  <span className="capitalize">{service}</span>
-                  <span className="text-sm opacity-70">({status})</span>
-                </div>
-              ))}
+              {stats &&
+                Object.entries(stats.systemHealth).map(([service, status]) => (
+                  <div key={service} className="flex items-center gap-2">
+                    <div
+                      className={`w-3 h-3 rounded-full ${
+                        status === 'healthy' ? 'bg-green-500' : 'bg-red-500'
+                      }`}
+                    />
+                    <span className="capitalize">{service}</span>
+                    <span className="text-sm opacity-70">({status})</span>
+                  </div>
+                ))}
             </div>
           </section>
 
@@ -163,7 +178,10 @@ export default function AdminDashboard() {
       {activeTab === 'users' && (
         <div className="space-y-4">
           <div className="flex gap-2">
-            <input className="flex-1 rounded-xl border px-3 py-2" placeholder="Search users..." />
+            <input
+              className="flex-1 rounded-xl border px-3 py-2"
+              placeholder="Search users..."
+            />
             <select className="rounded-xl border px-3 py-2">
               <option>All Roles</option>
               <option>Admin</option>
@@ -198,11 +216,13 @@ export default function AdminDashboard() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        user.isActive 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${
+                          user.isActive
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
                         {user.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>
@@ -211,8 +231,12 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
-                        <button className="text-sm text-blue-600 hover:underline">Edit</button>
-                        <button className="text-sm text-red-600 hover:underline">Suspend</button>
+                        <button className="text-sm text-blue-600 hover:underline">
+                          Edit
+                        </button>
+                        <button className="text-sm text-red-600 hover:underline">
+                          Suspend
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -231,7 +255,9 @@ export default function AdminDashboard() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl border p-4">
                 <h3 className="font-medium mb-2">Database Schema</h3>
-                <p className="text-sm opacity-70 mb-3">View and modify database schema</p>
+                <p className="text-sm opacity-70 mb-3">
+                  View and modify database schema
+                </p>
                 <button className="rounded-lg bg-blue-500 text-white px-3 py-2 text-sm">
                   View Schema
                 </button>
@@ -245,14 +271,18 @@ export default function AdminDashboard() {
               </div>
               <div className="rounded-xl border p-4">
                 <h3 className="font-medium mb-2">Performance Monitoring</h3>
-                <p className="text-sm opacity-70 mb-3">Monitor system performance</p>
+                <p className="text-sm opacity-70 mb-3">
+                  Monitor system performance
+                </p>
                 <button className="rounded-lg bg-blue-500 text-white px-3 py-2 text-sm">
                   View Metrics
                 </button>
               </div>
               <div className="rounded-xl border p-4">
                 <h3 className="font-medium mb-2">Error Logs</h3>
-                <p className="text-sm opacity-70 mb-3">View detailed error logs</p>
+                <p className="text-sm opacity-70 mb-3">
+                  View detailed error logs
+                </p>
                 <button className="rounded-lg bg-blue-500 text-white px-3 py-2 text-sm">
                   View Logs
                 </button>
@@ -273,7 +303,11 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <span>User Registration</span>
                 <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" className="sr-only peer" defaultChecked />
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    defaultChecked
+                  />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>

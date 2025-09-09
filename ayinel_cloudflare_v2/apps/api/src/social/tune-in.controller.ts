@@ -1,5 +1,19 @@
-import { Controller, Post, Delete, Get, Body, Param, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { TuneInService } from './tune-in.service';
 import { TuneInDto, TuneInResponseDto } from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -14,7 +28,10 @@ export class TuneInController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Tune in to a user' })
   @ApiResponse({ status: 201, description: 'Successfully tuned in to user' })
-  async tuneInToUser(@Req() req, @Body() dto: TuneInDto): Promise<TuneInResponseDto> {
+  async tuneInToUser(
+    @Req() req,
+    @Body() dto: TuneInDto
+  ): Promise<TuneInResponseDto> {
     return this.tuneInService.tuneInToUser(req.user.id, dto);
   }
 
@@ -23,7 +40,10 @@ export class TuneInController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Untune from a user' })
   @ApiResponse({ status: 200, description: 'Successfully untuned from user' })
-  async untuneFromUser(@Req() req, @Param('userId') userId: string): Promise<void> {
+  async untuneFromUser(
+    @Req() req,
+    @Param('userId') userId: string
+  ): Promise<void> {
     return this.tuneInService.untuneFromUser(req.user.id, userId);
   }
 
@@ -31,7 +51,10 @@ export class TuneInController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get users you are tuned in to' })
-  @ApiResponse({ status: 200, description: 'List of users you are tuned in to' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users you are tuned in to',
+  })
   async getTuneInsByUser(@Req() req): Promise<TuneInResponseDto[]> {
     return this.tuneInService.getTuneInsByUser(req.user.id);
   }
@@ -50,7 +73,10 @@ export class TuneInController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Check if you are tuned in to a user' })
   @ApiResponse({ status: 200, description: 'Tune-in status' })
-  async isTunedIn(@Req() req, @Param('userId') userId: string): Promise<{ isTunedIn: boolean }> {
+  async isTunedIn(
+    @Req() req,
+    @Param('userId') userId: string
+  ): Promise<{ isTunedIn: boolean }> {
     const isTunedIn = await this.tuneInService.isTunedIn(req.user.id, userId);
     return { isTunedIn };
   }
@@ -60,7 +86,9 @@ export class TuneInController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get tune-in counts' })
   @ApiResponse({ status: 200, description: 'Tune-in counts' })
-  async getTuneInCount(@Req() req): Promise<{ following: number; crew: number }> {
+  async getTuneInCount(
+    @Req() req
+  ): Promise<{ following: number; crew: number }> {
     return this.tuneInService.getTuneInCount(req.user.id);
   }
 }

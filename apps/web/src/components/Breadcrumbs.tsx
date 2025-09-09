@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import { ChevronRightIcon } from 'lucide-react'
+import Link from 'next/link';
+import { ChevronRightIcon } from 'lucide-react';
 
 interface BreadcrumbItem {
-  label: string
-  href?: string
+  label: string;
+  href?: string;
 }
 
 interface BreadcrumbsProps {
-  items: BreadcrumbItem[]
+  items: BreadcrumbItem[];
 }
 
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
@@ -19,7 +19,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             <ChevronRightIcon className="h-4 w-4 mx-2 text-gray-400" />
           )}
           {item.href ? (
-            <Link 
+            <Link
               href={item.href}
               className="hover:text-foreground transition-colors"
             >
@@ -31,5 +31,5 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
         </div>
       ))}
     </nav>
-  )
+  );
 }

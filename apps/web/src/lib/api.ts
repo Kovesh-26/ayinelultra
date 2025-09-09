@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3001/api/v1';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3001/api/v1';
 
 // Create axios instance
 const api = axios.create({
@@ -36,7 +37,9 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('refreshToken');
         if (refreshToken) {
-          const response = await api.post('/auth/refresh', { token: refreshToken });
+          const response = await api.post('/auth/refresh', {
+            token: refreshToken,
+          });
           const { accessToken } = response.data;
 
           localStorage.setItem('accessToken', accessToken);
@@ -70,8 +73,7 @@ export const authAPI = {
     password: string;
   }) => api.post('/auth/register', data),
 
-  verifyToken: (token: string) =>
-    api.post('/auth/verify', { token }),
+  verifyToken: (token: string) => api.post('/auth/verify', { token }),
 
   getProfile: () => api.get('/auth/profile'),
 };
@@ -112,12 +114,15 @@ export const studiosAPI = {
 
   getUserStudios: () => api.get('/studios/my-studios'),
 
-  updateStudio: (id: string, data: {
-    name?: string;
-    description?: string;
-    category?: string;
-    isPublic?: boolean;
-  }) => api.put(`/studios/${id}`, data),
+  updateStudio: (
+    id: string,
+    data: {
+      name?: string;
+      description?: string;
+      category?: string;
+      isPublic?: boolean;
+    }
+  ) => api.put(`/studios/${id}`, data),
 
   deleteStudio: (id: string) => api.delete(`/studios/${id}`),
 
@@ -126,7 +131,8 @@ export const studiosAPI = {
 
   followStudio: (studioId: string) => api.post(`/studios/${studioId}/follow`),
 
-  unfollowStudio: (studioId: string) => api.delete(`/studios/${studioId}/follow`),
+  unfollowStudio: (studioId: string) =>
+    api.delete(`/studios/${studioId}/follow`),
 };
 
 // Videos API
@@ -151,13 +157,16 @@ export const videosAPI = {
 
   getUserVideos: () => api.get('/videos/my-videos'),
 
-  updateVideo: (id: string, data: {
-    title?: string;
-    description?: string;
-    tags?: string[];
-    category?: string;
-    visibility?: string;
-  }) => api.put(`/videos/${id}`, data),
+  updateVideo: (
+    id: string,
+    data: {
+      title?: string;
+      description?: string;
+      tags?: string[];
+      category?: string;
+      visibility?: string;
+    }
+  ) => api.put(`/videos/${id}`, data),
 
   deleteVideo: (id: string) => api.delete(`/videos/${id}`),
 

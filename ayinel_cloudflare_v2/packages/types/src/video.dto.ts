@@ -1,16 +1,22 @@
-import { IsString, IsOptional, IsEnum, IsArray, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsArray,
+  IsNumber,
+} from 'class-validator';
 
 export enum VideoStatus {
   DRAFT = 'DRAFT',
   PROCESSING = 'PROCESSING',
   READY = 'READY',
-  BLOCKED = 'BLOCKED'
+  BLOCKED = 'BLOCKED',
 }
 
 export enum VideoVisibility {
   PUBLIC = 'PUBLIC',
   CREW = 'CREW',
-  PRIVATE = 'PRIVATE'
+  PRIVATE = 'PRIVATE',
 }
 
 export class CreateVideoDto {

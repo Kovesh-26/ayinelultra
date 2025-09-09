@@ -1,4 +1,14 @@
-import { Controller, Post, Get, Put, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { LiveService, CreateStreamDto } from './live.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -31,14 +41,21 @@ export class LiveController {
   }
 
   @Get(':streamId/analytics')
-  async getStreamAnalytics(@Request() req, @Param('streamId') streamId: string) {
+  async getStreamAnalytics(
+    @Request() req,
+    @Param('streamId') streamId: string
+  ) {
     const userId = req.user.id;
     // TODO: Add authorization check
     return this.liveService.getStreamAnalytics(streamId);
   }
 
   @Post(':streamId/chat')
-  async sendChatMessage(@Request() req, @Param('streamId') streamId: string, @Body() message: { text: string }) {
+  async sendChatMessage(
+    @Request() req,
+    @Param('streamId') streamId: string,
+    @Body() message: { text: string }
+  ) {
     // TODO: Implement chat functionality
     return { success: true, message: 'Chat message sent' };
   }

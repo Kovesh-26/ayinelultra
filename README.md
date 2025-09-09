@@ -9,6 +9,7 @@ AYINEL is a comprehensive creator platform that combines the best features of Yo
 ## 🏗️ Architecture
 
 ### Monorepo Structure
+
 ```
 ayinel/
 ├── apps/
@@ -24,6 +25,7 @@ ayinel/
 ### Tech Stack
 
 #### Backend (NestJS)
+
 - **Framework**: NestJS with TypeScript
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: JWT + OAuth (Google/Apple)
@@ -35,6 +37,7 @@ ayinel/
 - **Email**: SendGrid/Mailgun
 
 #### Frontend (Next.js)
+
 - **Framework**: Next.js 14 with App Router
 - **Styling**: Tailwind CSS with custom design system
 - **State Management**: TanStack Query + Zustand
@@ -43,6 +46,7 @@ ayinel/
 - **Real-time**: Socket.IO client
 
 #### Mobile (React Native)
+
 - **Framework**: React Native with Expo
 - **State Management**: TanStack Query + Zustand
 - **Navigation**: React Navigation
@@ -51,12 +55,14 @@ ayinel/
 ## 🛠️ Setup Instructions
 
 ### Prerequisites
+
 - Node.js 18+ and pnpm
 - PostgreSQL 14+ with pgAdmin4
 - Redis (for queues and caching)
 - Git
 
 ### 1. Clone and Install
+
 ```bash
 git clone <repository-url>
 cd ayinel
@@ -66,6 +72,7 @@ pnpm install
 ### 2. Database Setup
 
 #### Using pgAdmin4:
+
 1. Open pgAdmin4
 2. Connect to your PostgreSQL server
 3. Open the Query Tool
@@ -75,11 +82,13 @@ pnpm install
    ```
 
 #### Using psql:
+
 ```bash
 psql -U postgres -f scripts/setup-database.sql
 ```
 
 ### 3. Environment Configuration
+
 ```bash
 # Copy the environment template
 cp env.local .env.local
@@ -89,6 +98,7 @@ cp env.local .env.local
 ```
 
 ### 4. Database Migration
+
 ```bash
 # Generate Prisma client
 pnpm db:generate
@@ -101,6 +111,7 @@ pnpm db:seed
 ```
 
 ### 5. Start Development
+
 ```bash
 # Start all services
 pnpm dev
@@ -114,6 +125,7 @@ pnpm dev:mobile # Mobile app
 ## 📁 Project Structure
 
 ### Backend API (`apps/api/`)
+
 ```
 src/
 ├── modules/           # Feature modules
@@ -133,6 +145,7 @@ src/
 ```
 
 ### Frontend (`apps/web/`)
+
 ```
 src/
 ├── app/              # Next.js App Router pages
@@ -146,6 +159,7 @@ src/
 ## 🎨 Brand Guidelines
 
 ### Terminology
+
 - **Channel** → **Studio**
 - **Subscribe** → **Join**
 - **Follow** → **Tune-In**
@@ -158,6 +172,7 @@ src/
 - **Recommendations** → **For You**
 
 ### Design System
+
 - **Primary Colors**: Purple gradient (#667eea to #764ba2)
 - **Theme**: Dark mode with glassmorphism
 - **Typography**: Inter font family
@@ -166,6 +181,7 @@ src/
 ## 🔧 Development
 
 ### Available Scripts
+
 ```bash
 # Development
 pnpm dev              # Start all services
@@ -191,12 +207,14 @@ pnpm setup            # Complete setup
 ```
 
 ### Code Style
+
 - **TypeScript**: Strict mode enabled
 - **ESLint**: Airbnb configuration
 - **Prettier**: Code formatting
 - **Husky**: Git hooks for quality
 
 ### Testing
+
 ```bash
 # Run tests
 pnpm test
@@ -211,12 +229,14 @@ pnpm test:e2e
 ## 🌐 API Documentation
 
 Once the API is running, visit:
+
 - **Swagger UI**: http://localhost:3001/api/docs
 - **API Base URL**: http://localhost:3001/api/v1
 
 ## 📱 Features
 
 ### Core Features
+
 - ✅ User authentication and profiles
 - ✅ Studio creation and management
 - ✅ Video upload and streaming
@@ -232,6 +252,7 @@ Once the API is running, visit:
 - ✅ Advanced analytics
 
 ### Advanced Features
+
 - 🔄 MySpace-style profile customization
 - 🔄 AI-powered content moderation
 - 🔄 Semantic search capabilities
@@ -256,6 +277,7 @@ Once the API is running, visit:
 ## 🚀 Deployment
 
 ### Production Setup
+
 1. Set up production environment variables
 2. Configure database connections
 3. Set up Redis for production
@@ -266,6 +288,7 @@ Once the API is running, visit:
 8. Configure load balancing
 
 ### Docker Support
+
 ```bash
 # Build and run with Docker
 docker-compose up -d
@@ -289,6 +312,7 @@ This project is proprietary software. All rights reserved.
 ## 🆘 Support
 
 For support and questions:
+
 - **Documentation**: [docs.ayinel.com](https://docs.ayinel.com)
 - **Community**: [community.ayinel.com](https://community.ayinel.com)
 - **Email**: support@ayinel.com

@@ -5,14 +5,26 @@ export interface CreatePaymentIntentDto {
   amount: number;
   currency: string;
   description: string;
-  paymentMethod: 'stripe' | 'paypal' | 'cashapp' | 'googlepay' | 'applepay' | 'venmo';
+  paymentMethod:
+    | 'stripe'
+    | 'paypal'
+    | 'cashapp'
+    | 'googlepay'
+    | 'applepay'
+    | 'venmo';
   metadata?: Record<string, any>;
 }
 
 export interface CreateSubscriptionDto {
   priceId: string;
   customerId: string;
-  paymentMethod: 'stripe' | 'paypal' | 'cashapp' | 'googlepay' | 'applepay' | 'venmo';
+  paymentMethod:
+    | 'stripe'
+    | 'paypal'
+    | 'cashapp'
+    | 'googlepay'
+    | 'applepay'
+    | 'venmo';
   metadata?: Record<string, any>;
 }
 
@@ -56,7 +68,7 @@ export class BillingService {
   async createPaymentIntent(dto: CreatePaymentIntentDto) {
     try {
       let paymentIntent;
-      
+
       switch (dto.paymentMethod) {
         case 'stripe':
           // TODO: Integrate with Stripe
@@ -72,7 +84,7 @@ export class BillingService {
             currency: dto.currency,
             status: 'requires_payment_method',
             client_secret: `pi_stripe_${Date.now()}_secret_${Math.random().toString(36).substr(2, 16)}`,
-            paymentMethod: 'stripe'
+            paymentMethod: 'stripe',
           };
           break;
 
@@ -90,7 +102,7 @@ export class BillingService {
             currency: dto.currency,
             status: 'requires_payment_method',
             paypalOrderId: `paypal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            paymentMethod: 'paypal'
+            paymentMethod: 'paypal',
           };
           break;
 
@@ -107,7 +119,7 @@ export class BillingService {
             currency: dto.currency,
             status: 'requires_payment_method',
             cashappPaymentId: `cashapp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            paymentMethod: 'cashapp'
+            paymentMethod: 'cashapp',
           };
           break;
 
@@ -124,7 +136,7 @@ export class BillingService {
             currency: dto.currency,
             status: 'requires_payment_method',
             googlePayToken: `googlepay_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            paymentMethod: 'googlepay'
+            paymentMethod: 'googlepay',
           };
           break;
 
@@ -141,7 +153,7 @@ export class BillingService {
             currency: dto.currency,
             status: 'requires_payment_method',
             applePayToken: `applepay_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            paymentMethod: 'applepay'
+            paymentMethod: 'applepay',
           };
           break;
 
@@ -158,7 +170,7 @@ export class BillingService {
             currency: dto.currency,
             status: 'requires_payment_method',
             venmoPaymentId: `venmo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            paymentMethod: 'venmo'
+            paymentMethod: 'venmo',
           };
           break;
 
@@ -166,10 +178,14 @@ export class BillingService {
           throw new Error(`Unsupported payment method: ${dto.paymentMethod}`);
       }
 
-      this.logger.log(`Payment intent created via ${dto.paymentMethod}: ${paymentIntent.id}`);
+      this.logger.log(
+        `Payment intent created via ${dto.paymentMethod}: ${paymentIntent.id}`
+      );
       return paymentIntent;
     } catch (error) {
-      this.logger.error(`Failed to create payment intent via ${dto.paymentMethod}: ${error.message}`);
+      this.logger.error(
+        `Failed to create payment intent via ${dto.paymentMethod}: ${error.message}`
+      );
       throw error;
     }
   }
@@ -189,7 +205,7 @@ export class BillingService {
         status: 'active',
         current_period_start: new Date(),
         current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        customer: dto.customerId
+        customer: dto.customerId,
       };
 
       this.logger.log(`Subscription created: ${subscription.id}`);
@@ -204,12 +220,12 @@ export class BillingService {
     try {
       // TODO: Integrate with Stripe
       // const balance = await stripe.customers.retrieve(customerId);
-      
+
       // Placeholder implementation
       const balance = {
         available: 1000, // $10.00
-        pending: 500,    // $5.00
-        instant_available: 1000
+        pending: 500, // $5.00
+        instant_available: 1000,
       };
 
       return balance;
@@ -234,7 +250,7 @@ export class BillingService {
         amount: amount,
         currency: 'usd',
         status: 'pending',
-        arrival_date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days
+        arrival_date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days
       };
 
       this.logger.log(`Payout processed: ${payout.id} for user: ${userId}`);
@@ -249,18 +265,18 @@ export class BillingService {
     try {
       // TODO: Implement revenue analytics from database
       const startDate = this.getStartDate(timeRange);
-      
+
       // Placeholder implementation
       const analytics = {
         totalRevenue: 15000, // $150.00
-        thisPeriod: 5000,   // $50.00
+        thisPeriod: 5000, // $50.00
         previousPeriod: 4500, // $45.00
-        growth: 11.1,        // 11.1%
+        growth: 11.1, // 11.1%
         sources: [
           { name: 'Subscriptions', amount: 3000, percentage: 60 },
           { name: 'Tips', amount: 1500, percentage: 30 },
-          { name: 'Ads', amount: 500, percentage: 10 }
-        ]
+          { name: 'Ads', amount: 500, percentage: 10 },
+        ],
       };
 
       return analytics;
@@ -270,7 +286,11 @@ export class BillingService {
     }
   }
 
-  async processPaymentConfirmation(paymentId: string, paymentMethod: string, gatewayData: any) {
+  async processPaymentConfirmation(
+    paymentId: string,
+    paymentMethod: string,
+    gatewayData: any
+  ) {
     try {
       let paymentStatus = 'pending';
       let transactionId = '';
@@ -344,10 +364,14 @@ export class BillingService {
       //   }
       // });
 
-      this.logger.log(`Payment ${paymentId} processed via ${paymentMethod}: ${paymentStatus}`);
+      this.logger.log(
+        `Payment ${paymentId} processed via ${paymentMethod}: ${paymentStatus}`
+      );
       return { status: paymentStatus, transactionId };
     } catch (error) {
-      this.logger.error(`Failed to process payment confirmation: ${error.message}`);
+      this.logger.error(
+        `Failed to process payment confirmation: ${error.message}`
+      );
       throw error;
     }
   }
@@ -359,73 +383,78 @@ export class BillingService {
         name: 'Credit/Debit Cards',
         description: 'Visa, Mastercard, American Express, Discover',
         icon: '💳',
-        supported: true
+        supported: true,
       },
       {
         id: 'paypal',
         name: 'PayPal',
         description: 'PayPal account or credit card',
         icon: '🔵',
-        supported: true
+        supported: true,
       },
       {
         id: 'cashapp',
         name: 'Cash App',
         description: 'Send money instantly',
         icon: '💚',
-        supported: true
+        supported: true,
       },
       {
         id: 'googlepay',
         name: 'Google Pay',
         description: 'Fast, secure checkout',
         icon: '🔴',
-        supported: true
+        supported: true,
       },
       {
         id: 'applepay',
         name: 'Apple Pay',
         description: 'Simple and secure',
         icon: '🍎',
-        supported: true
+        supported: true,
       },
       {
         id: 'venmo',
         name: 'Venmo',
         description: 'Split payments with friends',
         icon: '💙',
-        supported: true
-      }
+        supported: true,
+      },
     ];
   }
 
   async getPaymentMethodConfig(paymentMethod: string) {
     const configs = {
       stripe: {
-        publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder',
-        clientSecret: process.env.STRIPE_CLIENT_SECRET || 'sk_test_placeholder'
+        publishableKey:
+          process.env.STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder',
+        clientSecret: process.env.STRIPE_CLIENT_SECRET || 'sk_test_placeholder',
       },
       paypal: {
-        clientId: process.env.PAYPAL_CLIENT_ID || 'paypal_client_id_placeholder',
-        environment: process.env.PAYPAL_ENVIRONMENT || 'sandbox'
+        clientId:
+          process.env.PAYPAL_CLIENT_ID || 'paypal_client_id_placeholder',
+        environment: process.env.PAYPAL_ENVIRONMENT || 'sandbox',
       },
       cashapp: {
-        clientId: process.env.CASHAPP_CLIENT_ID || 'cashapp_client_id_placeholder',
-        environment: process.env.CASHAPP_ENVIRONMENT || 'sandbox'
+        clientId:
+          process.env.CASHAPP_CLIENT_ID || 'cashapp_client_id_placeholder',
+        environment: process.env.CASHAPP_ENVIRONMENT || 'sandbox',
       },
       googlepay: {
-        merchantId: process.env.GOOGLEPAY_MERCHANT_ID || 'merchant_id_placeholder',
+        merchantId:
+          process.env.GOOGLEPAY_MERCHANT_ID || 'merchant_id_placeholder',
         merchantName: 'Ayinel',
-        environment: process.env.GOOGLEPAY_ENVIRONMENT || 'test'
+        environment: process.env.GOOGLEPAY_ENVIRONMENT || 'test',
       },
       applepay: {
-        merchantId: process.env.APPLEPAY_MERCHANT_ID || 'merchant_id_placeholder',
-        environment: process.env.APPLEPAY_ENVIRONMENT || 'sandbox'
+        merchantId:
+          process.env.APPLEPAY_MERCHANT_ID || 'merchant_id_placeholder',
+        environment: process.env.APPLEPAY_ENVIRONMENT || 'sandbox',
       },
       venmo: {
         clientId: process.env.VENMO_CLIENT_ID || 'venmo_client_id_placeholder',
-        environment: process.env.VENMO_ENVIRONMENT || 'sandbox'
-      }
+        environment: process.env.VENMO_ENVIRONMENT || 'sandbox',
+      },
     };
 
     return configs[paymentMethod] || null;

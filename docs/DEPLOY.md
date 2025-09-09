@@ -90,6 +90,7 @@ CNAME   www                ayinel.com          300
 ```
 
 **Example with IP 192.168.1.100:**
+
 ```
 Type    Name               Value               TTL
 A       @                  192.168.1.100      300
@@ -135,6 +136,7 @@ sudo bash ayinel_install.sh \
 ```
 
 **What happens during installation:**
+
 - ✅ System dependencies installed (Node.js, pnpm, PM2, Nginx, PostgreSQL)
 - ✅ Code cloned from GitHub repository
 - ✅ Database created and configured
@@ -417,11 +419,13 @@ Database (if provisioned):
 ## 🆘 **SUPPORT & RESOURCES**
 
 ### **Documentation**
+
 - [Ayinel Platform Documentation](../README.md)
 - [Linode Documentation](https://www.linode.com/docs/)
 - [PM2 Documentation](https://pm2.keymetrics.io/docs/)
 
 ### **Community**
+
 - GitHub Issues: [Report bugs or request features](https://github.com/Kovesh-26/ayinelultra/issues)
 - Linode Community: [Get help with VPS issues](https://www.linode.com/community/)
 

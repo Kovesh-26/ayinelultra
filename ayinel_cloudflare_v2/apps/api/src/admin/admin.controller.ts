@@ -15,11 +15,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { AdminService } from './admin.service';
-import { 
-  BanUserDto, 
-  UpdateUserRoleDto, 
+import {
+  BanUserDto,
+  UpdateUserRoleDto,
   ModerationActionDto,
-  SystemStatsResponseDto 
+  SystemStatsResponseDto,
 } from '@ayinel/types';
 
 @Controller('admin')
@@ -38,7 +38,7 @@ export class AdminController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
     @Query('search') search?: string,
-    @Query('status') status?: string,
+    @Query('status') status?: string
   ) {
     return this.adminService.getUsers(page, limit, search, status);
   }
@@ -59,7 +59,10 @@ export class AdminController {
   }
 
   @Put('users/:id/role')
-  async updateUserRole(@Param('id') id: string, @Body() dto: UpdateUserRoleDto) {
+  async updateUserRole(
+    @Param('id') id: string,
+    @Body() dto: UpdateUserRoleDto
+  ) {
     return this.adminService.updateUserRole(id, dto);
   }
 
@@ -67,7 +70,7 @@ export class AdminController {
   async getReportedContent(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
-    @Query('type') type?: string,
+    @Query('type') type?: string
   ) {
     return this.adminService.getReportedContent(page, limit, type);
   }
@@ -75,7 +78,7 @@ export class AdminController {
   @Post('content/:id/moderate')
   async moderateContent(
     @Param('id') id: string,
-    @Body() dto: ModerationActionDto,
+    @Body() dto: ModerationActionDto
   ) {
     return this.adminService.moderateContent(id, dto);
   }
@@ -84,7 +87,7 @@ export class AdminController {
   async getStudios(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
-    @Query('status') status?: string,
+    @Query('status') status?: string
   ) {
     return this.adminService.getStudios(page, limit, status);
   }
@@ -108,7 +111,7 @@ export class AdminController {
   async getSystemLogs(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number,
-    @Query('level') level?: string,
+    @Query('level') level?: string
   ) {
     return this.adminService.getSystemLogs(page, limit, level);
   }

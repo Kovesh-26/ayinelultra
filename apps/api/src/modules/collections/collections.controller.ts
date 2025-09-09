@@ -1,22 +1,22 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Put, 
-  Delete, 
-  Body, 
-  Param, 
-  Query, 
-  UseGuards, 
-  Request 
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { CollectionsService } from './collections.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { 
-  CreateCollectionDto, 
-  UpdateCollectionDto, 
-  AddVideoToCollectionDto, 
-  RemoveVideoFromCollectionDto 
+import {
+  CreateCollectionDto,
+  UpdateCollectionDto,
+  AddVideoToCollectionDto,
+  RemoveVideoFromCollectionDto,
 } from './dto/collections.dto';
 
 @Controller('api/v1/collections')
@@ -39,10 +39,7 @@ export class CollectionsController {
   }
 
   @Get(':id')
-  async findOne(
-    @Param('id') id: string,
-    @Request() req?: any
-  ) {
+  async findOne(@Param('id') id: string, @Request() req?: any) {
     const userId = req?.user?.id;
     return this.collectionsService.findOne(id, userId);
   }
@@ -84,10 +81,7 @@ export class CollectionsController {
   }
 
   @Get('user/:userId')
-  async findByUser(
-    @Param('userId') userId: string,
-    @Request() req?: any
-  ) {
+  async findByUser(@Param('userId') userId: string, @Request() req?: any) {
     const currentUserId = req?.user?.id;
     return this.collectionsService.findByUser(currentUserId, userId);
   }

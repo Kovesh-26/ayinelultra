@@ -1,10 +1,14 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { 
-  BanUserDto, 
-  UpdateUserRoleDto, 
+import {
+  BanUserDto,
+  UpdateUserRoleDto,
   ModerationActionDto,
-  SystemStatsResponseDto 
+  SystemStatsResponseDto,
 } from '@ayinel/types';
 
 @Injectable()
@@ -43,9 +47,14 @@ export class AdminService {
     };
   }
 
-  async getUsers(page: number, limit: number, search?: string, status?: string) {
+  async getUsers(
+    page: number,
+    limit: number,
+    search?: string,
+    status?: string
+  ) {
     const skip = (page - 1) * limit;
-    
+
     const where: any = {};
     if (search) {
       where.OR = [
@@ -175,7 +184,7 @@ export class AdminService {
 
   async getReportedContent(page: number, limit: number, type?: string) {
     const skip = (page - 1) * limit;
-    
+
     const where: any = { status: 'PENDING' };
     if (type) {
       where.contentType = type;
@@ -251,7 +260,7 @@ export class AdminService {
 
   async getStudios(page: number, limit: number, status?: string) {
     const skip = (page - 1) * limit;
-    
+
     const where: any = {};
     if (status) {
       where.status = status;
@@ -311,7 +320,7 @@ export class AdminService {
 
     const rejectedStudio = await this.prisma.studio.update({
       where: { id },
-      data: { 
+      data: {
         status: 'REJECTED',
         rejectionReason: reason,
       },
@@ -389,7 +398,7 @@ export class AdminService {
 
   async getSystemLogs(page: number, limit: number, level?: string) {
     const skip = (page - 1) * limit;
-    
+
     const where: any = {};
     if (level) {
       where.level = level;
@@ -437,7 +446,7 @@ export class AdminService {
   async endMaintenance() {
     await this.prisma.maintenanceMode.updateMany({
       where: { isActive: true },
-      data: { 
+      data: {
         isActive: false,
         endedAt: new Date(),
       },

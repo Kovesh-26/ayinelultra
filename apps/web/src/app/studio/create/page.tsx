@@ -29,16 +29,16 @@ export default function CreateStudioPage() {
     'Travel',
     'Fitness',
     'Business',
-    'Other'
+    'Other',
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // TODO: Implement studio creation logic
     console.log('Studio creation attempt:', formData);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
@@ -48,7 +48,11 @@ export default function CreateStudioPage() {
     }, 2000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -58,7 +62,10 @@ export default function CreateStudioPage() {
   const renderStep1 = () => (
     <div className="space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Studio Name *
         </label>
         <input
@@ -74,7 +81,10 @@ export default function CreateStudioPage() {
       </div>
 
       <div>
-        <label htmlFor="handle" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="handle"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Studio Handle (@handle) *
         </label>
         <input
@@ -87,11 +97,16 @@ export default function CreateStudioPage() {
           className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
           placeholder="Choose your studio handle"
         />
-        <p className="text-sm text-gray-400 mt-1">This will be your studio&apos;s unique URL</p>
+        <p className="text-sm text-gray-400 mt-1">
+          This will be your studio&apos;s unique URL
+        </p>
       </div>
 
       <div>
-        <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Category *
         </label>
         <select
@@ -104,7 +119,9 @@ export default function CreateStudioPage() {
         >
           <option value="">Select a category</option>
           {categories.map((category) => (
-            <option key={category} value={category}>{category}</option>
+            <option key={category} value={category}>
+              {category}
+            </option>
           ))}
         </select>
       </div>
@@ -114,7 +131,10 @@ export default function CreateStudioPage() {
   const renderStep2 = () => (
     <div className="space-y-6">
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Studio Description
         </label>
         <textarea
@@ -140,12 +160,19 @@ export default function CreateStudioPage() {
               name="isPublic"
               value="true"
               checked={formData.isPublic === true}
-              onChange={(e) => setFormData({ ...formData, isPublic: e.target.value === 'true' })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  isPublic: e.target.value === 'true',
+                })
+              }
               className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800"
             />
             <div className="ml-3">
               <div className="text-white font-medium">Public Studio</div>
-              <div className="text-gray-400 text-sm">Anyone can find and view your studio</div>
+              <div className="text-gray-400 text-sm">
+                Anyone can find and view your studio
+              </div>
             </div>
           </label>
           <label className="flex items-center">
@@ -154,12 +181,19 @@ export default function CreateStudioPage() {
               name="isPublic"
               value="false"
               checked={formData.isPublic === false}
-              onChange={(e) => setFormData({ ...formData, isPublic: e.target.value === 'true' })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  isPublic: e.target.value === 'true',
+                })
+              }
               className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-600 bg-gray-800"
             />
             <div className="ml-3">
               <div className="text-white font-medium">Private Studio</div>
-              <div className="text-gray-400 text-sm">Only you and invited members can access</div>
+              <div className="text-gray-400 text-sm">
+                Only you and invited members can access
+              </div>
             </div>
           </label>
         </div>
@@ -170,13 +204,27 @@ export default function CreateStudioPage() {
   const renderStep3 = () => (
     <div className="text-center space-y-6">
       <div className="w-16 h-16 bg-green-500 rounded-full mx-auto flex items-center justify-center">
-        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        <svg
+          className="w-8 h-8 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
         </svg>
       </div>
       <div>
-        <h3 className="text-xl font-semibold text-white mb-2">Studio Created!</h3>
-        <p className="text-gray-400">Your studio &quot;{formData.name}&quot; is ready to go.</p>
+        <h3 className="text-xl font-semibold text-white mb-2">
+          Studio Created!
+        </h3>
+        <p className="text-gray-400">
+          Your studio &quot;{formData.name}&quot; is ready to go.
+        </p>
       </div>
       <div className="space-y-4">
         <Link
@@ -197,19 +245,27 @@ export default function CreateStudioPage() {
 
   const getStepTitle = () => {
     switch (step) {
-      case 1: return 'Create Your Studio';
-      case 2: return 'Customize Your Studio';
-      case 3: return 'Studio Created!';
-      default: return 'Create Your Studio';
+      case 1:
+        return 'Create Your Studio';
+      case 2:
+        return 'Customize Your Studio';
+      case 3:
+        return 'Studio Created!';
+      default:
+        return 'Create Your Studio';
     }
   };
 
   const getStepDescription = () => {
     switch (step) {
-      case 1: return 'Let\'s start with the basics of your studio';
-      case 2: return 'Add details and set up your studio preferences';
-      case 3: return 'Your studio is ready! Start creating amazing content.';
-      default: return 'Let\'s start with the basics of your studio';
+      case 1:
+        return "Let's start with the basics of your studio";
+      case 2:
+        return 'Add details and set up your studio preferences';
+      case 3:
+        return 'Your studio is ready! Start creating amazing content.';
+      default:
+        return "Let's start with the basics of your studio";
     }
   };
 
@@ -221,14 +277,16 @@ export default function CreateStudioPage() {
           <Link href="/" className="inline-block">
             <h1 className="text-4xl font-bold text-white mb-2">AYINEL</h1>
           </Link>
-          <h2 className="text-2xl font-semibold text-white mb-2">{getStepTitle()}</h2>
+          <h2 className="text-2xl font-semibold text-white mb-2">
+            {getStepTitle()}
+          </h2>
           <p className="text-gray-400">{getStepDescription()}</p>
         </div>
 
         {/* Progress Bar */}
         {step < 3 && (
           <div className="w-full bg-gray-700 rounded-full h-2 mb-8">
-            <div 
+            <div
               className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(step / 2) * 100}%` }}
             ></div>
@@ -263,8 +321,10 @@ export default function CreateStudioPage() {
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       {step === 1 ? 'Creating...' : 'Saving...'}
                     </div>
+                  ) : step === 1 ? (
+                    'Continue'
                   ) : (
-                    step === 1 ? 'Continue' : 'Create Studio'
+                    'Create Studio'
                   )}
                 </button>
               </div>
@@ -277,7 +337,10 @@ export default function CreateStudioPage() {
         {/* Back to Dashboard */}
         {step < 3 && (
           <div className="text-center mt-6">
-            <Link href="/dashboard" className="text-purple-400 hover:text-purple-300 transition">
+            <Link
+              href="/dashboard"
+              className="text-purple-400 hover:text-purple-300 transition"
+            >
               ← Back to Dashboard
             </Link>
           </div>

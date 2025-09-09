@@ -30,7 +30,7 @@ export default function MediaCard({
   isLive = false,
   kidSafe = false,
   type = 'video',
-  href
+  href,
 }: MediaCardProps) {
   return (
     <Link href={href} className="group">
@@ -38,8 +38,8 @@ export default function MediaCard({
         {/* Thumbnail */}
         <div className="relative aspect-video bg-gradient-to-br from-gray-700 to-gray-800">
           {thumbnail ? (
-            <img 
-              src={thumbnail} 
+            <img
+              src={thumbnail}
               alt={title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -55,7 +55,7 @@ export default function MediaCard({
               </div>
             </div>
           )}
-          
+
           {/* Live Badge */}
           {isLive && (
             <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded text-sm font-semibold shadow-lg flex items-center space-x-1">
@@ -63,14 +63,14 @@ export default function MediaCard({
               <span>LIVE</span>
             </div>
           )}
-          
+
           {/* Duration Badge */}
           {duration && !isLive && (
             <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
               {duration}
             </div>
           )}
-          
+
           {/* Kid Safe Badge */}
           {kidSafe && (
             <div className="absolute top-2 right-2 bg-green-600 text-white px-2 py-1 rounded text-sm font-semibold shadow-lg">
@@ -78,13 +78,13 @@ export default function MediaCard({
             </div>
           )}
         </div>
-        
+
         {/* Content Info */}
         <div className="p-4">
           <h3 className="font-semibold mb-2 line-clamp-2 text-white group-hover:text-purple-300 transition">
             {title}
           </h3>
-          
+
           <div className="flex items-center justify-between text-sm text-gray-400">
             <div className="flex items-center space-x-2">
               <span>{author}</span>

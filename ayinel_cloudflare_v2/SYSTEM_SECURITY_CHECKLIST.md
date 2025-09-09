@@ -3,6 +3,7 @@
 ## 🛡️ Immediate Security Checks
 
 ### 1. Windows Defender (Built-in Protection)
+
 ```powershell
 # Check Windows Defender status
 Get-MpComputerStatus | Select-Object AntivirusEnabled, RealTimeProtectionEnabled, BehaviorMonitorEnabled, OnAccessProtectionEnabled
@@ -15,16 +16,18 @@ Start-MpScan -ScanType FullScan
 ```
 
 ### 2. Windows Security Center
+
 - Press `Windows + I` → Update & Security → Windows Security
 - Check all protection areas are green:
   - ✅ Virus & threat protection
-  - ✅ Account protection  
+  - ✅ Account protection
   - ✅ Firewall & network protection
   - ✅ App & browser control
   - ✅ Device security
   - ✅ Device performance & health
 
 ### 3. Task Manager Analysis
+
 - Press `Ctrl + Shift + Esc`
 - Check for suspicious processes:
   - High CPU usage from unknown programs
@@ -33,6 +36,7 @@ Start-MpScan -ScanType FullScan
   - Processes using excessive memory
 
 ### 4. Startup Programs Check
+
 ```powershell
 # Check startup programs
 Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location
@@ -43,21 +47,25 @@ Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location
 ## 🔍 Advanced Security Tools
 
 ### 5. Malwarebytes (Free Version)
+
 - Download from: https://www.malwarebytes.com/
 - Install and run full scan
 - Remove any detected threats
 
 ### 6. AdwCleaner (Free)
+
 - Download from: https://www.malwarebytes.com/adwcleaner
 - Run scan for adware and PUPs (Potentially Unwanted Programs)
 
 ### 7. HitmanPro (Free Trial)
+
 - Download from: https://www.hitmanpro.com/
 - Cloud-based scanning for advanced threats
 
 ## 🚨 Suspicious Activity Indicators
 
 ### Check for:
+
 - **Unexpected pop-ups or ads**
 - **Browser redirects**
 - **Slow system performance**
@@ -67,6 +75,7 @@ Get-CimInstance Win32_StartupCommand | Select-Object Name, Command, Location
 - **Strange emails sent from your account**
 
 ### Network Activity Check:
+
 ```powershell
 # Check active network connections
 netstat -an | findstr ESTABLISHED
@@ -79,6 +88,7 @@ netstat -an | findstr :443
 ## 🛠️ System Hardening
 
 ### 8. Windows Updates
+
 ```powershell
 # Check for updates
 Get-WindowsUpdate
@@ -88,6 +98,7 @@ Install-WindowsUpdate -AcceptAll
 ```
 
 ### 9. Firewall Configuration
+
 ```powershell
 # Check firewall status
 Get-NetFirewallProfile | Select-Object Name, Enabled
@@ -97,12 +108,14 @@ Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
 ```
 
 ### 10. User Account Control (UAC)
+
 - Ensure UAC is enabled
 - Set to "Always notify" for maximum security
 
 ## 🔧 Development Environment Security
 
 ### 11. Node.js Security
+
 ```bash
 # Check for vulnerable packages
 npm audit
@@ -115,6 +128,7 @@ npm update
 ```
 
 ### 12. Git Security
+
 ```bash
 # Check git configuration
 git config --list
@@ -124,6 +138,7 @@ git remote -v
 ```
 
 ### 13. Environment Variables
+
 - Check `.env` files for sensitive data
 - Never commit API keys or passwords
 - Use environment variables for secrets
@@ -164,6 +179,7 @@ Get-ScheduledTask | Where-Object {$_.State -eq "Ready"} | Select-Object TaskName
 ## 🔒 Prevention Best Practices
 
 ### Daily Habits:
+
 - ✅ Keep Windows updated
 - ✅ Use strong, unique passwords
 - ✅ Enable 2FA on all accounts
@@ -172,6 +188,7 @@ Get-ScheduledTask | Where-Object {$_.State -eq "Ready"} | Select-Object TaskName
 - ✅ Regular backups of important data
 
 ### For Development:
+
 - ✅ Use virtual environments
 - ✅ Keep dependencies updated
 - ✅ Use HTTPS for all connections
@@ -188,6 +205,7 @@ Get-ScheduledTask | Where-Object {$_.State -eq "Ready"} | Select-Object TaskName
 ## ✅ Security Status Check
 
 After running these checks, your system should be:
+
 - ✅ Windows Defender active and updated
 - ✅ No suspicious processes running
 - ✅ No unauthorized network connections

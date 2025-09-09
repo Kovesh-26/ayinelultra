@@ -12,13 +12,13 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { WalletService } from './wallet.service';
-import { 
-  CreateTransactionDto, 
-  WalletResponseDto, 
+import {
+  CreateTransactionDto,
+  WalletResponseDto,
   TransactionResponseDto,
   AddFundsDto,
   WithdrawFundsDto,
-  TransferFundsDto 
+  TransferFundsDto,
 } from '@ayinel/types';
 
 @Controller('wallet')
@@ -36,15 +36,25 @@ export class WalletController {
     @Request() req,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
-    @Query('type') type?: string,
-  ): Promise<{ transactions: TransactionResponseDto[]; total: number; page: number; totalPages: number }> {
-    return this.walletService.getUserTransactions(req.user.id, page, limit, type);
+    @Query('type') type?: string
+  ): Promise<{
+    transactions: TransactionResponseDto[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
+    return this.walletService.getUserTransactions(
+      req.user.id,
+      page,
+      limit,
+      type
+    );
   }
 
   @Post('add-funds')
   async addFunds(
     @Request() req,
-    @Body() dto: AddFundsDto,
+    @Body() dto: AddFundsDto
   ): Promise<TransactionResponseDto> {
     return this.walletService.addFunds(req.user.id, dto);
   }
@@ -52,7 +62,7 @@ export class WalletController {
   @Post('withdraw')
   async withdrawFunds(
     @Request() req,
-    @Body() dto: WithdrawFundsDto,
+    @Body() dto: WithdrawFundsDto
   ): Promise<TransactionResponseDto> {
     return this.walletService.withdrawFunds(req.user.id, dto);
   }
@@ -60,7 +70,7 @@ export class WalletController {
   @Post('transfer')
   async transferFunds(
     @Request() req,
-    @Body() dto: TransferFundsDto,
+    @Body() dto: TransferFundsDto
   ): Promise<TransactionResponseDto> {
     return this.walletService.transferFunds(req.user.id, dto);
   }
@@ -68,7 +78,7 @@ export class WalletController {
   @Get('transactions/:id')
   async getTransaction(
     @Request() req,
-    @Param('id') id: string,
+    @Param('id') id: string
   ): Promise<TransactionResponseDto> {
     return this.walletService.getTransaction(req.user.id, id);
   }
@@ -79,18 +89,19 @@ export class WalletController {
   }
 
   @Post('create-payment-intent')
-  async createPaymentIntent(
-    @Request() req,
-    @Body() dto: AddFundsDto,
-  ) {
+  async createPaymentIntent(@Request() req, @Body() dto: AddFundsDto) {
     return this.walletService.createPaymentIntent(req.user.id, dto);
   }
 
   @Post('confirm-payment')
   async confirmPayment(
     @Request() req,
-    @Body() dto: { paymentIntentId: string; transactionId: string },
+    @Body() dto: { paymentIntentId: string; transactionId: string }
   ): Promise<TransactionResponseDto> {
-    return this.walletService.confirmPayment(req.user.id, dto.paymentIntentId, dto.transactionId);
+    return this.walletService.confirmPayment(
+      req.user.id,
+      dto.paymentIntentId,
+      dto.transactionId
+    );
   }
 }

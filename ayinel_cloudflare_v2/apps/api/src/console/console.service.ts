@@ -1,12 +1,22 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ConsoleIntegrationDto, ConsoleIntegrationResponseDto } from '@ayinel/types';
+import {
+  ConsoleIntegrationDto,
+  ConsoleIntegrationResponseDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class ConsoleService {
   constructor(private prisma: PrismaService) {}
 
-  async createConsoleIntegration(userId: string, dto: ConsoleIntegrationDto): Promise<ConsoleIntegrationResponseDto> {
+  async createConsoleIntegration(
+    userId: string,
+    dto: ConsoleIntegrationDto
+  ): Promise<ConsoleIntegrationResponseDto> {
     const integration = await this.prisma.consoleIntegration.create({
       data: {
         userId,
@@ -21,16 +31,23 @@ export class ConsoleService {
     return this.mapToConsoleIntegrationResponse(integration);
   }
 
-  async getUserIntegrations(userId: string): Promise<ConsoleIntegrationResponseDto[]> {
+  async getUserIntegrations(
+    userId: string
+  ): Promise<ConsoleIntegrationResponseDto[]> {
     const integrations = await this.prisma.consoleIntegration.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
 
-    return integrations.map(integration => this.mapToConsoleIntegrationResponse(integration));
+    return integrations.map((integration) =>
+      this.mapToConsoleIntegrationResponse(integration)
+    );
   }
 
-  async getConsoleIntegration(id: string, userId: string): Promise<ConsoleIntegrationResponseDto> {
+  async getConsoleIntegration(
+    id: string,
+    userId: string
+  ): Promise<ConsoleIntegrationResponseDto> {
     const integration = await this.prisma.consoleIntegration.findFirst({
       where: { id, userId },
     });
@@ -42,7 +59,11 @@ export class ConsoleService {
     return this.mapToConsoleIntegrationResponse(integration);
   }
 
-  async updateConsoleIntegration(id: string, userId: string, dto: ConsoleIntegrationDto): Promise<ConsoleIntegrationResponseDto> {
+  async updateConsoleIntegration(
+    id: string,
+    userId: string,
+    dto: ConsoleIntegrationDto
+  ): Promise<ConsoleIntegrationResponseDto> {
     const integration = await this.prisma.consoleIntegration.findFirst({
       where: { id, userId },
     });
@@ -78,7 +99,10 @@ export class ConsoleService {
     });
   }
 
-  async toggleIntegrationStatus(id: string, userId: string): Promise<ConsoleIntegrationResponseDto> {
+  async toggleIntegrationStatus(
+    id: string,
+    userId: string
+  ): Promise<ConsoleIntegrationResponseDto> {
     const integration = await this.prisma.consoleIntegration.findFirst({
       where: { id, userId },
     });
@@ -222,35 +246,102 @@ export class ConsoleService {
   async getPlatformCategories(platform: string): Promise<any[]> {
     const platformData = {
       amazon: [
-        { id: 'electronics', name: 'Electronics', subcategories: ['Computers', 'Phones', 'TV & Video', 'Audio'] },
-        { id: 'books', name: 'Books', subcategories: ['Fiction', 'Non-Fiction', 'Educational', 'Children'] },
-        { id: 'home', name: 'Home & Garden', subcategories: ['Kitchen', 'Furniture', 'Garden', 'Tools'] },
-        { id: 'fashion', name: 'Fashion', subcategories: ['Clothing', 'Shoes', 'Jewelry', 'Accessories'] },
+        {
+          id: 'electronics',
+          name: 'Electronics',
+          subcategories: ['Computers', 'Phones', 'TV & Video', 'Audio'],
+        },
+        {
+          id: 'books',
+          name: 'Books',
+          subcategories: ['Fiction', 'Non-Fiction', 'Educational', 'Children'],
+        },
+        {
+          id: 'home',
+          name: 'Home & Garden',
+          subcategories: ['Kitchen', 'Furniture', 'Garden', 'Tools'],
+        },
+        {
+          id: 'fashion',
+          name: 'Fashion',
+          subcategories: ['Clothing', 'Shoes', 'Jewelry', 'Accessories'],
+        },
       ],
       walmart: [
-        { id: 'electronics', name: 'Electronics', subcategories: ['Computers', 'Phones', 'TV & Video'] },
-        { id: 'home', name: 'Home', subcategories: ['Kitchen', 'Furniture', 'Decor'] },
-        { id: 'grocery', name: 'Grocery', subcategories: ['Fresh Food', 'Pantry', 'Beverages'] },
-        { id: 'toys', name: 'Toys', subcategories: ['Action Figures', 'Board Games', 'Educational'] },
+        {
+          id: 'electronics',
+          name: 'Electronics',
+          subcategories: ['Computers', 'Phones', 'TV & Video'],
+        },
+        {
+          id: 'home',
+          name: 'Home',
+          subcategories: ['Kitchen', 'Furniture', 'Decor'],
+        },
+        {
+          id: 'grocery',
+          name: 'Grocery',
+          subcategories: ['Fresh Food', 'Pantry', 'Beverages'],
+        },
+        {
+          id: 'toys',
+          name: 'Toys',
+          subcategories: ['Action Figures', 'Board Games', 'Educational'],
+        },
       ],
       etsy: [
-        { id: 'handmade', name: 'Handmade', subcategories: ['Jewelry', 'Clothing', 'Home Decor', 'Art'] },
-        { id: 'vintage', name: 'Vintage', subcategories: ['Clothing', 'Jewelry', 'Home', 'Collectibles'] },
-        { id: 'crafts', name: 'Crafts', subcategories: ['Supplies', 'Kits', 'Finished Items'] },
-        { id: 'art', name: 'Art', subcategories: ['Paintings', 'Photography', 'Sculptures', 'Digital'] },
+        {
+          id: 'handmade',
+          name: 'Handmade',
+          subcategories: ['Jewelry', 'Clothing', 'Home Decor', 'Art'],
+        },
+        {
+          id: 'vintage',
+          name: 'Vintage',
+          subcategories: ['Clothing', 'Jewelry', 'Home', 'Collectibles'],
+        },
+        {
+          id: 'crafts',
+          name: 'Crafts',
+          subcategories: ['Supplies', 'Kits', 'Finished Items'],
+        },
+        {
+          id: 'art',
+          name: 'Art',
+          subcategories: ['Paintings', 'Photography', 'Sculptures', 'Digital'],
+        },
       ],
       ebay: [
-        { id: 'electronics', name: 'Electronics', subcategories: ['Computers', 'Phones', 'Cameras', 'Audio'] },
-        { id: 'collectibles', name: 'Collectibles', subcategories: ['Coins', 'Stamps', 'Trading Cards', 'Antiques'] },
-        { id: 'fashion', name: 'Fashion', subcategories: ['Clothing', 'Shoes', 'Jewelry', 'Watches'] },
-        { id: 'home', name: 'Home & Garden', subcategories: ['Furniture', 'Garden', 'Tools', 'Decor'] },
+        {
+          id: 'electronics',
+          name: 'Electronics',
+          subcategories: ['Computers', 'Phones', 'Cameras', 'Audio'],
+        },
+        {
+          id: 'collectibles',
+          name: 'Collectibles',
+          subcategories: ['Coins', 'Stamps', 'Trading Cards', 'Antiques'],
+        },
+        {
+          id: 'fashion',
+          name: 'Fashion',
+          subcategories: ['Clothing', 'Shoes', 'Jewelry', 'Watches'],
+        },
+        {
+          id: 'home',
+          name: 'Home & Garden',
+          subcategories: ['Furniture', 'Garden', 'Tools', 'Decor'],
+        },
       ],
     };
 
     return platformData[platform] || [];
   }
 
-  async getIntegrationStats(integrationId: string, userId: string): Promise<any> {
+  async getIntegrationStats(
+    integrationId: string,
+    userId: string
+  ): Promise<any> {
     const integration = await this.prisma.consoleIntegration.findFirst({
       where: { id: integrationId, userId },
     });
@@ -296,7 +387,9 @@ export class ConsoleService {
     return syncResults;
   }
 
-  private mapToConsoleIntegrationResponse(integration: any): ConsoleIntegrationResponseDto {
+  private mapToConsoleIntegrationResponse(
+    integration: any
+  ): ConsoleIntegrationResponseDto {
     return {
       id: integration.id,
       userId: integration.userId,

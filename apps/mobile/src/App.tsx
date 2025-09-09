@@ -80,8 +80,8 @@ function TabNavigator() {
         tabBarInactiveTintColor: '#9ca3af',
       }}
     >
-      <Tab.Screen 
-        name="Home" 
+      <Tab.Screen
+        name="Home"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
@@ -90,8 +90,8 @@ function TabNavigator() {
           // ),
         }}
       />
-      <Tab.Screen 
-        name="Search" 
+      <Tab.Screen
+        name="Search"
         component={SearchScreen}
         options={{
           tabBarLabel: 'Search',
@@ -100,8 +100,8 @@ function TabNavigator() {
           // ),
         }}
       />
-      <Tab.Screen 
-        name="Upload" 
+      <Tab.Screen
+        name="Upload"
         component={UploadScreen}
         options={{
           tabBarLabel: 'Upload',
@@ -110,8 +110,8 @@ function TabNavigator() {
           // ),
         }}
       />
-      <Tab.Screen 
-        name="Inbox" 
+      <Tab.Screen
+        name="Inbox"
         component={InboxScreen}
         options={{
           tabBarLabel: 'Inbox',
@@ -120,8 +120,8 @@ function TabNavigator() {
           // ),
         }}
       />
-      <Tab.Screen 
-        name="Profile" 
+      <Tab.Screen
+        name="Profile"
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',

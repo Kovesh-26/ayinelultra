@@ -1,7 +1,9 @@
 # AYINEL FIX PACK 1
 
 ## Goal
+
 Fix remaining blockers and polish the MVP for production readiness:
+
 1. Apply pending Prisma migrations safely
 2. Fix CORS configuration for proper frontend-backend communication
 3. Create environment samples for deployment
@@ -22,11 +24,11 @@ Update `apps/api/src/main.ts` to support both development ports:
 app.enableCors({
   origin: (configService.get('CORS_ORIGIN') as string)?.split(',') || [
     'http://localhost:3000',
-    'http://localhost:3002', 
+    'http://localhost:3002',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3002',
     'https://ayinel.com',
-    'https://www.ayinel.com'
+    'https://www.ayinel.com',
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -44,7 +46,7 @@ Create `env.example` at repo root:
 # Application
 NODE_ENV=development
 
-# Database Configuration  
+# Database Configuration
 DATABASE_URL=postgresql://username:password@localhost:5432/ayineldb?schema=public
 SHADOW_DATABASE_URL=postgresql://username:password@localhost:5432/ayineldb_shadow?schema=public
 
@@ -113,17 +115,26 @@ export class AppModule {}
 Update `apps/api/src/videos/videos.service.ts` to handle optional queue service:
 
 ```typescript
-import { Injectable, NotFoundException, BadRequestException, Inject, Optional } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  Inject,
+  Optional,
+} from '@nestjs/common';
 
 @Injectable()
 export class VideosService {
   constructor(
     private prisma: PrismaService,
-    @Optional() @Inject('QueueService') private queueService?: any,
+    @Optional() @Inject('QueueService') private queueService?: any
   ) {}
 
   // Update the upload method to handle optional queue
-  async uploadVideoFile(videoId: string, file: Express.Multer.File): Promise<Media> {
+  async uploadVideoFile(
+    videoId: string,
+    file: Express.Multer.File
+  ): Promise<Media> {
     // ... existing code ...
 
     // Only enqueue transcode job if queue service is available
@@ -134,7 +145,9 @@ export class VideosService {
         outputDir: path.dirname(media.filePath),
       });
     } else {
-      console.log('Queue service not available - skipping background transcoding');
+      console.log(
+        'Queue service not available - skipping background transcoding'
+      );
     }
 
     return media;
@@ -146,7 +159,7 @@ export class VideosService {
 
 Create/update `README.md`:
 
-```markdown
+````markdown
 # Ayinel Platform
 
 Next-generation video platform for creators built with modern technologies.
@@ -164,7 +177,8 @@ Next-generation video platform for creators built with modern technologies.
 ## Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - pnpm 8+
 - PostgreSQL 14+
 - Redis (optional, for background jobs)
@@ -177,35 +191,40 @@ Next-generation video platform for creators built with modern technologies.
    cd ayinel
    pnpm install
    ```
+````
 
 2. **Setup environment:**
+
    ```bash
    cp env.example env.local
    # Edit env.local with your database credentials
    ```
 
 3. **Setup database:**
+
    ```bash
    # Create databases
    psql -U postgres -h localhost -c "CREATE DATABASE ayineldb OWNER yourusername;"
    psql -U postgres -h localhost -c "CREATE DATABASE ayineldb_shadow OWNER yourusername;"
-   
+
    # Run migrations
    pnpm -C apps/api db:migrate
    pnpm -C apps/api db:generate
    ```
 
 4. **Start development servers:**
+
    ```bash
    # Start both API and Web servers
    pnpm dev
-   
+
    # Or start individually:
    pnpm dev:api    # API on http://localhost:3001
    pnpm dev:web    # Web on http://localhost:3002
    ```
 
 ### Development URLs
+
 - **Web App**: http://localhost:3002
 - **API**: http://localhost:3001
 - **API Health**: http://localhost:3001/health
@@ -214,6 +233,7 @@ Next-generation video platform for creators built with modern technologies.
 ## Features
 
 ### MVP Features ✅
+
 - User authentication (signup/login with email or username)
 - Studio creation (automatic for new users)
 - Public Studio pages with branding
@@ -224,6 +244,7 @@ Next-generation video platform for creators built with modern technologies.
 - Payment integration (Stripe)
 
 ### Coming Soon 🚧
+
 - Store management (products)
 - Analytics dashboard
 - Live streaming
@@ -232,12 +253,14 @@ Next-generation video platform for creators built with modern technologies.
 ## API Endpoints
 
 ### Authentication
+
 - `POST /auth/register` - User registration
 - `POST /auth/login` - User login (email or username)
 - `POST /auth/logout` - User logout
 - `GET /auth/me` - Get current user
 
 ### Studios
+
 - `GET /studios/:handle` - Get public studio data
 - `PUT /studios/:handle/branding` - Update studio branding
 - `GET /studios/:handle/analytics` - Get studio analytics
@@ -245,6 +268,7 @@ Next-generation video platform for creators built with modern technologies.
 - `POST /studios/:handle/products` - Create studio product
 
 ### Media
+
 - `POST /media/upload` - Upload media file
 - `GET /media/:id` - Get media details
 - `POST /media/:id/boost` - Boost media (like)
@@ -253,6 +277,7 @@ Next-generation video platform for creators built with modern technologies.
 ## Database Schema
 
 Key models:
+
 - **User** - User accounts and profiles
 - **Studio** - Creator studios/channels
 - **Media** - Videos, audio, and other content
@@ -262,6 +287,7 @@ Key models:
 ## Deployment
 
 ### Environment Variables for Production
+
 ```env
 NODE_ENV=production
 DATABASE_URL=postgresql://user:pass@localhost:5432/ayineldb_prod
@@ -270,6 +296,7 @@ NEXT_PUBLIC_API_BASE=https://api.ayinel.com
 ```
 
 ### Docker Deployment
+
 ```bash
 # Start services
 docker-compose -f docker-compose.dev.yml up -d
@@ -282,6 +309,7 @@ pnpm start:prod
 ## Development
 
 ### Package Scripts
+
 - `pnpm dev` - Start all development servers
 - `pnpm build` - Build all packages
 - `pnpm db:migrate` - Run database migrations
@@ -289,6 +317,7 @@ pnpm start:prod
 - `pnpm lint` - Lint all packages
 
 ### Project Structure
+
 ```
 apps/
   api/          # NestJS backend
@@ -303,6 +332,7 @@ packages/
 ### Common Issues
 
 **OneDrive EPERM Errors:**
+
 ```bash
 # Move project out of OneDrive or exclude folder from sync
 # Then reinstall dependencies
@@ -310,11 +340,13 @@ pnpm install
 ```
 
 **Prisma Client Issues:**
+
 ```bash
 pnpm -C apps/api db:generate
 ```
 
 **Port Conflicts:**
+
 ```bash
 # Kill existing processes
 taskkill /f /im node.exe
@@ -322,6 +354,7 @@ taskkill /f /im node.exe
 ```
 
 **Migration Issues:**
+
 ```bash
 # Reset migrations (development only)
 pnpm -C apps/api db:push
@@ -342,7 +375,8 @@ pnpm -C apps/api db:push
 ## Support
 
 For support, email support@ayinel.com or join our Discord.
-```
+
+````
 
 ### 6. Prisma Migration Instructions
 
@@ -357,18 +391,20 @@ pnpm -C apps/api db:migrate
 
 # Regenerate Prisma client
 pnpm -C apps/api db:generate
-```
+````
 
 ### 7. Verification Steps
 
 After all changes:
 
 1. **Test API Health:**
+
    ```bash
    curl http://localhost:3001/health
    ```
 
 2. **Test Studio Endpoint:**
+
    ```bash
    curl http://localhost:3001/studios/alyahshad
    ```
@@ -384,7 +420,7 @@ After all changes:
 ## Post-Implementation Checklist
 
 - [ ] API server starts without errors on port 3001
-- [ ] Web server starts without errors on port 3002  
+- [ ] Web server starts without errors on port 3002
 - [ ] CORS allows requests from both 3000 and 3002
 - [ ] Prisma migrations applied successfully
 - [ ] Studio endpoint returns data

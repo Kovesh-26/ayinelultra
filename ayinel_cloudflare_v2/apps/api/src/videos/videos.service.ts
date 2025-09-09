@@ -1,12 +1,23 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateVideoDto, UpdateVideoDto, VideoResponseDto } from '@ayinel/types';
+import {
+  CreateVideoDto,
+  UpdateVideoDto,
+  VideoResponseDto,
+} from '@ayinel/types';
 
 @Injectable()
 export class VideosService {
   constructor(private prisma: PrismaService) {}
 
-  async createVideo(studioId: string, dto: CreateVideoDto): Promise<VideoResponseDto> {
+  async createVideo(
+    studioId: string,
+    dto: CreateVideoDto
+  ): Promise<VideoResponseDto> {
     const studio = await this.prisma.studio.findUnique({
       where: { id: studioId },
     });
@@ -32,10 +43,7 @@ export class VideosService {
   async findAll(visibility: string = 'PUBLIC'): Promise<VideoResponseDto[]> {
     const videos = await this.prisma.video.findMany({
       where: {
-        AND: [
-          { visibility: visibility as any },
-          { status: 'READY' },
-        ],
+        AND: [{ visibility: visibility as any }, { status: 'READY' }],
       },
       include: {
         studio: true,
@@ -43,7 +51,7 @@ export class VideosService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return videos.map(video => this.mapToVideoResponse(video));
+    return videos.map((video) => this.mapToVideoResponse(video));
   }
 
   async findById(id: string): Promise<VideoResponseDto> {
@@ -67,10 +75,13 @@ export class VideosService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return videos.map(video => this.mapToVideoResponse(video));
+    return videos.map((video) => this.mapToVideoResponse(video));
   }
 
-  async updateVideo(id: string, dto: UpdateVideoDto): Promise<VideoResponseDto> {
+  async updateVideo(
+    id: string,
+    dto: UpdateVideoDto
+  ): Promise<VideoResponseDto> {
     const video = await this.prisma.video.findUnique({
       where: { id },
     });
@@ -134,16 +145,13 @@ export class VideosService {
       orderBy: { views: 'desc' },
     });
 
-    return videos.map(video => this.mapToVideoResponse(video));
+    return videos.map((video) => this.mapToVideoResponse(video));
   }
 
   async getTrendingVideos(): Promise<VideoResponseDto[]> {
     const videos = await this.prisma.video.findMany({
       where: {
-        AND: [
-          { visibility: 'PUBLIC' },
-          { status: 'READY' },
-        ],
+        AND: [{ visibility: 'PUBLIC' }, { status: 'READY' }],
       },
       include: {
         studio: true,
@@ -152,16 +160,13 @@ export class VideosService {
       orderBy: { views: 'desc' },
     });
 
-    return videos.map(video => this.mapToVideoResponse(video));
+    return videos.map((video) => this.mapToVideoResponse(video));
   }
 
   async getRecentVideos(): Promise<VideoResponseDto[]> {
     const videos = await this.prisma.video.findMany({
       where: {
-        AND: [
-          { visibility: 'PUBLIC' },
-          { status: 'READY' },
-        ],
+        AND: [{ visibility: 'PUBLIC' }, { status: 'READY' }],
       },
       include: {
         studio: true,
@@ -170,7 +175,7 @@ export class VideosService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return videos.map(video => this.mapToVideoResponse(video));
+    return videos.map((video) => this.mapToVideoResponse(video));
   }
 
   private mapToVideoResponse(video: any): VideoResponseDto {

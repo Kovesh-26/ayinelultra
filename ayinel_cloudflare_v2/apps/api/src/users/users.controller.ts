@@ -1,5 +1,20 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -43,7 +58,9 @@ export class UsersController {
   @ApiOperation({ summary: 'Get user by username' })
   @ApiResponse({ status: 200, description: 'User found' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async findByUsername(@Param('username') username: string): Promise<UserResponseDto> {
+  async findByUsername(
+    @Param('username') username: string
+  ): Promise<UserResponseDto> {
     return this.usersService.findByUsername(username);
   }
 
@@ -55,7 +72,7 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found' })
   async updateUser(
     @Param('id') id: string,
-    @Body() dto: UpdateUserDto,
+    @Body() dto: UpdateUserDto
   ): Promise<UserResponseDto> {
     return this.usersService.updateUser(id, dto);
   }

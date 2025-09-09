@@ -31,10 +31,10 @@ export class MusicService {
           ...dto,
           userUploads: {
             create: {
-              userId
-            }
-          }
-        }
+              userId,
+            },
+          },
+        },
       });
 
       this.logger.log(`Track created: ${track.title} by ${track.artist}`);
@@ -48,23 +48,25 @@ export class MusicService {
   async getTracks(page: number = 1, limit: number = 20, search?: string) {
     try {
       const skip = (page - 1) * limit;
-      
-      const where = search ? {
-        OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { artist: { contains: search, mode: 'insensitive' } },
-          { album: { contains: search, mode: 'insensitive' } }
-        ]
-      } : {};
+
+      const where = search
+        ? {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { artist: { contains: search, mode: 'insensitive' } },
+              { album: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {};
 
       const [tracks, total] = await Promise.all([
         this.prisma.musicTrack.findMany({
           where,
           skip,
           take: limit,
-          orderBy: { createdAt: 'desc' }
+          orderBy: { createdAt: 'desc' },
         }),
-        this.prisma.musicTrack.count({ where })
+        this.prisma.musicTrack.count({ where }),
       ]);
 
       return {
@@ -73,8 +75,8 @@ export class MusicService {
           page,
           limit,
           total,
-          pages: Math.ceil(total / limit)
-        }
+          pages: Math.ceil(total / limit),
+        },
       };
     } catch (error) {
       this.logger.error(`Failed to get tracks: ${error.message}`);
@@ -93,18 +95,18 @@ export class MusicService {
           tracks: {
             create: dto.tracks.map((trackId, index) => ({
               trackId,
-              order: index
-            }))
-          }
+              order: index,
+            })),
+          },
         },
         include: {
           tracks: {
             include: {
-              track: true
+              track: true,
             },
-            orderBy: { order: 'asc' }
-          }
-        }
+            orderBy: { order: 'asc' },
+          },
+        },
       });
 
       this.logger.log(`Playlist created: ${playlist.name} by user: ${userId}`);
@@ -122,18 +124,18 @@ export class MusicService {
         include: {
           tracks: {
             include: {
-              track: true
+              track: true,
             },
-            orderBy: { order: 'asc' }
+            orderBy: { order: 'asc' },
           },
           creator: {
             select: {
               id: true,
               name: true,
-              handle: true
-            }
-          }
-        }
+              handle: true,
+            },
+          },
+        },
       });
 
       if (!playlist) {
@@ -154,11 +156,11 @@ export class MusicService {
         include: {
           tracks: {
             include: {
-              track: true
-            }
-          }
+              track: true,
+            },
+          },
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
       return playlists;
@@ -177,10 +179,10 @@ export class MusicService {
             OR: [
               { title: { contains: query, mode: 'insensitive' } },
               { artist: { contains: query, mode: 'insensitive' } },
-              { album: { contains: query, mode: 'insensitive' } }
-            ]
+              { album: { contains: query, mode: 'insensitive' } },
+            ],
           },
-          take: 10
+          take: 10,
         }),
         // Search playlists
         this.prisma.playlist.findMany({
@@ -188,16 +190,16 @@ export class MusicService {
             isPublic: true,
             OR: [
               { name: { contains: query, mode: 'insensitive' } },
-              { description: { contains: query, mode: 'insensitive' } }
-            ]
+              { description: { contains: query, mode: 'insensitive' } },
+            ],
           },
-          take: 5
-        })
+          take: 5,
+        }),
       ]);
 
       return {
         tracks: searchResults[0],
-        playlists: searchResults[1]
+        playlists: searchResults[1],
       };
     } catch (error) {
       this.logger.error(`Failed to search music: ${error.message}`);
@@ -210,8 +212,8 @@ export class MusicService {
       await this.prisma.musicTrack.update({
         where: { id: trackId },
         data: {
-          playCount: { increment: 1 }
-        }
+          playCount: { increment: 1 },
+        },
       });
     } catch (error) {
       this.logger.error(`Failed to increment play count: ${error.message}`);

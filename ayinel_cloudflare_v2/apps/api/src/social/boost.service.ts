@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { BoostVideoDto, BoostResponseDto } from '@ayinel/types';
 
@@ -6,7 +10,10 @@ import { BoostVideoDto, BoostResponseDto } from '@ayinel/types';
 export class BoostService {
   constructor(private prisma: PrismaService) {}
 
-  async boostVideo(userId: string, dto: BoostVideoDto): Promise<BoostResponseDto> {
+  async boostVideo(
+    userId: string,
+    dto: BoostVideoDto
+  ): Promise<BoostResponseDto> {
     // Check if video exists
     const video = await this.prisma.video.findUnique({
       where: { id: dto.videoId },
@@ -102,7 +109,7 @@ export class BoostService {
       },
     });
 
-    return boosts.map(boost => ({
+    return boosts.map((boost) => ({
       id: boost.id,
       userId: boost.userId,
       videoId: boost.videoId,
@@ -131,7 +138,7 @@ export class BoostService {
       },
     });
 
-    return boosts.map(boost => ({
+    return boosts.map((boost) => ({
       id: boost.id,
       userId: boost.userId,
       videoId: boost.videoId,
@@ -140,7 +147,10 @@ export class BoostService {
     }));
   }
 
-  async hasUserBoosted(userId: string, videoId: string): Promise<{ hasBoosted: boolean; type?: 'BOOST' | 'DISLIKE' }> {
+  async hasUserBoosted(
+    userId: string,
+    videoId: string
+  ): Promise<{ hasBoosted: boolean; type?: 'BOOST' | 'DISLIKE' }> {
     const boost = await this.prisma.videoBoost.findUnique({
       where: {
         userId_videoId: {
@@ -157,7 +167,9 @@ export class BoostService {
     return { hasBoosted: true, type: boost.type };
   }
 
-  async getVideoBoostCount(videoId: string): Promise<{ boosts: number; dislikes: number }> {
+  async getVideoBoostCount(
+    videoId: string
+  ): Promise<{ boosts: number; dislikes: number }> {
     const [boosts, dislikes] = await Promise.all([
       this.prisma.videoBoost.count({
         where: { videoId, type: 'BOOST' },

@@ -1,7 +1,28 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ChatService } from './chat.service';
-import { CreateConversationDto, SendMessageDto, ConversationResponseDto, MessageResponseDto } from '@ayinel/types';
+import {
+  CreateConversationDto,
+  SendMessageDto,
+  ConversationResponseDto,
+  MessageResponseDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Chat')
@@ -13,11 +34,14 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new conversation' })
-  @ApiResponse({ status: 201, description: 'Conversation created successfully' })
+  @ApiResponse({
+    status: 201,
+    description: 'Conversation created successfully',
+  })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async createConversation(
     @Req() req,
-    @Body() dto: CreateConversationDto,
+    @Body() dto: CreateConversationDto
   ): Promise<ConversationResponseDto> {
     return this.chatService.createConversation(req.user.id, dto);
   }
@@ -26,7 +50,10 @@ export class ChatController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user conversations' })
-  @ApiResponse({ status: 200, description: 'Conversations retrieved successfully' })
+  @ApiResponse({
+    status: 200,
+    description: 'Conversations retrieved successfully',
+  })
   async getConversations(@Req() req): Promise<ConversationResponseDto[]> {
     return this.chatService.getConversations(req.user.id);
   }
@@ -37,7 +64,10 @@ export class ChatController {
   @ApiOperation({ summary: 'Get conversation by ID' })
   @ApiResponse({ status: 200, description: 'Conversation found' })
   @ApiResponse({ status: 404, description: 'Conversation not found' })
-  async getConversation(@Param('id') id: string, @Req() req): Promise<ConversationResponseDto> {
+  async getConversation(
+    @Param('id') id: string,
+    @Req() req
+  ): Promise<ConversationResponseDto> {
     return this.chatService.getConversation(id, req.user.id);
   }
 
@@ -50,7 +80,7 @@ export class ChatController {
   async sendMessage(
     @Param('id') conversationId: string,
     @Req() req,
-    @Body() dto: SendMessageDto,
+    @Body() dto: SendMessageDto
   ): Promise<MessageResponseDto> {
     return this.chatService.sendMessage(conversationId, req.user.id, dto);
   }
@@ -64,9 +94,14 @@ export class ChatController {
     @Param('id') conversationId: string,
     @Req() req,
     @Query('limit') limit?: number,
-    @Query('offset') offset?: number,
+    @Query('offset') offset?: number
   ): Promise<MessageResponseDto[]> {
-    return this.chatService.getMessages(conversationId, req.user.id, limit, offset);
+    return this.chatService.getMessages(
+      conversationId,
+      req.user.id,
+      limit,
+      offset
+    );
   }
 
   @Post('conversations/:id/members')
@@ -78,9 +113,13 @@ export class ChatController {
   async addMemberToConversation(
     @Param('id') conversationId: string,
     @Req() req,
-    @Body('memberId') memberId: string,
+    @Body('memberId') memberId: string
   ): Promise<void> {
-    return this.chatService.addMemberToConversation(conversationId, req.user.id, memberId);
+    return this.chatService.addMemberToConversation(
+      conversationId,
+      req.user.id,
+      memberId
+    );
   }
 
   @Delete('conversations/:id/members/:memberId')
@@ -92,8 +131,12 @@ export class ChatController {
   async removeMemberFromConversation(
     @Param('id') conversationId: string,
     @Param('memberId') memberId: string,
-    @Req() req,
+    @Req() req
   ): Promise<void> {
-    return this.chatService.removeMemberFromConversation(conversationId, req.user.id, memberId);
+    return this.chatService.removeMemberFromConversation(
+      conversationId,
+      req.user.id,
+      memberId
+    );
   }
 }

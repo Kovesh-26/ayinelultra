@@ -1,11 +1,17 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState } from 'react';
 
-type Track = { id: string; title: string; artist: string; duration: string; src?: string };
+type Track = {
+  id: string;
+  title: string;
+  artist: string;
+  duration: string;
+  src?: string;
+};
 
 const demo: Track[] = [
-  { id: "1", title: "First Light", artist: "Ayinel", duration: "3:24" },
-  { id: "2", title: "City Nights", artist: "Studio Crew", duration: "4:02" },
+  { id: '1', title: 'First Light', artist: 'Ayinel', duration: '3:24' },
+  { id: '2', title: 'City Nights', artist: 'Studio Crew', duration: '4:02' },
 ];
 
 export default function MusicPage() {
@@ -16,7 +22,10 @@ export default function MusicPage() {
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Music</h1>
         <div className="flex gap-2">
-          <input className="rounded-xl border px-3 py-2" placeholder="Search music…" />
+          <input
+            className="rounded-xl border px-3 py-2"
+            placeholder="Search music…"
+          />
           <button className="rounded-xl border px-3 py-2">Filters</button>
         </div>
       </header>
@@ -31,7 +40,9 @@ export default function MusicPage() {
             <button className="rounded-xl border px-3 py-2">Pause</button>
             <button className="rounded-xl border px-3 py-2">Next</button>
             <div className="ml-auto opacity-70 text-sm">
-              {current ? `${current.title} — ${current.artist}` : "Choose a track"}
+              {current
+                ? `${current.title} — ${current.artist}`
+                : 'Choose a track'}
             </div>
           </div>
         </div>
@@ -46,7 +57,9 @@ export default function MusicPage() {
                   className="w-full rounded-xl border px-3 py-2 text-left hover:bg-zinc-50"
                 >
                   <div className="font-medium">{t.title}</div>
-                  <div className="text-xs opacity-70">{t.artist} · {t.duration}</div>
+                  <div className="text-xs opacity-70">
+                    {t.artist} · {t.duration}
+                  </div>
                 </button>
               </li>
             ))}

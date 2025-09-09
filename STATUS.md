@@ -4,7 +4,7 @@
 
 ```
 Node.js: v22.18.0
-pnpm: 10.15.0  
+pnpm: 10.15.0
 npm: 10.9.3
 NestJS CLI: 10.4.9
 Prisma: 5.22.0
@@ -14,6 +14,7 @@ Prisma: 5.22.0
 ## 2) Repo Layout
 
 **Root Directory:**
+
 - `apps/` - Monorepo applications
 - `packages/` - Shared libraries (types, ui)
 - `env.local` - Environment configuration
@@ -21,16 +22,19 @@ Prisma: 5.22.0
 - `docker-compose.dev.yml` - Dev services (PostgreSQL, Redis)
 
 **Key Applications:**
+
 - `apps/api/` - NestJS backend (75 source files)
 - `apps/web/` - Next.js frontend (24 source files)
 
 **Packages:**
+
 - `packages/types/` - TypeScript definitions
 - `packages/ui/` - React component library
 
 ## 3) Package Scripts
 
 **Root package.json:**
+
 ```json
 {
   "scripts": {
@@ -46,6 +50,7 @@ Prisma: 5.22.0
 ```
 
 **apps/web/package.json:**
+
 ```json
 {
   "scripts": {
@@ -57,6 +62,7 @@ Prisma: 5.22.0
 ```
 
 **apps/api/package.json:**
+
 ```json
 {
   "scripts": {
@@ -95,8 +101,9 @@ NEXT_PUBLIC_API_BASE=http://localhost:3001
 ⚠️ **3 pending migrations** need to be applied
 
 **Pending Migrations:**
+
 - 20250829154706_add_studio_branding_fields
-- 20250829154754_add_studio_branding_fields  
+- 20250829154754_add_studio_branding_fields
 - 20250829154938_baseline_sync
 
 **Fix Plan:**
@@ -105,6 +112,7 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 ## 6) Database Check (Postgres)
 
 **Connection Details:**
+
 - Database: `ayineldb`
 - Host: `localhost:5432`
 - User: `ayinelusers`
@@ -117,11 +125,13 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 **Status:** ✅ **RUNNING SUCCESSFULLY**
 
 **Server Info:**
+
 - Port: 3001
 - Environment: development
 - Build: Compiled successfully (0 errors)
 
 **Recent Startup Logs:**
+
 ```
 [Nest] 3048 - 08/29/2025, 4:14:56 PM LOG [NestFactory] Starting Nest application...
 [Nest] 3048 - 08/29/2025, 4:14:56 PM LOG [InstanceLoader] PrismaModule dependencies initialized +97ms
@@ -131,22 +141,24 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 ```
 
 **API Endpoints Working:**
+
 - ✅ `GET /health` - Health check
 - ✅ `GET /studios/alyahshad` - Studio data retrieval
 - ✅ `POST /auth/login` - Authentication
 - ✅ All 20+ mapped routes active
 
 **Sample API Response:**
+
 ```json
 {
   "studio": {
     "id": "6d407c4d-9e2e-4bd0-8814-ea97026dedd6",
-    "name": "Alya Hshad Studio", 
+    "name": "Alya Hshad Studio",
     "handle": "alyahshad",
     "about": "Welcome to my Ayinel Studio! 🎬 Follow for amazing content.",
     "logoUrl": null,
     "bannerUrl": null,
-    "_count": {"followers": 0, "media": 0}
+    "_count": { "followers": 0, "media": 0 }
   },
   "videos": [],
   "products": []
@@ -158,11 +170,13 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 **Status:** ✅ **RUNNING SUCCESSFULLY**
 
 **Server Info:**
+
 - Port: 3002 (custom port)
 - Framework: Next.js 14.2.32
 - Mode: Development with hot reload
 
 **Available Routes:**
+
 - ✅ `/` - Homepage
 - ✅ `/login` - Authentication
 - ✅ `/studio/[slug]` - Public Studio pages
@@ -172,6 +186,7 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 ## 9) Ports & Conflicts
 
 **Active Ports:**
+
 - ✅ `3001` - API Server (NestJS)
 - ✅ `3002` - Web Server (Next.js)
 - ✅ `5432` - PostgreSQL Database
@@ -182,6 +197,7 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 ## 10) Notable Errors / Next Steps
 
 **✅ What's Working:**
+
 - Complete authentication system (login/signup/JWT)
 - Studio creation and management
 - Database with all MVP models
@@ -189,11 +205,13 @@ Run `npx prisma migrate dev` to apply pending migrations safely. These are addit
 - API endpoints returning proper JSON
 
 **⚠️ Minor Issues:**
+
 1. 3 pending Prisma migrations (safe to apply)
 2. OneDrive file locking causing `EPERM` during `prisma generate`
 
 **🎯 Next Actions:**
-1. **Apply migrations**: `npx prisma migrate dev` 
+
+1. **Apply migrations**: `npx prisma migrate dev`
 2. **Complete MVP features**: Store management, Analytics dashboard
 3. **File uploads**: Logo/banner upload functionality
 4. **Production deployment**: Update CORS origins for `ayinel.com`

@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsArray, IsBoolean, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsArray,
+  IsBoolean,
+  IsEnum,
+} from 'class-validator';
 import { Visibility } from '@prisma/client';
 
 export class CreateCollectionDto {

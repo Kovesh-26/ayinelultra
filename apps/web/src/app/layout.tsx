@@ -15,17 +15,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ 
-  children,
-}: { 
-  children: ReactNode 
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={fontClass} suppressHydrationWarning={true}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

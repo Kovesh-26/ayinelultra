@@ -1,5 +1,5 @@
-"use client";
-import { useState, useEffect } from "react";
+'use client';
+import { useState, useEffect } from 'react';
 
 interface CustomizationItem {
   id: string;
@@ -28,7 +28,7 @@ const categories = [
   { name: 'Layouts', count: 32 },
   { name: 'Widgets', count: 28 },
   { name: 'Animations', count: 19 },
-  { name: 'Music', count: 15 }
+  { name: 'Music', count: 15 },
 ];
 
 const types = ['theme', 'layout', 'widget', 'animation', 'music'];
@@ -55,14 +55,14 @@ export default function MarketplacePage() {
           id: '1',
           name: 'CyberDesigner',
           handle: 'cyberdesigner',
-          rating: 4.8
+          rating: 4.8,
         },
         rating: 4.8,
         sales: 156,
         downloads: 234,
         tags: ['cyberpunk', 'neon', 'futuristic'],
         category: 'Themes',
-        createdAt: '2024-01-15'
+        createdAt: '2024-01-15',
       },
       {
         id: '2',
@@ -75,23 +75,29 @@ export default function MarketplacePage() {
           id: '2',
           name: 'MinimalistPro',
           handle: 'minimalistpro',
-          rating: 4.9
+          rating: 4.9,
         },
         rating: 4.9,
         sales: 89,
         downloads: 134,
         tags: ['minimalist', 'grid', 'clean'],
         category: 'Layouts',
-        createdAt: '2024-01-18'
-      }
+        createdAt: '2024-01-18',
+      },
     ]);
   }, []);
 
-  const filteredCustomizations = customizations.filter(item => {
-    if (selectedCategory !== 'All' && item.category !== selectedCategory) return false;
+  const filteredCustomizations = customizations.filter((item) => {
+    if (selectedCategory !== 'All' && item.category !== selectedCategory)
+      return false;
     if (selectedType && item.type !== selectedType) return false;
-    if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-    if (item.price < priceRange.min || item.price > priceRange.max) return false;
+    if (
+      searchQuery &&
+      !item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+      return false;
+    if (item.price < priceRange.min || item.price > priceRange.max)
+      return false;
     return true;
   });
 
@@ -106,15 +112,21 @@ export default function MarketplacePage() {
       case 'sales':
         return b.sales - a.sales;
       default:
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
     }
   });
 
   return (
     <main className="mx-auto max-w-7xl p-4 space-y-6">
       <header className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">Profile Customization Marketplace</h1>
-        <p className="text-lg opacity-70">Discover and sell amazing profile customizations</p>
+        <h1 className="text-3xl font-bold">
+          Profile Customization Marketplace
+        </h1>
+        <p className="text-lg opacity-70">
+          Discover and sell amazing profile customizations
+        </p>
       </header>
 
       {/* Search and Filters */}
@@ -132,8 +144,10 @@ export default function MarketplacePage() {
             onChange={(e) => setSelectedType(e.target.value)}
           >
             <option value="">All Types</option>
-            {types.map(type => (
-              <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+            {types.map((type) => (
+              <option key={type} value={type}>
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </option>
             ))}
           </select>
           <select
@@ -174,7 +188,12 @@ export default function MarketplacePage() {
             placeholder="Min"
             className="w-20 rounded-lg border px-2 py-1 text-sm"
             value={priceRange.min}
-            onChange={(e) => setPriceRange(prev => ({ ...prev, min: Number(e.target.value) }))}
+            onChange={(e) =>
+              setPriceRange((prev) => ({
+                ...prev,
+                min: Number(e.target.value),
+              }))
+            }
           />
           <span className="text-sm">to</span>
           <input
@@ -182,20 +201,29 @@ export default function MarketplacePage() {
             placeholder="Max"
             className="w-20 rounded-lg border px-2 py-1 text-sm"
             value={priceRange.max}
-            onChange={(e) => setPriceRange(prev => ({ ...prev, max: Number(e.target.value) }))}
+            onChange={(e) =>
+              setPriceRange((prev) => ({
+                ...prev,
+                max: Number(e.target.value),
+              }))
+            }
           />
         </div>
       </section>
 
       {/* Results Count */}
       <div className="text-sm opacity-70">
-        Showing {sortedCustomizations.length} of {customizations.length} customizations
+        Showing {sortedCustomizations.length} of {customizations.length}{' '}
+        customizations
       </div>
 
       {/* Customizations Grid */}
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {sortedCustomizations.map((item) => (
-          <article key={item.id} className="rounded-2xl border overflow-hidden hover:shadow-lg transition-shadow">
+          <article
+            key={item.id}
+            className="rounded-2xl border overflow-hidden hover:shadow-lg transition-shadow"
+          >
             <div className="aspect-video bg-gray-100 relative">
               <img
                 src={item.previewUrl}
@@ -206,11 +234,13 @@ export default function MarketplacePage() {
                 ${item.price}
               </div>
             </div>
-            
+
             <div className="p-4 space-y-3">
               <div>
                 <h3 className="font-semibold line-clamp-1">{item.name}</h3>
-                <p className="text-sm opacity-70 line-clamp-2">{item.description}</p>
+                <p className="text-sm opacity-70 line-clamp-2">
+                  {item.description}
+                </p>
               </div>
 
               <div className="flex items-center justify-between text-sm">
@@ -219,7 +249,9 @@ export default function MarketplacePage() {
                   <span>{item.rating}</span>
                   <span className="opacity-70">({item.sales} sales)</span>
                 </div>
-                <span className="text-xs opacity-70 capitalize">{item.type}</span>
+                <span className="text-xs opacity-70 capitalize">
+                  {item.type}
+                </span>
               </div>
 
               <div className="flex items-center gap-2 text-sm">
@@ -257,15 +289,21 @@ export default function MarketplacePage() {
       {sortedCustomizations.length === 0 && (
         <div className="text-center py-12">
           <div className="text-4xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold mb-2">No customizations found</h3>
-          <p className="opacity-70">Try adjusting your search criteria or browse all categories</p>
+          <h3 className="text-xl font-semibold mb-2">
+            No customizations found
+          </h3>
+          <p className="opacity-70">
+            Try adjusting your search criteria or browse all categories
+          </p>
         </div>
       )}
 
       {/* Sell Your Customization */}
       <section className="rounded-2xl border p-6 text-center bg-gradient-to-r from-blue-50 to-purple-50">
         <h2 className="text-2xl font-semibold mb-2">Have a great idea?</h2>
-        <p className="opacity-70 mb-4">Create and sell your own profile customizations to the community</p>
+        <p className="opacity-70 mb-4">
+          Create and sell your own profile customizations to the community
+        </p>
         <button className="rounded-xl bg-blue-500 text-white px-6 py-3 font-medium hover:bg-blue-600 transition-colors">
           Start Selling
         </button>

@@ -35,13 +35,13 @@ export class MonitoringService {
     try {
       // TODO: Implement real performance monitoring
       // This would integrate with tools like New Relic, DataDog, or custom metrics
-      
+
       const metrics: PerformanceMetrics = {
         responseTime: Math.random() * 100 + 50, // 50-150ms
         memoryUsage: process.memoryUsage().heapUsed / 1024 / 1024, // MB
         cpuUsage: Math.random() * 30 + 10, // 10-40%
         activeConnections: Math.floor(Math.random() * 100) + 10, // 10-110
-        errorRate: Math.random() * 2 // 0-2%
+        errorRate: Math.random() * 2, // 0-2%
       };
 
       return metrics;
@@ -58,28 +58,38 @@ export class MonitoringService {
         this.prisma.user.count({
           where: {
             lastLoginAt: {
-              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
-            }
-          }
+              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // Last 7 days
+            },
+          },
         }),
         this.prisma.user.count({
           where: {
             createdAt: {
-              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
-            }
-          }
-        })
+              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // Last 7 days
+            },
+          },
+        }),
       ]);
 
       // Calculate retention rate (simplified)
-      const retentionRate = totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0;
+      const retentionRate =
+        totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0;
 
       // TODO: Implement real user action tracking
       const topUserActions = [
-        { action: 'video_watch', count: Math.floor(Math.random() * 1000) + 500 },
+        {
+          action: 'video_watch',
+          count: Math.floor(Math.random() * 1000) + 500,
+        },
         { action: 'music_play', count: Math.floor(Math.random() * 500) + 200 },
-        { action: 'live_stream_view', count: Math.floor(Math.random() * 300) + 100 },
-        { action: 'profile_update', count: Math.floor(Math.random() * 200) + 50 }
+        {
+          action: 'live_stream_view',
+          count: Math.floor(Math.random() * 300) + 100,
+        },
+        {
+          action: 'profile_update',
+          count: Math.floor(Math.random() * 200) + 50,
+        },
       ];
 
       return {
@@ -87,7 +97,7 @@ export class MonitoringService {
         activeUsers,
         newUsers,
         userRetention: retentionRate,
-        topUserActions
+        topUserActions,
       };
     } catch (error) {
       this.logger.error(`Failed to get user analytics: ${error.message}`);
@@ -100,7 +110,7 @@ export class MonitoringService {
       const [totalVideos, totalMusic, totalLiveStreams] = await Promise.all([
         this.prisma.video.count(),
         this.prisma.musicTrack.count(),
-        this.prisma.liveStream.count()
+        this.prisma.liveStream.count(),
       ]);
 
       // TODO: Implement real analytics from database
@@ -112,7 +122,7 @@ export class MonitoringService {
         totalMusic,
         totalLiveStreams,
         averageWatchTime,
-        engagementRate
+        engagementRate,
       };
     } catch (error) {
       this.logger.error(`Failed to get content analytics: ${error.message}`);
@@ -163,7 +173,7 @@ export class MonitoringService {
         database: 'healthy',
         redis: 'healthy',
         externalServices: 'healthy',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       // Check database connection

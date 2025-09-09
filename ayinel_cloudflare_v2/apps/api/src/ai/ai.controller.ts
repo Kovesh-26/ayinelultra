@@ -1,7 +1,30 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AiService } from './ai.service';
-import { AskAiDto, AiResponseDto, TutorialResponseDto, FeatureGuideResponseDto, CreateAiIntegrationDto, AiIntegrationResponseDto } from '@ayinel/types';
+import {
+  AskAiDto,
+  AiResponseDto,
+  TutorialResponseDto,
+  FeatureGuideResponseDto,
+  CreateAiIntegrationDto,
+  AiIntegrationResponseDto,
+} from '@ayinel/types';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('AI Assistant')
@@ -23,7 +46,10 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get platform tutorials' })
   @ApiResponse({ status: 200, description: 'Tutorials retrieved' })
-  async getTutorials(@Req() req, @Query('feature') feature?: string): Promise<TutorialResponseDto[]> {
+  async getTutorials(
+    @Req() req,
+    @Query('feature') feature?: string
+  ): Promise<TutorialResponseDto[]> {
     return this.aiService.getTutorials(req.user.id, feature);
   }
 
@@ -32,7 +58,10 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Mark tutorial as complete' })
   @ApiResponse({ status: 200, description: 'Tutorial marked complete' })
-  async markTutorialComplete(@Param('id') tutorialId: string, @Req() req): Promise<void> {
+  async markTutorialComplete(
+    @Param('id') tutorialId: string,
+    @Req() req
+  ): Promise<void> {
     return this.aiService.markTutorialComplete(req.user.id, tutorialId);
   }
 
@@ -67,7 +96,10 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create AI integration' })
   @ApiResponse({ status: 201, description: 'AI integration created' })
-  async createAiIntegration(@Req() req, @Body() dto: CreateAiIntegrationDto): Promise<AiIntegrationResponseDto> {
+  async createAiIntegration(
+    @Req() req,
+    @Body() dto: CreateAiIntegrationDto
+  ): Promise<AiIntegrationResponseDto> {
     return this.aiService.createAiIntegration(req.user.id, dto);
   }
 
@@ -85,7 +117,10 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get AI integration by ID' })
   @ApiResponse({ status: 200, description: 'AI integration found' })
-  async getAiIntegration(@Param('id') id: string, @Req() req): Promise<AiIntegrationResponseDto> {
+  async getAiIntegration(
+    @Param('id') id: string,
+    @Req() req
+  ): Promise<AiIntegrationResponseDto> {
     return this.aiService.getAiIntegration(id, req.user.id);
   }
 
@@ -94,7 +129,11 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update AI integration' })
   @ApiResponse({ status: 200, description: 'AI integration updated' })
-  async updateAiIntegration(@Param('id') id: string, @Req() req, @Body() dto: CreateAiIntegrationDto): Promise<AiIntegrationResponseDto> {
+  async updateAiIntegration(
+    @Param('id') id: string,
+    @Req() req,
+    @Body() dto: CreateAiIntegrationDto
+  ): Promise<AiIntegrationResponseDto> {
     return this.aiService.updateAiIntegration(id, req.user.id, dto);
   }
 
@@ -103,7 +142,10 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete AI integration' })
   @ApiResponse({ status: 200, description: 'AI integration deleted' })
-  async deleteAiIntegration(@Param('id') id: string, @Req() req): Promise<void> {
+  async deleteAiIntegration(
+    @Param('id') id: string,
+    @Req() req
+  ): Promise<void> {
     return this.aiService.deleteAiIntegration(id, req.user.id);
   }
 
@@ -112,7 +154,11 @@ export class AiController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Chat with external AI' })
   @ApiResponse({ status: 200, description: 'AI response received' })
-  async chatWithExternalAi(@Param('id') integrationId: string, @Req() req, @Body() dto: AskAiDto): Promise<AiResponseDto> {
+  async chatWithExternalAi(
+    @Param('id') integrationId: string,
+    @Req() req,
+    @Body() dto: AskAiDto
+  ): Promise<AiResponseDto> {
     return this.aiService.chatWithExternalAi(integrationId, req.user.id, dto);
   }
 

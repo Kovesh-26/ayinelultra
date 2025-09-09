@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsEnum, IsBoolean, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsBoolean,
+  IsNumber,
+} from 'class-validator';
 
 export enum ReportReason {
   SPAM = 'SPAM',
@@ -6,14 +12,14 @@ export enum ReportReason {
   HARASSMENT = 'HARASSMENT',
   COPYRIGHT = 'COPYRIGHT',
   VIOLENCE = 'VIOLENCE',
-  OTHER = 'OTHER'
+  OTHER = 'OTHER',
 }
 
 export enum ReportStatus {
   PENDING = 'PENDING',
   REVIEWED = 'REVIEWED',
   RESOLVED = 'RESOLVED',
-  DISMISSED = 'DISMISSED'
+  DISMISSED = 'DISMISSED',
 }
 
 export class CreateReportDto {

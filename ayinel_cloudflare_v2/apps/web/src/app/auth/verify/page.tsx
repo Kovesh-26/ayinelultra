@@ -14,7 +14,7 @@ export default function VerifyPage() {
 
   useEffect(() => {
     const token = searchParams.get('token');
-    
+
     if (!token) {
       setError('No verification token found');
       setIsVerifying(false);
@@ -25,20 +25,19 @@ export default function VerifyPage() {
       try {
         const response = await api.post('/auth/verify', { token });
         const { accessToken, refreshToken, user: userData } = response.data;
-        
+
         // Store tokens
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('user', JSON.stringify(userData));
-        
+
         // Set user data
         setUser(userData);
-        
+
         // Redirect to dashboard or home
         setTimeout(() => {
           router.push('/dashboard');
         }, 2000);
-        
       } catch (error: any) {
         setError(error.response?.data?.message || 'Failed to verify token');
       } finally {
@@ -55,7 +54,9 @@ export default function VerifyPage() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
           <h2 className="text-2xl font-bold text-white mb-2">Verifying...</h2>
-          <p className="text-purple-200">Please wait while we verify your account</p>
+          <p className="text-purple-200">
+            Please wait while we verify your account
+          </p>
         </div>
       </div>
     );
@@ -66,7 +67,9 @@ export default function VerifyPage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <div className="text-red-400 text-6xl mb-4">✗</div>
-          <h2 className="text-2xl font-bold text-white mb-4">Verification Failed</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Verification Failed
+          </h2>
           <p className="text-purple-200 mb-6">{error}</p>
           <Link
             href="/auth/login"
@@ -83,14 +86,17 @@ export default function VerifyPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
         <div className="text-green-400 text-6xl mb-4">✓</div>
-        <h2 className="text-2xl font-bold text-white mb-4">Welcome to Ayinel!</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">
+          Welcome to Ayinel!
+        </h2>
         {user && (
           <p className="text-purple-200 mb-6">
             Welcome back, <strong>{user.displayName}</strong>!
           </p>
         )}
         <p className="text-purple-200 mb-6">
-          Your account has been verified successfully. Redirecting to dashboard...
+          Your account has been verified successfully. Redirecting to
+          dashboard...
         </p>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto"></div>
       </div>

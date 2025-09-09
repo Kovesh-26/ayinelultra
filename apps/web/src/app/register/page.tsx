@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       if (step === 1) {
         // Validate step 1 data
@@ -30,13 +30,17 @@ export default function RegisterPage() {
         setStep(2);
       } else if (step === 2) {
         // Validate step 2 data
-        if (!formData.displayName || !formData.password || !formData.confirmPassword) {
+        if (
+          !formData.displayName ||
+          !formData.password ||
+          !formData.confirmPassword
+        ) {
           throw new Error('Please fill in all required fields');
         }
         if (formData.password !== formData.confirmPassword) {
           throw new Error('Passwords do not match');
         }
-        
+
         // Register user
         await register({
           email: formData.email,
@@ -45,7 +49,7 @@ export default function RegisterPage() {
           displayName: formData.displayName,
           password: formData.password,
         });
-        
+
         setStep(3);
       }
     } catch (error) {
@@ -66,7 +70,10 @@ export default function RegisterPage() {
   const renderStep1 = () => (
     <div className="space-y-6">
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Email address
         </label>
         <input
@@ -83,7 +90,10 @@ export default function RegisterPage() {
       </div>
 
       <div>
-        <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="username"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Username
         </label>
         <input
@@ -100,7 +110,10 @@ export default function RegisterPage() {
       </div>
 
       <div>
-        <label htmlFor="handle" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="handle"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Handle (@username)
         </label>
         <input
@@ -120,7 +133,10 @@ export default function RegisterPage() {
   const renderStep2 = () => (
     <div className="space-y-6">
       <div>
-        <label htmlFor="displayName" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="displayName"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Display Name
         </label>
         <input
@@ -137,7 +153,10 @@ export default function RegisterPage() {
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Password
         </label>
         <input
@@ -154,7 +173,10 @@ export default function RegisterPage() {
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-gray-300 mb-2"
+        >
           Confirm Password
         </label>
         <input
@@ -175,13 +197,27 @@ export default function RegisterPage() {
   const renderStep3 = () => (
     <div className="text-center space-y-6">
       <div className="w-16 h-16 bg-green-500 rounded-full mx-auto flex items-center justify-center">
-        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        <svg
+          className="w-8 h-8 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
         </svg>
       </div>
       <div>
-        <h3 className="text-xl font-semibold text-white mb-2">Welcome to AYINEL!</h3>
-        <p className="text-gray-400">Your account has been created successfully.</p>
+        <h3 className="text-xl font-semibold text-white mb-2">
+          Welcome to AYINEL!
+        </h3>
+        <p className="text-gray-400">
+          Your account has been created successfully.
+        </p>
       </div>
       <div className="space-y-4">
         <Link
@@ -202,19 +238,27 @@ export default function RegisterPage() {
 
   const getStepTitle = () => {
     switch (step) {
-      case 1: return 'Create your account';
-      case 2: return 'Set up your profile';
-      case 3: return 'Welcome to AYINEL!';
-      default: return 'Create your account';
+      case 1:
+        return 'Create your account';
+      case 2:
+        return 'Set up your profile';
+      case 3:
+        return 'Welcome to AYINEL!';
+      default:
+        return 'Create your account';
     }
   };
 
   const getStepDescription = () => {
     switch (step) {
-      case 1: return 'Let\'s get started with your basic information';
-      case 2: return 'Secure your account and personalize your profile';
-      case 3: return 'You\'re all set! Start creating amazing content.';
-      default: return 'Let\'s get started with your basic information';
+      case 1:
+        return "Let's get started with your basic information";
+      case 2:
+        return 'Secure your account and personalize your profile';
+      case 3:
+        return "You're all set! Start creating amazing content.";
+      default:
+        return "Let's get started with your basic information";
     }
   };
 
@@ -226,14 +270,16 @@ export default function RegisterPage() {
           <Link href="/" className="inline-block">
             <h1 className="text-4xl font-bold text-white mb-2">AYINEL</h1>
           </Link>
-          <h2 className="text-2xl font-semibold text-white mb-2">{getStepTitle()}</h2>
+          <h2 className="text-2xl font-semibold text-white mb-2">
+            {getStepTitle()}
+          </h2>
           <p className="text-gray-400">{getStepDescription()}</p>
         </div>
 
         {/* Progress Bar */}
         {step < 3 && (
           <div className="w-full bg-gray-700 rounded-full h-2">
-            <div 
+            <div
               className="bg-gradient-to-r from-purple-600 to-pink-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${(step / 2) * 100}%` }}
             ></div>
@@ -256,10 +302,14 @@ export default function RegisterPage() {
                 {isLoading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    {step === 1 ? 'Creating account...' : 'Setting up profile...'}
+                    {step === 1
+                      ? 'Creating account...'
+                      : 'Setting up profile...'}
                   </div>
+                ) : step === 1 ? (
+                  'Continue'
                 ) : (
-                  step === 1 ? 'Continue' : 'Create Account'
+                  'Create Account'
                 )}
               </button>
             </form>
@@ -273,7 +323,10 @@ export default function RegisterPage() {
           <div className="text-center">
             <p className="text-gray-400">
               Already have an account?{' '}
-              <Link href="/login" className="text-purple-400 hover:text-purple-300 transition">
+              <Link
+                href="/login"
+                className="text-purple-400 hover:text-purple-300 transition"
+              >
                 Sign in
               </Link>
             </p>

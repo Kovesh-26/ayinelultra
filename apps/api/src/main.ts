@@ -20,11 +20,13 @@ async function bootstrap() {
   });
 
   // Global validation pipe
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    })
+  );
 
   // Global rate limiting
   app.useGlobalGuards(new CustomThrottlerGuard());
@@ -34,7 +36,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
-  
+
   console.log(`🚀 AYINEL API server running on port ${port}`);
   console.log(`📚 API Documentation: http://localhost:${port}/api/v1/docs`);
 }

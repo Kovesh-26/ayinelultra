@@ -1,11 +1,13 @@
 # 📹 MEDIA PIPELINE IMPLEMENTATION TODO
 
 ## 🎯 Overview
+
 Implement Cloudflare Stream or Mux integration for video uploads, processing, and delivery.
 
 ## 🔧 Required Endpoints
 
 ### 1. Direct Upload Endpoint
+
 ```typescript
 POST /api/v1/media/upload/direct
 {
@@ -28,6 +30,7 @@ Response:
 ```
 
 ### 2. Upload Webhook Handler
+
 ```typescript
 POST /api/v1/media/webhook/upload-complete
 {
@@ -40,6 +43,7 @@ POST /api/v1/media/webhook/upload-complete
 ```
 
 ### 3. Video Processing Status
+
 ```typescript
 GET /api/v1/media/status/:playbackId
 {
@@ -85,6 +89,7 @@ enum MediaStatus {
 ## 🚀 Implementation Steps
 
 1. **Install Dependencies**
+
    ```bash
    pnpm add @cloudflare/stream-client mux
    ```

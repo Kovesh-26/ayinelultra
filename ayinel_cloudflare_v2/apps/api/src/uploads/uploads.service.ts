@@ -1,9 +1,14 @@
-import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { 
-  UploadResponseDto, 
+import {
+  UploadResponseDto,
   UploadStatusResponseDto,
-  CreateUploadDto 
+  CreateUploadDto,
 } from '@ayinel/types';
 import * as crypto from 'crypto';
 import * as path from 'path';
@@ -16,7 +21,7 @@ export class UploadsService {
   async uploadVideo(
     file: Express.Multer.File,
     userId: string,
-    dto: CreateUploadDto,
+    dto: CreateUploadDto
   ): Promise<UploadResponseDto> {
     if (!file) {
       throw new BadRequestException('No file uploaded');
@@ -39,7 +44,9 @@ export class UploadsService {
     // Validate file size (max 500MB)
     const maxSize = 500 * 1024 * 1024; // 500MB
     if (file.size > maxSize) {
-      throw new BadRequestException('File size too large. Maximum size is 500MB');
+      throw new BadRequestException(
+        'File size too large. Maximum size is 500MB'
+      );
     }
 
     // Generate unique filename
@@ -103,14 +110,19 @@ export class UploadsService {
   async uploadImage(
     file: Express.Multer.File,
     userId: string,
-    type: 'AVATAR' | 'BANNER' | 'STUDIO_BANNER',
+    type: 'AVATAR' | 'BANNER' | 'STUDIO_BANNER'
   ): Promise<UploadResponseDto> {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
 
     // Validate file type
-    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const allowedImageTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/gif',
+    ];
     if (!allowedImageTypes.includes(file.mimetype)) {
       throw new BadRequestException('Invalid image file type');
     }
@@ -118,7 +130,9 @@ export class UploadsService {
     // Validate file size (max 10MB for images)
     const maxSize = 10 * 1024 * 1024; // 10MB
     if (file.size > maxSize) {
-      throw new BadRequestException('File size too large. Maximum size is 10MB');
+      throw new BadRequestException(
+        'File size too large. Maximum size is 10MB'
+      );
     }
 
     // Generate unique filename
@@ -142,7 +156,12 @@ export class UploadsService {
 
     try {
       // Save file to disk
-      const uploadDir = path.join(process.cwd(), 'uploads', 'images', type.toLowerCase());
+      const uploadDir = path.join(
+        process.cwd(),
+        'uploads',
+        'images',
+        type.toLowerCase()
+      );
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
@@ -173,7 +192,7 @@ export class UploadsService {
   async uploadThumbnail(
     file: Express.Multer.File,
     userId: string,
-    videoId: string,
+    videoId: string
   ): Promise<UploadResponseDto> {
     if (!file) {
       throw new BadRequestException('No file uploaded');
@@ -185,7 +204,9 @@ export class UploadsService {
     });
 
     if (!video) {
-      throw new ForbiddenException('You do not have permission to upload thumbnails for this video');
+      throw new ForbiddenException(
+        'You do not have permission to upload thumbnails for this video'
+      );
     }
 
     // Validate file type
@@ -272,7 +293,7 @@ export class UploadsService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return uploads.map(upload => this.mapToUploadResponse(upload));
+    return uploads.map((upload) => this.mapToUploadResponse(upload));
   }
 
   async deleteUpload(id: string, userId: string): Promise<void> {
@@ -281,7 +302,9 @@ export class UploadsService {
     });
 
     if (!upload) {
-      throw new NotFoundException('Upload not found or you do not have permission to delete it');
+      throw new NotFoundException(
+        'Upload not found or you do not have permission to delete it'
+      );
     }
 
     // Delete file from disk
@@ -297,7 +320,7 @@ export class UploadsService {
 
   async getPresignedUrl(
     userId: string,
-    dto: { fileName: string; fileType: string; fileSize: number },
+    dto: { fileName: string; fileType: string; fileSize: number }
   ) {
     // In a real implementation, this would generate a presigned URL for cloud storage
     const fileId = crypto.randomUUID();
@@ -367,7 +390,9 @@ export class UploadsService {
     });
 
     if (!upload) {
-      throw new NotFoundException('Upload not found or you do not have permission to retry it');
+      throw new NotFoundException(
+        'Upload not found or you do not have permission to retry it'
+      );
     }
 
     if (upload.status !== 'FAILED') {
@@ -392,7 +417,10 @@ export class UploadsService {
     return this.mapToUploadResponse(updatedUpload);
   }
 
-  private async processVideo(uploadId: string, filePath: string): Promise<void> {
+  private async processVideo(
+    uploadId: string,
+    filePath: string
+  ): Promise<void> {
     // Update status to processing
     await this.prisma.upload.update({
       where: { id: uploadId },
@@ -413,8 +441,8 @@ export class UploadsService {
     ];
 
     for (const step of processingSteps) {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate processing time
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate processing time
+
       await this.prisma.upload.update({
         where: { id: uploadId },
         data: {

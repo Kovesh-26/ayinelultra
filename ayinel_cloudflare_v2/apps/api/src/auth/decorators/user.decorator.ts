@@ -6,5 +6,5 @@ export const User = createParamDecorator(
     const user = request.user;
 
     return data ? user?.[data] : user;
-  },
+  }
 );

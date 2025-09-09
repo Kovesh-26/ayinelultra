@@ -1,6 +1,15 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateKidProfileDto, UpdateKidSettingsDto, GuardianConsentDto, AgeVerificationDto } from './dto/kidzone.dto';
+import {
+  CreateKidProfileDto,
+  UpdateKidSettingsDto,
+  GuardianConsentDto,
+  AgeVerificationDto,
+} from './dto/kidzone.dto';
 import { ContentRating, KidAgeGroup } from '@prisma/client';
 
 @Injectable()
@@ -12,20 +21,20 @@ export class KidzoneService {
     const where: any = {
       isKidSafe: true,
       contentRating: {
-        in: [ContentRating.G, ContentRating.PG, ContentRating.PG13]
+        in: [ContentRating.G, ContentRating.PG, ContentRating.PG13],
       },
-      visibility: 'PUBLIC'
+      visibility: 'PUBLIC',
     };
 
     // If user has kid settings, apply additional filters
     if (userId) {
       const kidSettings = await this.prisma.kidSettings.findUnique({
-        where: { userId }
+        where: { userId },
       });
 
       if (kidSettings) {
         where.contentRating = {
-          in: this.getContentRatingsForMaxRating(kidSettings.maxRating)
+          in: this.getContentRatingsForMaxRating(kidSettings.maxRating),
         };
       }
     }
@@ -38,28 +47,28 @@ export class KidzoneService {
             id: true,
             username: true,
             displayName: true,
-            avatarUrl: true
-          }
+            avatarUrl: true,
+          },
         },
         studio: {
           select: {
             id: true,
             name: true,
-            isFamilyFriendly: true
-          }
-        }
+            isFamilyFriendly: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
+        createdAt: 'desc',
       },
-      take: 50
+      take: 50,
     });
 
     return {
-      videos: videos.filter(video => 
-        !video.studio || video.studio.isFamilyFriendly
+      videos: videos.filter(
+        (video) => !video.studio || video.studio.isFamilyFriendly
       ),
-      total: videos.length
+      total: videos.length,
     };
   }
 
@@ -68,7 +77,7 @@ export class KidzoneService {
     return this.prisma.studio.findMany({
       where: {
         isFamilyFriendly: true,
-        kidzoneVisible: true
+        kidzoneVisible: true,
       },
       include: {
         owner: {
@@ -76,8 +85,8 @@ export class KidzoneService {
             id: true,
             username: true,
             displayName: true,
-            avatarUrl: true
-          }
+            avatarUrl: true,
+          },
         },
         _count: {
           select: {
@@ -85,16 +94,16 @@ export class KidzoneService {
               where: {
                 isKidSafe: true,
                 contentRating: {
-                  in: [ContentRating.G, ContentRating.PG, ContentRating.PG13]
-                }
-              }
-            }
-          }
-        }
+                  in: [ContentRating.G, ContentRating.PG, ContentRating.PG13],
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -103,8 +112,8 @@ export class KidzoneService {
     return this.prisma.kidProfile.create({
       data: {
         guardianId,
-        ...dto
-      }
+        ...dto,
+      },
     });
   }
 
@@ -112,7 +121,7 @@ export class KidzoneService {
   async getKidProfiles(guardianId: string) {
     return this.prisma.kidProfile.findMany({
       where: { guardianId },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
   }
 
@@ -123,15 +132,15 @@ export class KidzoneService {
       update: dto,
       create: {
         userId,
-        ...dto
-      }
+        ...dto,
+      },
     });
   }
 
   // Get kid settings
   async getKidSettings(userId: string) {
     return this.prisma.kidSettings.findUnique({
-      where: { userId }
+      where: { userId },
     });
   }
 
@@ -141,8 +150,11 @@ export class KidzoneService {
     const today = new Date();
     const age = today.getFullYear() - dateOfBirth.getFullYear();
     const monthDiff = today.getMonth() - dateOfBirth.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())
+    ) {
       // Birthday hasn't occurred this year
       age--;
     }
@@ -154,8 +166,8 @@ export class KidzoneService {
       where: { id: userId },
       data: {
         dateOfBirth,
-        isMinor
-      }
+        isMinor,
+      },
     });
 
     // If minor, create default kid settings
@@ -165,14 +177,14 @@ export class KidzoneService {
         maxRating: ContentRating.PG13,
         chatEnabled: false,
         dmsEnabled: false,
-        tuneInAllowed: true
+        tuneInAllowed: true,
       });
     }
 
     return {
       user,
       isMinor,
-      age
+      age,
     };
   }
 
@@ -182,14 +194,14 @@ export class KidzoneService {
     // 1. Send email to guardian
     // 2. Generate verification token
     // 3. Store pending consent request
-    
+
     // For now, we'll just update the user with guardian info
     return this.prisma.user.update({
       where: { id: userId },
       data: {
         guardianEmail: dto.guardianEmail,
-        isMinor: true
-      }
+        isMinor: true,
+      },
     });
   }
 
@@ -200,42 +212,59 @@ export class KidzoneService {
     return this.prisma.user.update({
       where: { id: userId },
       data: {
-        guardianVerifiedAt: new Date()
-      }
+        guardianVerifiedAt: new Date(),
+      },
     });
   }
 
   // Helper method to get content ratings based on max rating
-  private getContentRatingsForMaxRating(maxRating: ContentRating): ContentRating[] {
-    const ratings = [ContentRating.G, ContentRating.PG, ContentRating.PG13, ContentRating.R, ContentRating.NC17];
+  private getContentRatingsForMaxRating(
+    maxRating: ContentRating
+  ): ContentRating[] {
+    const ratings = [
+      ContentRating.G,
+      ContentRating.PG,
+      ContentRating.PG13,
+      ContentRating.R,
+      ContentRating.NC17,
+    ];
     const maxIndex = ratings.indexOf(maxRating);
     return ratings.slice(0, maxIndex + 1);
   }
 
   // Check if content is safe for kid
-  async isContentSafeForKid(videoId: string, userId?: string): Promise<boolean> {
+  async isContentSafeForKid(
+    videoId: string,
+    userId?: string
+  ): Promise<boolean> {
     const video = await this.prisma.video.findUnique({
       where: { id: videoId },
       include: {
-        studio: true
-      }
+        studio: true,
+      },
     });
 
     if (!video) return false;
 
     // Basic safety checks
     if (!video.isKidSafe) return false;
-    if (video.contentRating === ContentRating.R || video.contentRating === ContentRating.NC17) return false;
+    if (
+      video.contentRating === ContentRating.R ||
+      video.contentRating === ContentRating.NC17
+    )
+      return false;
     if (video.studio && !video.studio.isFamilyFriendly) return false;
 
     // If user has kid settings, apply additional filters
     if (userId) {
       const kidSettings = await this.prisma.kidSettings.findUnique({
-        where: { userId }
+        where: { userId },
       });
 
       if (kidSettings) {
-        const allowedRatings = this.getContentRatingsForMaxRating(kidSettings.maxRating);
+        const allowedRatings = this.getContentRatingsForMaxRating(
+          kidSettings.maxRating
+        );
         if (!allowedRatings.includes(video.contentRating)) return false;
       }
     }

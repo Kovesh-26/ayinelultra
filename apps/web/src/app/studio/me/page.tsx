@@ -9,26 +9,47 @@ export default function CreatorStudioPage() {
     { label: 'Total Views', value: '1.2M', change: '+12%', icon: '👁️' },
     { label: 'Crew Members', value: '2.4K', change: '+8%', icon: '👥' },
     { label: 'Videos', value: '45', change: '+3', icon: '🎬' },
-    { label: 'Revenue', value: '$2.8K', change: '+15%', icon: '💰' }
+    { label: 'Revenue', value: '$2.8K', change: '+15%', icon: '💰' },
   ];
 
   const recentVideos = [
-    { id: '1', title: 'Building a Next-Gen Studio', views: '12.5K', status: 'Published', date: '2 hours ago' },
-    { id: '2', title: 'Live Coding Session', views: '8.2K', status: 'Published', date: '1 day ago' },
-    { id: '3', title: 'Tech Review: Latest Gadgets', views: '15.7K', status: 'Published', date: '3 days ago' }
+    {
+      id: '1',
+      title: 'Building a Next-Gen Studio',
+      views: '12.5K',
+      status: 'Published',
+      date: '2 hours ago',
+    },
+    {
+      id: '2',
+      title: 'Live Coding Session',
+      views: '8.2K',
+      status: 'Published',
+      date: '1 day ago',
+    },
+    {
+      id: '3',
+      title: 'Tech Review: Latest Gadgets',
+      views: '15.7K',
+      status: 'Published',
+      date: '3 days ago',
+    },
   ];
 
   return (
     <CreatorShell>
-      <PageHeader 
-        title="Creator Studio" 
-        subtitle="Manage your content, audience, and monetization" 
+      <PageHeader
+        title="Creator Studio"
+        subtitle="Manage your content, audience, and monetization"
       />
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <div
+            key={index}
+            className="bg-gray-800 rounded-lg p-6 border border-gray-700"
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-400">{stat.label}</p>
@@ -68,7 +89,9 @@ export default function CreatorStudioPage() {
               {recentVideos.map((video) => (
                 <tr key={video.id} className="hover:bg-gray-700">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-white">{video.title}</div>
+                    <div className="text-sm font-medium text-white">
+                      {video.title}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-300">{video.views}</div>
@@ -91,7 +114,9 @@ export default function CreatorStudioPage() {
       {/* Quick Actions */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-          <h4 className="text-lg font-semibold text-white mb-4">Quick Actions</h4>
+          <h4 className="text-lg font-semibold text-white mb-4">
+            Quick Actions
+          </h4>
           <div className="space-y-3">
             <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition">
               Upload Video
@@ -124,7 +149,9 @@ export default function CreatorStudioPage() {
         </div>
 
         <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-          <h4 className="text-lg font-semibold text-white mb-4">Notifications</h4>
+          <h4 className="text-lg font-semibold text-white mb-4">
+            Notifications
+          </h4>
           <div className="space-y-3">
             <div className="text-sm text-gray-300">
               <p>🎉 New Crew member joined!</p>

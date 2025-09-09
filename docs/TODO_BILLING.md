@@ -1,11 +1,13 @@
 # 💳 BILLING & PAYMENT IMPLEMENTATION TODO
 
 ## 🎯 Overview
+
 Implement Stripe Connect integration for creator monetization, subscriptions, and payment processing.
 
 ## 🔧 Required Endpoints
 
 ### 1. Stripe Connect Onboarding
+
 ```typescript
 POST /api/v1/billing/connect/onboard
 {
@@ -23,6 +25,7 @@ Response:
 ```
 
 ### 2. Create Payment Intent
+
 ```typescript
 POST /api/v1/billing/payment-intent
 {
@@ -43,6 +46,7 @@ Response:
 ```
 
 ### 3. Create Subscription
+
 ```typescript
 POST /api/v1/billing/subscriptions
 {
@@ -63,6 +67,7 @@ Response:
 ```
 
 ### 4. Webhook Handler
+
 ```typescript
 POST /api/v1/billing/webhooks/stripe
 {
@@ -151,6 +156,7 @@ enum SubscriptionStatus {
 ## 🚀 Implementation Steps
 
 1. **Install Dependencies**
+
    ```bash
    pnpm add stripe @types/stripe
    ```

@@ -4,6 +4,7 @@
 
 1. Install Docker Desktop for Windows
 2. Run Redis in a container:
+
 ```bash
 docker run -d --name redis-ayinel -p 6379:6379 redis:alpine
 ```
@@ -13,6 +14,7 @@ docker run -d --name redis-ayinel -p 6379:6379 redis:alpine
 1. Install WSL2 if not already installed
 2. Install Ubuntu or another Linux distribution
 3. In WSL terminal:
+
 ```bash
 sudo apt update
 sudo apt install redis-server
@@ -28,6 +30,7 @@ sudo service redis-server start
 ## Testing Redis Connection
 
 Once Redis is running, test the connection:
+
 ```bash
 # In WSL or Git Bash
 redis-cli ping

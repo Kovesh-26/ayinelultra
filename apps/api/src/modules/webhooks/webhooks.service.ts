@@ -94,8 +94,8 @@ export class WebhooksService {
     // Find video by Mux asset ID
     const video = await this.prisma.video.findFirst({
       where: {
-        playbackId: assetId
-      }
+        playbackId: assetId,
+      },
     });
 
     if (!video) {
@@ -115,8 +115,8 @@ export class WebhooksService {
         dashUrl: dashUrl ? `https://stream.mux.com/${dashUrl}.mpd` : null,
         thumbUrl,
         // Set as published if it was pending
-        publishedAt: video.publishedAt || new Date()
-      }
+        publishedAt: video.publishedAt || new Date(),
+      },
     });
 
     this.logger.log(`Updated video ${video.id} with Mux URLs`);
@@ -127,8 +127,8 @@ export class WebhooksService {
 
     const video = await this.prisma.video.findFirst({
       where: {
-        playbackId: assetId
-      }
+        playbackId: assetId,
+      },
     });
 
     if (!video) {
@@ -142,7 +142,7 @@ export class WebhooksService {
       data: {
         // You might want to add an error field to the Video model
         // error: JSON.stringify(errors)
-      }
+      },
     });
 
     this.logger.error(`Video ${video.id} processing failed:`, errors);
@@ -153,8 +153,8 @@ export class WebhooksService {
 
     const video = await this.prisma.video.findFirst({
       where: {
-        playbackId: assetId
-      }
+        playbackId: assetId,
+      },
     });
 
     if (!video) {
@@ -168,7 +168,7 @@ export class WebhooksService {
       data: {
         // You might want to add a status field
         // status: 'DELETED'
-      }
+      },
     });
 
     this.logger.log(`Marked video ${video.id} as deleted`);
@@ -179,8 +179,8 @@ export class WebhooksService {
 
     const video = await this.prisma.video.findFirst({
       where: {
-        playbackId: uid
-      }
+        playbackId: uid,
+      },
     });
 
     if (!video) {
@@ -194,8 +194,8 @@ export class WebhooksService {
         hlsUrl: `https://customer-${process.env.CF_STREAM_ACCOUNT_ID}.cloudflarestream.com/${uid}/manifest/video.m3u8`,
         dashUrl: `https://customer-${process.env.CF_STREAM_ACCOUNT_ID}.cloudflarestream.com/${uid}/manifest/video.mpd`,
         thumbUrl: thumbnail,
-        publishedAt: video.publishedAt || new Date()
-      }
+        publishedAt: video.publishedAt || new Date(),
+      },
     });
 
     this.logger.log(`Updated video ${video.id} with Cloudflare Stream URLs`);
@@ -206,8 +206,8 @@ export class WebhooksService {
 
     const video = await this.prisma.video.findFirst({
       where: {
-        playbackId: uid
-      }
+        playbackId: uid,
+      },
     });
 
     if (!video) {
@@ -220,17 +220,19 @@ export class WebhooksService {
 
   private async handleSubscriptionCreated(data: any) {
     const { object: subscription } = data;
-    
+
     // Find user by Stripe customer ID
     const user = await this.prisma.user.findFirst({
       where: {
         // You'll need to add stripeCustomerId field to User model
         // stripeCustomerId: subscription.customer
-      }
+      },
     });
 
     if (!user) {
-      this.logger.warn(`User not found for Stripe customer: ${subscription.customer}`);
+      this.logger.warn(
+        `User not found for Stripe customer: ${subscription.customer}`
+      );
       return;
     }
 

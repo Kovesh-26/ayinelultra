@@ -14,7 +14,7 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const type = searchParams.get('type') || 'all';
-  
+
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState(type);
@@ -28,37 +28,58 @@ export default function SearchPage() {
 
   const performSearch = async (searchQuery: string, searchType: string) => {
     setIsLoading(true);
-    
+
     try {
       let searchResults: SearchResult[] = [];
-      
+
       if (searchType === 'all' || searchType === 'video') {
         try {
-          const videoResponse = await api.get(`${endpoints.videos.list}?search=${encodeURIComponent(searchQuery)}`);
-          searchResults.push(...videoResponse.data.map((video: any) => ({ type: 'video', data: video })));
+          const videoResponse = await api.get(
+            `${endpoints.videos.list}?search=${encodeURIComponent(searchQuery)}`
+          );
+          searchResults.push(
+            ...videoResponse.data.map((video: any) => ({
+              type: 'video',
+              data: video,
+            }))
+          );
         } catch (error) {
           console.error('Video search failed:', error);
         }
       }
-      
+
       if (searchType === 'all' || searchType === 'studio') {
         try {
-          const studioResponse = await api.get(`${endpoints.studios.list}?search=${encodeURIComponent(searchQuery)}`);
-          searchResults.push(...studioResponse.data.map((studio: any) => ({ type: 'studio', data: studio })));
+          const studioResponse = await api.get(
+            `${endpoints.studios.list}?search=${encodeURIComponent(searchQuery)}`
+          );
+          searchResults.push(
+            ...studioResponse.data.map((studio: any) => ({
+              type: 'studio',
+              data: studio,
+            }))
+          );
         } catch (error) {
           console.error('Studio search failed:', error);
         }
       }
-      
+
       if (searchType === 'all' || searchType === 'user') {
         try {
-          const userResponse = await api.get(`/users/search?q=${encodeURIComponent(searchQuery)}`);
-          searchResults.push(...userResponse.data.map((user: any) => ({ type: 'user', data: user })));
+          const userResponse = await api.get(
+            `/users/search?q=${encodeURIComponent(searchQuery)}`
+          );
+          searchResults.push(
+            ...userResponse.data.map((user: any) => ({
+              type: 'user',
+              data: user,
+            }))
+          );
         } catch (error) {
           console.error('User search failed:', error);
         }
       }
-      
+
       setResults(searchResults);
     } catch (error) {
       console.error('Search failed:', error);
@@ -109,8 +130,18 @@ export default function SearchPage() {
           />
         ) : (
           <div className="w-full h-32 bg-white/10 flex items-center justify-center">
-            <svg className="w-12 h-12 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            <svg
+              className="w-12 h-12 text-white/30"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+              />
             </svg>
           </div>
         )}
@@ -118,9 +149,11 @@ export default function SearchPage() {
           {formatDuration(video.duration)}
         </div>
       </div>
-      
+
       <div className="p-4">
-        <h3 className="font-medium text-white mb-2 line-clamp-2">{video.title}</h3>
+        <h3 className="font-medium text-white mb-2 line-clamp-2">
+          {video.title}
+        </h3>
         <div className="flex items-center space-x-4 text-sm text-purple-200">
           <span>{video.views?.toLocaleString() || 0} views</span>
           <span>{video.boosts?.toLocaleString() || 0} boosts</span>
@@ -150,14 +183,18 @@ export default function SearchPage() {
           />
         ) : (
           <div className="w-full h-32 bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center">
-            <span className="text-2xl font-bold text-white">{studio.name.charAt(0)}</span>
+            <span className="text-2xl font-bold text-white">
+              {studio.name.charAt(0)}
+            </span>
           </div>
         )}
       </div>
-      
+
       <div className="p-4">
         <h3 className="font-medium text-white mb-2">{studio.name}</h3>
-        <p className="text-sm text-purple-200 mb-3 line-clamp-2">{studio.about}</p>
+        <p className="text-sm text-purple-200 mb-3 line-clamp-2">
+          {studio.about}
+        </p>
         <div className="flex items-center space-x-4 text-sm text-purple-300">
           <span>{studio.videoCount || 0} videos</span>
           <span>{studio.crewCount || 0} crew members</span>
@@ -181,15 +218,19 @@ export default function SearchPage() {
           />
         ) : (
           <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-xl font-bold text-white">{user.displayName?.charAt(0)}</span>
+            <span className="text-xl font-bold text-white">
+              {user.displayName?.charAt(0)}
+            </span>
           </div>
         )}
-        
+
         <div className="flex-1">
           <h3 className="font-medium text-white">{user.displayName}</h3>
           <p className="text-sm text-purple-200">@{user.username}</p>
           {user.bio && (
-            <p className="text-sm text-purple-300 mt-1 line-clamp-2">{user.bio}</p>
+            <p className="text-sm text-purple-300 mt-1 line-clamp-2">
+              {user.bio}
+            </p>
           )}
         </div>
       </div>
@@ -205,7 +246,7 @@ export default function SearchPage() {
             <Link href="/" className="text-3xl font-bold text-white">
               Ayinel
             </Link>
-            
+
             <div className="flex items-center space-x-4">
               <Link
                 href="/dashboard"
@@ -246,9 +287,21 @@ export default function SearchPage() {
             <div className="flex space-x-1 bg-white/10 rounded-lg p-1 max-w-md mx-auto">
               {[
                 { id: 'all', label: 'All', count: results.length },
-                { id: 'video', label: 'Videos', count: results.filter(r => r.type === 'video').length },
-                { id: 'studio', label: 'Studios', count: results.filter(r => r.type === 'studio').length },
-                { id: 'user', label: 'Users', count: results.filter(r => r.type === 'user').length },
+                {
+                  id: 'video',
+                  label: 'Videos',
+                  count: results.filter((r) => r.type === 'video').length,
+                },
+                {
+                  id: 'studio',
+                  label: 'Studios',
+                  count: results.filter((r) => r.type === 'studio').length,
+                },
+                {
+                  id: 'user',
+                  label: 'Users',
+                  count: results.filter((r) => r.type === 'user').length,
+                },
               ].map((filter) => (
                 <button
                   key={filter.id}
@@ -259,7 +312,11 @@ export default function SearchPage() {
                     if (filter.id !== 'all') {
                       params.append('type', filter.id);
                     }
-                    window.history.pushState({}, '', `/search?${params.toString()}`);
+                    window.history.pushState(
+                      {},
+                      '',
+                      `/search?${params.toString()}`
+                    );
                     performSearch(query, filter.id);
                   }}
                   className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-md text-sm font-medium transition-all duration-300 ${
@@ -287,7 +344,9 @@ export default function SearchPage() {
         ) : query && results.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-purple-200 text-6xl mb-4">🔍</div>
-            <h2 className="text-2xl font-bold text-white mb-2">No results found</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              No results found
+            </h2>
             <p className="text-purple-200 mb-6">
               Try adjusting your search terms or check the spelling.
             </p>
@@ -307,7 +366,7 @@ export default function SearchPage() {
                 Results for "{query}" ({results.length} found)
               </h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {results.map((result) => {
                 switch (result.type) {
@@ -326,9 +385,12 @@ export default function SearchPage() {
         ) : (
           <div className="text-center py-12">
             <div className="text-purple-200 text-6xl mb-4">🔍</div>
-            <h2 className="text-2xl font-bold text-white mb-2">Start searching</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Start searching
+            </h2>
             <p className="text-purple-200">
-              Enter a search term above to find videos, studios, and users on Ayinel.
+              Enter a search term above to find videos, studios, and users on
+              Ayinel.
             </p>
           </div>
         )}

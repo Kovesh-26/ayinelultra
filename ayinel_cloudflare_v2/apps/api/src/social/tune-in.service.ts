@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { TuneInDto, TuneInResponseDto } from '@ayinel/types';
 
@@ -6,7 +10,10 @@ import { TuneInDto, TuneInResponseDto } from '@ayinel/types';
 export class TuneInService {
   constructor(private prisma: PrismaService) {}
 
-  async tuneInToUser(followerId: string, dto: TuneInDto): Promise<TuneInResponseDto> {
+  async tuneInToUser(
+    followerId: string,
+    dto: TuneInDto
+  ): Promise<TuneInResponseDto> {
     if (followerId === dto.followedId) {
       throw new BadRequestException('You cannot tune in to yourself');
     }
@@ -82,7 +89,7 @@ export class TuneInService {
       },
     });
 
-    return tuneIns.map(tuneIn => ({
+    return tuneIns.map((tuneIn) => ({
       id: tuneIn.id,
       followerId: tuneIn.followerId,
       followedId: tuneIn.followedId,
@@ -104,7 +111,7 @@ export class TuneInService {
       },
     });
 
-    return tuneIns.map(tuneIn => ({
+    return tuneIns.map((tuneIn) => ({
       id: tuneIn.id,
       followerId: tuneIn.followerId,
       followedId: tuneIn.followedId,
@@ -125,7 +132,9 @@ export class TuneInService {
     return !!tuneIn;
   }
 
-  async getTuneInCount(userId: string): Promise<{ following: number; crew: number }> {
+  async getTuneInCount(
+    userId: string
+  ): Promise<{ following: number; crew: number }> {
     const [following, crew] = await Promise.all([
       this.prisma.tuneIn.count({
         where: { followerId: userId },

@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import { authAPI } from '@/lib/api';
 
 interface User {
@@ -70,7 +76,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authAPI.login({ email, password });
       const { user, accessToken } = response.data;
-      
+
       localStorage.setItem('accessToken', accessToken);
       setUser(user);
     } catch (error) {
@@ -89,7 +95,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authAPI.register(data);
       const { user, accessToken } = response.data;
-      
+
       localStorage.setItem('accessToken', accessToken);
       setUser(user);
     } catch (error) {
@@ -117,9 +123,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     updateUser,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

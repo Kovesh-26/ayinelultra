@@ -1,5 +1,19 @@
-import { Controller, Post, Get, Put, Body, Param, UseGuards, Request, Query } from '@nestjs/common';
-import { BillingService, CreatePaymentIntentDto, CreateSubscriptionDto } from './billing.service';
+import {
+  Controller,
+  Post,
+  Get,
+  Put,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
+import {
+  BillingService,
+  CreatePaymentIntentDto,
+  CreateSubscriptionDto,
+} from './billing.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('api/v1/billing')
@@ -8,7 +22,10 @@ export class BillingController {
   constructor(private readonly billingService: BillingService) {}
 
   @Post('payment-intent')
-  async createPaymentIntent(@Request() req, @Body() dto: CreatePaymentIntentDto) {
+  async createPaymentIntent(
+    @Request() req,
+    @Body() dto: CreatePaymentIntentDto
+  ) {
     const userId = req.user.id;
     return this.billingService.createPaymentIntent(dto);
   }
@@ -37,7 +54,7 @@ export class BillingController {
   ) {
     // TODO: Verify webhook signatures for security
     // This endpoint handles webhooks from payment gateways
-    
+
     try {
       switch (gateway) {
         case 'stripe':

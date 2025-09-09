@@ -29,8 +29,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleConnection(client: Socket) {
     try {
       // Extract user ID from JWT token (you'll need to implement JWT verification)
-      const token = client.handshake.auth.token || client.handshake.headers.authorization;
-      
+      const token =
+        client.handshake.auth.token || client.handshake.headers.authorization;
+
       if (!token) {
         client.disconnect();
         return;
@@ -39,9 +40,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       // TODO: Verify JWT token and extract user ID
       // For now, we'll use a placeholder
       const userId = 'user-id-from-token';
-      
+
       this.connectedUsers.set(client.id, userId);
-      
+
       console.log(`User ${userId} connected with socket ${client.id}`);
     } catch (error) {
       console.error('Connection error:', error);
@@ -71,13 +72,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       await this.chatService.joinRoom(data.roomId, userId);
       client.join(data.roomId);
-      
+
       client.emit('joined_room', { roomId: data.roomId });
-      
+
       // Notify others in the room
-      client.to(data.roomId).emit('user_joined', { 
-        userId, 
-        roomId: data.roomId 
+      client.to(data.roomId).emit('user_joined', {
+        userId,
+        roomId: data.roomId,
       });
     } catch (error) {
       client.emit('error', { message: error.message });
@@ -98,13 +99,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       await this.chatService.leaveRoom(data.roomId, userId);
       client.leave(data.roomId);
-      
+
       client.emit('left_room', { roomId: data.roomId });
-      
+
       // Notify others in the room
-      client.to(data.roomId).emit('user_left', { 
-        userId, 
-        roomId: data.roomId 
+      client.to(data.roomId).emit('user_left', {
+        userId,
+        roomId: data.roomId,
       });
     } catch (error) {
       client.emit('error', { message: error.message });
@@ -123,14 +124,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         return;
       }
 
-      const message = await this.chatService.sendMessage(
-        data.roomId, 
-        userId, 
-        { 
-          text: data.text, 
-          replyToId: data.replyToId 
-        }
-      );
+      const message = await this.chatService.sendMessage(data.roomId, userId, {
+        text: data.text,
+        replyToId: data.replyToId,
+      });
 
       // Broadcast message to all users in the room
       this.server.to(data.roomId).emit('new_message', message);
@@ -146,9 +143,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     const userId = this.connectedUsers.get(client.id);
     if (userId) {
-      client.to(data.roomId).emit('user_typing', { 
-        userId, 
-        roomId: data.roomId 
+      client.to(data.roomId).emit('user_typing', {
+        userId,
+        roomId: data.roomId,
       });
     }
   }
@@ -160,9 +157,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     const userId = this.connectedUsers.get(client.id);
     if (userId) {
-      client.to(data.roomId).emit('user_stopped_typing', { 
-        userId, 
-        roomId: data.roomId 
+      client.to(data.roomId).emit('user_stopped_typing', {
+        userId,
+        roomId: data.roomId,
       });
     }
   }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const api = axios.create({ 
+export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
   timeout: 10000,
 });
@@ -35,11 +35,11 @@ api.interceptors.response.use(
             `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
             { refreshToken }
           );
-          
+
           const { accessToken, refreshToken: newRefreshToken } = response.data;
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', newRefreshToken);
-          
+
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return api(originalRequest);
         }

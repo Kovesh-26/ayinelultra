@@ -40,7 +40,7 @@ function hasPage(route, files) {
 }
 
 function hasApiModule(module, files) {
-  return files.some(f => f.includes(/modules//));
+  return files.some(f => f.includes('/modules/'));
 }
 
 // Find web pages

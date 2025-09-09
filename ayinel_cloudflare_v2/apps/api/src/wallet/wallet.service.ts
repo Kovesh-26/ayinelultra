@@ -1,11 +1,16 @@
-import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { 
-  WalletResponseDto, 
-  TransactionResponseDto, 
+import {
+  WalletResponseDto,
+  TransactionResponseDto,
   AddFundsDto,
   WithdrawFundsDto,
-  TransferFundsDto 
+  TransferFundsDto,
 } from '@ayinel/types';
 
 @Injectable()
@@ -33,10 +38,15 @@ export class WalletService {
     userId: string,
     page: number = 1,
     limit: number = 20,
-    type?: string,
-  ): Promise<{ transactions: TransactionResponseDto[]; total: number; page: number; totalPages: number }> {
+    type?: string
+  ): Promise<{
+    transactions: TransactionResponseDto[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
     const skip = (page - 1) * limit;
-    
+
     const where: any = { userId };
     if (type) {
       where.type = type;
@@ -55,14 +65,17 @@ export class WalletService {
     const totalPages = Math.ceil(total / limit);
 
     return {
-      transactions: transactions.map(tx => this.mapToTransactionResponse(tx)),
+      transactions: transactions.map((tx) => this.mapToTransactionResponse(tx)),
       total,
       page,
       totalPages,
     };
   }
 
-  async addFunds(userId: string, dto: AddFundsDto): Promise<TransactionResponseDto> {
+  async addFunds(
+    userId: string,
+    dto: AddFundsDto
+  ): Promise<TransactionResponseDto> {
     const { amount, paymentMethod, description } = dto;
 
     if (amount <= 0) {
@@ -94,7 +107,10 @@ export class WalletService {
     return this.mapToTransactionResponse(transaction);
   }
 
-  async withdrawFunds(userId: string, dto: WithdrawFundsDto): Promise<TransactionResponseDto> {
+  async withdrawFunds(
+    userId: string,
+    dto: WithdrawFundsDto
+  ): Promise<TransactionResponseDto> {
     const { amount, withdrawalMethod, accountDetails, description } = dto;
 
     if (amount <= 0) {
@@ -132,7 +148,10 @@ export class WalletService {
     return this.mapToTransactionResponse(transaction);
   }
 
-  async transferFunds(senderId: string, dto: TransferFundsDto): Promise<TransactionResponseDto> {
+  async transferFunds(
+    senderId: string,
+    dto: TransferFundsDto
+  ): Promise<TransactionResponseDto> {
     const { recipientId, amount, description } = dto;
 
     if (senderId === recipientId) {
@@ -210,7 +229,10 @@ export class WalletService {
     return this.mapToTransactionResponse(result);
   }
 
-  async getTransaction(userId: string, transactionId: string): Promise<TransactionResponseDto> {
+  async getTransaction(
+    userId: string,
+    transactionId: string
+  ): Promise<TransactionResponseDto> {
     const transaction = await this.prisma.transaction.findFirst({
       where: {
         id: transactionId,
@@ -227,25 +249,27 @@ export class WalletService {
 
   async getWalletStats(userId: string) {
     const wallet = await this.getUserWallet(userId);
-    
-    const [totalDeposits, totalWithdrawals, totalTransfers] = await Promise.all([
-      this.prisma.transaction.aggregate({
-        where: { userId, type: 'DEPOSIT', status: 'COMPLETED' },
-        _sum: { amount: true },
-      }),
-      this.prisma.transaction.aggregate({
-        where: { userId, type: 'WITHDRAWAL', status: 'COMPLETED' },
-        _sum: { amount: true },
-      }),
-      this.prisma.transaction.aggregate({
-        where: { 
-          userId, 
-          type: { in: ['TRANSFER_IN', 'TRANSFER_OUT'] }, 
-          status: 'COMPLETED' 
-        },
-        _sum: { amount: true },
-      }),
-    ]);
+
+    const [totalDeposits, totalWithdrawals, totalTransfers] = await Promise.all(
+      [
+        this.prisma.transaction.aggregate({
+          where: { userId, type: 'DEPOSIT', status: 'COMPLETED' },
+          _sum: { amount: true },
+        }),
+        this.prisma.transaction.aggregate({
+          where: { userId, type: 'WITHDRAWAL', status: 'COMPLETED' },
+          _sum: { amount: true },
+        }),
+        this.prisma.transaction.aggregate({
+          where: {
+            userId,
+            type: { in: ['TRANSFER_IN', 'TRANSFER_OUT'] },
+            status: 'COMPLETED',
+          },
+          _sum: { amount: true },
+        }),
+      ]
+    );
 
     const monthlyStats = await this.getMonthlyStats(userId);
 
@@ -274,7 +298,11 @@ export class WalletService {
     return paymentIntent;
   }
 
-  async confirmPayment(userId: string, paymentIntentId: string, transactionId: string): Promise<TransactionResponseDto> {
+  async confirmPayment(
+    userId: string,
+    paymentIntentId: string,
+    transactionId: string
+  ): Promise<TransactionResponseDto> {
     // In a real implementation, this would verify the payment with the payment processor
     const transaction = await this.prisma.transaction.findFirst({
       where: {
@@ -299,8 +327,16 @@ export class WalletService {
 
   private async getMonthlyStats(userId: string) {
     const currentDate = new Date();
-    const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const startOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    );
+    const endOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
+    );
 
     const [deposits, withdrawals, transfers] = await Promise.all([
       this.prisma.transaction.aggregate({

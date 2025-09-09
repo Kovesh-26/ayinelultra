@@ -3,7 +3,7 @@ import { IsString, IsEnum, IsOptional } from 'class-validator';
 export enum FriendshipStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
-  BLOCKED = 'BLOCKED'
+  BLOCKED = 'BLOCKED',
 }
 
 export class SendFriendRequestDto {

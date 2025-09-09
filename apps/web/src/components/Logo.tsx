@@ -1,7 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function Logo({ withWordmark = true, size = 32 }: { withWordmark?: boolean; size?: number }) {
+export default function Logo({
+  withWordmark = true,
+  size = 32,
+}: {
+  withWordmark?: boolean;
+  size?: number;
+}) {
   return (
     <Link href="/" className="flex items-center gap-2">
       <Image

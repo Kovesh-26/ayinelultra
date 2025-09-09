@@ -91,6 +91,7 @@ AYINEL/
 ## 🎯 Key Features
 
 ### ✅ Implemented
+
 - **Monorepo Structure** with pnpm workspaces
 - **Database Schema** with Prisma ORM
 - **Type System** with comprehensive TypeScript types
@@ -105,6 +106,7 @@ AYINEL/
 - **Theme Customization** system
 
 ### 🚧 In Progress
+
 - **Core API Modules** (Auth, Users, Studios, Videos, etc.)
 - **Web Components** and pages
 - **Mobile App** development
@@ -138,17 +140,20 @@ pnpm setup            # Complete setup
 ## 🛠️ Troubleshooting
 
 ### Database Connection Issues
+
 - Ensure PostgreSQL service is running
 - Check credentials in `apps/api/.env`
 - Verify database exists: `ayinel_db`
 - Verify user exists: `ayineluser` with password `ayinelpass`
 
 ### Port Conflicts
+
 - API runs on port 3001
 - Web runs on port 3000
 - Change ports in respective `.env` files if needed
 
 ### Build Issues
+
 - Clear node_modules: `rm -rf node_modules && pnpm install`
 - Regenerate Prisma: `pnpm --filter @ayinel/api db:generate`
 - Check TypeScript errors: `pnpm --filter @ayinel/types build`

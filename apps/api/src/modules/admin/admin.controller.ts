@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AdminService, SystemConfig } from './admin.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -18,7 +28,11 @@ export class AdminController {
     @Query('limit') limit: string = '20',
     @Query('search') search?: string
   ) {
-    return this.adminService.getUserManagement(parseInt(page), parseInt(limit), search);
+    return this.adminService.getUserManagement(
+      parseInt(page),
+      parseInt(limit),
+      search
+    );
   }
 
   @Put('users/:userId/role')
@@ -53,7 +67,11 @@ export class AdminController {
     @Query('limit') limit: string = '50',
     @Query('level') level?: string
   ) {
-    return this.adminService.getSystemLogs(parseInt(page), parseInt(limit), level);
+    return this.adminService.getSystemLogs(
+      parseInt(page),
+      parseInt(limit),
+      level
+    );
   }
 
   @Post('maintenance')
@@ -74,24 +92,24 @@ export class AdminController {
         {
           name: 'Database Schema',
           endpoint: '/api/v1/admin/dev/schema',
-          description: 'View and modify database schema'
+          description: 'View and modify database schema',
         },
         {
           name: 'API Testing',
           endpoint: '/api/v1/admin/dev/test',
-          description: 'Test API endpoints'
+          description: 'Test API endpoints',
         },
         {
           name: 'Performance Monitoring',
           endpoint: '/api/v1/admin/dev/performance',
-          description: 'Monitor system performance'
+          description: 'Monitor system performance',
         },
         {
           name: 'Error Logs',
           endpoint: '/api/v1/admin/dev/errors',
-          description: 'View detailed error logs'
-        }
-      ]
+          description: 'View detailed error logs',
+        },
+      ],
     };
   }
 
@@ -100,16 +118,18 @@ export class AdminController {
     // TODO: Implement schema introspection
     return {
       message: 'Database schema introspection not implemented yet',
-      tables: ['users', 'videos', 'music', 'live_streams', 'payments']
+      tables: ['users', 'videos', 'music', 'live_streams', 'payments'],
     };
   }
 
   @Post('dev/test')
-  async testApiEndpoint(@Body() testData: { endpoint: string; method: string; data?: any }) {
+  async testApiEndpoint(
+    @Body() testData: { endpoint: string; method: string; data?: any }
+  ) {
     // TODO: Implement API testing tool
     return {
       message: 'API testing tool not implemented yet',
-      testData
+      testData,
     };
   }
 
@@ -121,8 +141,8 @@ export class AdminController {
       metrics: {
         responseTime: 'N/A',
         memoryUsage: 'N/A',
-        cpuUsage: 'N/A'
-      }
+        cpuUsage: 'N/A',
+      },
     };
   }
 
@@ -131,7 +151,7 @@ export class AdminController {
     // TODO: Implement error logging
     return {
       message: 'Error logging not implemented yet',
-      errors: []
+      errors: [],
     };
   }
 }

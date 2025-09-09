@@ -42,27 +42,28 @@ export class AdminService {
 
   async getSystemStats(): Promise<SystemStats> {
     try {
-      const [totalUsers, totalVideos, totalMusic, totalLiveStreams] = await Promise.all([
-        this.prisma.user.count(),
-        this.prisma.video.count(),
-        this.prisma.musicTrack.count(),
-        this.prisma.liveStream.count()
-      ]);
+      const [totalUsers, totalVideos, totalMusic, totalLiveStreams] =
+        await Promise.all([
+          this.prisma.user.count(),
+          this.prisma.video.count(),
+          this.prisma.musicTrack.count(),
+          this.prisma.liveStream.count(),
+        ]);
 
       // TODO: Implement real revenue calculation
       const totalRevenue = 0;
       const activeUsers = await this.prisma.user.count({
         where: {
           lastLoginAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        }
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          },
+        },
       });
 
       const systemHealth = {
         database: 'healthy',
         redis: 'healthy',
-        externalServices: 'healthy'
+        externalServices: 'healthy',
       };
 
       return {
@@ -72,7 +73,7 @@ export class AdminService {
         totalLiveStreams,
         totalRevenue,
         activeUsers,
-        systemHealth
+        systemHealth,
       };
     } catch (error) {
       this.logger.error(`Failed to get system stats: ${error.message}`);
@@ -80,17 +81,23 @@ export class AdminService {
     }
   }
 
-  async getUserManagement(page: number = 1, limit: number = 20, search?: string): Promise<UserManagementData> {
+  async getUserManagement(
+    page: number = 1,
+    limit: number = 20,
+    search?: string
+  ): Promise<UserManagementData> {
     try {
       const skip = (page - 1) * limit;
-      
-      const where = search ? {
-        OR: [
-          { name: { contains: search, mode: 'insensitive' } },
-          { email: { contains: search, mode: 'insensitive' } },
-          { handle: { contains: search, mode: 'insensitive' } }
-        ]
-      } : {};
+
+      const where = search
+        ? {
+            OR: [
+              { name: { contains: search, mode: 'insensitive' } },
+              { email: { contains: search, mode: 'insensitive' } },
+              { handle: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {};
 
       const [users, total] = await Promise.all([
         this.prisma.user.findMany({
@@ -105,18 +112,18 @@ export class AdminService {
             createdAt: true,
             lastLoginAt: true,
             isActive: true,
-            role: true
+            role: true,
           },
-          orderBy: { createdAt: 'desc' }
+          orderBy: { createdAt: 'desc' },
         }),
-        this.prisma.user.count({ where })
+        this.prisma.user.count({ where }),
       ]);
 
       return {
         users,
         total,
         page,
-        limit
+        limit,
       };
     } catch (error) {
       this.logger.error(`Failed to get user management data: ${error.message}`);
@@ -128,7 +135,7 @@ export class AdminService {
     try {
       const user = await this.prisma.user.update({
         where: { id: userId },
-        data: { role }
+        data: { role },
       });
 
       this.logger.log(`User role updated: ${userId} -> ${role}`);
@@ -143,7 +150,7 @@ export class AdminService {
     try {
       const user = await this.prisma.user.update({
         where: { id: userId },
-        data: { isActive }
+        data: { isActive },
       });
 
       this.logger.log(`User status updated: ${userId} -> ${isActive}`);
@@ -165,8 +172,8 @@ export class AdminService {
         rateLimits: {
           api: 1000, // requests per hour
           upload: 10, // files per hour
-          login: 5 // attempts per hour
-        }
+          login: 5, // attempts per hour
+        },
       };
 
       return config;
@@ -196,22 +203,22 @@ export class AdminService {
           level: 'INFO',
           message: 'System startup completed',
           timestamp: new Date(),
-          context: 'System'
+          context: 'System',
         },
         {
           id: '2',
           level: 'WARN',
           message: 'High memory usage detected',
           timestamp: new Date(Date.now() - 60000),
-          context: 'Monitoring'
-        }
+          context: 'Monitoring',
+        },
       ];
 
       return {
         logs,
         total: logs.length,
         page,
-        limit
+        limit,
       };
     } catch (error) {
       this.logger.error(`Failed to get system logs: ${error.message}`);
@@ -222,7 +229,9 @@ export class AdminService {
   async triggerSystemMaintenance(maintenanceMode: boolean) {
     try {
       // TODO: Implement real maintenance mode
-      this.logger.log(`Maintenance mode ${maintenanceMode ? 'enabled' : 'disabled'}`);
+      this.logger.log(
+        `Maintenance mode ${maintenanceMode ? 'enabled' : 'disabled'}`
+      );
       return { success: true, maintenanceMode };
     } catch (error) {
       this.logger.error(`Failed to trigger maintenance mode: ${error.message}`);

@@ -28,7 +28,8 @@ export default function CreateStudioPage() {
     if (!formData.handle.trim()) {
       newErrors.handle = 'Studio handle is required';
     } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.handle)) {
-      newErrors.handle = 'Handle can only contain letters, numbers, hyphens, and underscores';
+      newErrors.handle =
+        'Handle can only contain letters, numbers, hyphens, and underscores';
     } else if (formData.handle.length < 3) {
       newErrors.handle = 'Handle must be at least 3 characters';
     }
@@ -43,7 +44,7 @@ export default function CreateStudioPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -53,7 +54,7 @@ export default function CreateStudioPage() {
     try {
       const response = await api.post(endpoints.studios.create, formData);
       const { studio } = response.data;
-      
+
       // Redirect to the new studio
       router.push(`/studio/${studio.handle}`);
     } catch (error: any) {
@@ -70,10 +71,10 @@ export default function CreateStudioPage() {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear field-specific error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
   };
 
@@ -85,8 +86,12 @@ export default function CreateStudioPage() {
           <Link href="/" className="text-4xl font-bold text-white mb-2 block">
             Ayinel
           </Link>
-          <h1 className="text-3xl font-bold text-white mb-2">Create Your Studio</h1>
-          <p className="text-purple-200">Start sharing your content with the world</p>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Create Your Studio
+          </h1>
+          <p className="text-purple-200">
+            Start sharing your content with the world
+          </p>
         </div>
 
         {/* Form */}
@@ -94,7 +99,10 @@ export default function CreateStudioPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Studio Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-white mb-2"
+              >
                 Studio Name *
               </label>
               <input
@@ -115,7 +123,10 @@ export default function CreateStudioPage() {
 
             {/* Studio Handle */}
             <div>
-              <label htmlFor="handle" className="block text-sm font-medium text-white mb-2">
+              <label
+                htmlFor="handle"
+                className="block text-sm font-medium text-white mb-2"
+              >
                 Studio Handle *
               </label>
               <div className="relative">
@@ -126,7 +137,9 @@ export default function CreateStudioPage() {
                   id="handle"
                   type="text"
                   value={formData.handle}
-                  onChange={(e) => handleInputChange('handle', e.target.value.toLowerCase())}
+                  onChange={(e) =>
+                    handleInputChange('handle', e.target.value.toLowerCase())
+                  }
                   className={`w-full pl-32 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
                     errors.handle ? 'border-red-400' : 'border-white/20'
                   }`}
@@ -138,13 +151,17 @@ export default function CreateStudioPage() {
                 <p className="mt-1 text-red-400 text-sm">{errors.handle}</p>
               )}
               <p className="mt-1 text-purple-200 text-sm">
-                This will be your unique URL: ayinel.com/studio/{formData.handle || 'your-studio'}
+                This will be your unique URL: ayinel.com/studio/
+                {formData.handle || 'your-studio'}
               </p>
             </div>
 
             {/* About */}
             <div>
-              <label htmlFor="about" className="block text-sm font-medium text-white mb-2">
+              <label
+                htmlFor="about"
+                className="block text-sm font-medium text-white mb-2"
+              >
                 About Your Studio
               </label>
               <textarea
@@ -168,7 +185,10 @@ export default function CreateStudioPage() {
 
             {/* Banner URL */}
             <div>
-              <label htmlFor="bannerUrl" className="block text-sm font-medium text-white mb-2">
+              <label
+                htmlFor="bannerUrl"
+                className="block text-sm font-medium text-white mb-2"
+              >
                 Banner Image URL
               </label>
               <input
@@ -180,7 +200,8 @@ export default function CreateStudioPage() {
                 placeholder="https://example.com/banner.jpg"
               />
               <p className="mt-1 text-purple-200 text-sm">
-                Optional: Add a banner image for your studio (recommended size: 1200x400px)
+                Optional: Add a banner image for your studio (recommended size:
+                1200x400px)
               </p>
             </div>
 
@@ -214,7 +235,10 @@ export default function CreateStudioPage() {
         <div className="mt-8 text-center">
           <p className="text-purple-200 text-sm">
             Already have a studio?{' '}
-            <Link href="/dashboard" className="text-white hover:underline font-medium">
+            <Link
+              href="/dashboard"
+              className="text-white hover:underline font-medium"
+            >
               Go to Dashboard
             </Link>
           </p>

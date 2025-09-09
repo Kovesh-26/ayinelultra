@@ -1,6 +1,14 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateChatRoomDto, SendMessageDto, ChatRoomKind } from './dto/chat.dto';
+import {
+  CreateChatRoomDto,
+  SendMessageDto,
+  ChatRoomKind,
+} from './dto/chat.dto';
 
 @Injectable()
 export class ChatService {
@@ -14,14 +22,14 @@ export class ChatService {
           create: [
             {
               userId,
-              role: 'ADMIN'
+              role: 'ADMIN',
             },
-            ...(dto.participantIds || []).map(participantId => ({
+            ...(dto.participantIds || []).map((participantId) => ({
               userId: participantId,
-              role: 'MEMBER'
-            }))
-          ]
-        }
+              role: 'MEMBER',
+            })),
+          ],
+        },
       },
       include: {
         participants: {
@@ -31,12 +39,12 @@ export class ChatService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
-        }
-      }
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     return room;
@@ -47,9 +55,9 @@ export class ChatService {
       where: {
         participants: {
           some: {
-            userId
-          }
-        }
+            userId,
+          },
+        },
       },
       include: {
         participants: {
@@ -59,15 +67,15 @@ export class ChatService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
+                avatarUrl: true,
+              },
+            },
+          },
         },
         messages: {
           take: 1,
           orderBy: {
-            createdAt: 'desc'
+            createdAt: 'desc',
           },
           include: {
             sender: {
@@ -75,20 +83,20 @@ export class ChatService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
+                avatarUrl: true,
+              },
+            },
+          },
         },
         _count: {
           select: {
-            messages: true
-          }
-        }
+            messages: true,
+          },
+        },
       },
       orderBy: {
-        updatedAt: 'desc'
-      }
+        updatedAt: 'desc',
+      },
     });
   }
 
@@ -103,12 +111,12 @@ export class ChatService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
-        }
-      }
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!room) {
@@ -116,7 +124,7 @@ export class ChatService {
     }
 
     // Check if user is participant
-    const isParticipant = room.participants.some(p => p.userId === userId);
+    const isParticipant = room.participants.some((p) => p.userId === userId);
     if (!isParticipant) {
       throw new ForbiddenException('You are not a participant in this room');
     }
@@ -124,13 +132,18 @@ export class ChatService {
     return room;
   }
 
-  async getMessages(roomId: string, userId: string, page: number = 1, limit: number = 50) {
+  async getMessages(
+    roomId: string,
+    userId: string,
+    page: number = 1,
+    limit: number = 50
+  ) {
     // Check if user is participant
     const room = await this.getRoom(roomId, userId);
-    
+
     const messages = await this.prisma.message.findMany({
       where: {
-        conversationId: roomId
+        conversationId: roomId,
       },
       include: {
         sender: {
@@ -138,8 +151,8 @@ export class ChatService {
             id: true,
             username: true,
             displayName: true,
-            avatarUrl: true
-          }
+            avatarUrl: true,
+          },
         },
         replyTo: {
           include: {
@@ -148,17 +161,17 @@ export class ChatService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
-        }
+                avatarUrl: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
+        createdAt: 'desc',
       },
       skip: (page - 1) * limit,
-      take: limit
+      take: limit,
     });
 
     return {
@@ -167,9 +180,9 @@ export class ChatService {
         page,
         limit,
         total: await this.prisma.message.count({
-          where: { conversationId: roomId }
-        })
-      }
+          where: { conversationId: roomId },
+        }),
+      },
     };
   }
 
@@ -182,7 +195,7 @@ export class ChatService {
         conversationId: roomId,
         senderId: userId,
         text: dto.text,
-        replyToId: dto.replyToId
+        replyToId: dto.replyToId,
       },
       include: {
         sender: {
@@ -190,8 +203,8 @@ export class ChatService {
             id: true,
             username: true,
             displayName: true,
-            avatarUrl: true
-          }
+            avatarUrl: true,
+          },
         },
         replyTo: {
           include: {
@@ -200,18 +213,18 @@ export class ChatService {
                 id: true,
                 username: true,
                 displayName: true,
-                avatarUrl: true
-              }
-            }
-          }
-        }
-      }
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     // Update conversation updatedAt
     await this.prisma.conversation.update({
       where: { id: roomId },
-      data: { updatedAt: new Date() }
+      data: { updatedAt: new Date() },
     });
 
     return message;
@@ -221,8 +234,8 @@ export class ChatService {
     const room = await this.prisma.conversation.findUnique({
       where: { id: roomId },
       include: {
-        participants: true
-      }
+        participants: true,
+      },
     });
 
     if (!room) {
@@ -230,7 +243,7 @@ export class ChatService {
     }
 
     // Check if user is already a participant
-    const isParticipant = room.participants.some(p => p.userId === userId);
+    const isParticipant = room.participants.some((p) => p.userId === userId);
     if (isParticipant) {
       return room;
     }
@@ -240,8 +253,8 @@ export class ChatService {
       data: {
         conversationId: roomId,
         userId,
-        role: 'MEMBER'
-      }
+        role: 'MEMBER',
+      },
     });
 
     return this.getRoom(roomId, userId);
@@ -254,8 +267,8 @@ export class ChatService {
     await this.prisma.conversationParticipant.deleteMany({
       where: {
         conversationId: roomId,
-        userId
-      }
+        userId,
+      },
     });
 
     return { success: true };
@@ -263,7 +276,7 @@ export class ChatService {
 
   async deleteMessage(messageId: string, userId: string) {
     const message = await this.prisma.message.findUnique({
-      where: { id: messageId }
+      where: { id: messageId },
     });
 
     if (!message) {
@@ -275,7 +288,7 @@ export class ChatService {
     }
 
     return this.prisma.message.delete({
-      where: { id: messageId }
+      where: { id: messageId },
     });
   }
 
