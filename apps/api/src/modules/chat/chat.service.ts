@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateChatRoomDto, SendMessageDto, ChatRoomKind } from './dto/chat.dto';
 
@@ -177,11 +177,18 @@ export class ChatService {
     // Check if user is participant
     await this.getRoom(roomId, userId);
 
+    // Validate that either text or attachment is provided
+    if (!dto.text && !dto.attachmentUrl) {
+      throw new BadRequestException('Message must contain either text or an attachment');
+    }
+
     const message = await this.prisma.message.create({
       data: {
         conversationId: roomId,
         senderId: userId,
         text: dto.text,
+        attachmentUrl: dto.attachmentUrl,
+        attachmentType: dto.attachmentType,
         replyToId: dto.replyToId
       },
       include: {

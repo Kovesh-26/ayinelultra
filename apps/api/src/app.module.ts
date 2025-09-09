@@ -12,6 +12,8 @@ import { MarketplaceModule } from './modules/marketplace/marketplace.module';
 import { KidzoneModule } from './modules/kidzone/kidzone.module';
 import { CollectionsModule } from './modules/collections/collections.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { AiModule } from './modules/ai/ai.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { StoreModule } from './modules/store/store.module';
 import { PayoutsModule } from './modules/payouts/payouts.module';
@@ -42,6 +44,8 @@ import { MonitoringModule } from './modules/monitoring/monitoring.module';
     KidzoneModule,
     CollectionsModule,
     ChatModule,
+    AiModule,
+    UploadsModule,
     WebhooksModule,
     StoreModule,
     PayoutsModule,
