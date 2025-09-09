@@ -31,26 +31,35 @@ export default function HomePage() {
         <div className="flex gap-6 pt-6">
           <Sidebar active="Home" />
           <main className="flex-1">
-            {/* Hero Section */}
-            <div className="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-indigo-800/40 via-purple-800/30 to-fuchsia-700/40 p-8">
-              <div className="grid gap-8 md:grid-cols-[1fr_auto]">
-                <div>
-                  <h1 className="text-4xl font-bold text-white mb-4">Welcome to Ayinel</h1>
-                  <p className="text-lg text-muted-foreground">
+            {/* Enhanced Hero Section */}
+            <div className="group relative mb-8 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-indigo-800/40 via-purple-800/30 to-fuchsia-700/40 p-8 shadow-2xl shadow-indigo-500/20">
+              {/* Animated background elements */}
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-fuchsia-600/20 opacity-50" />
+              <div className="absolute -inset-10 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-fuchsia-500/10 blur-3xl" />
+              
+              {/* Floating orbs for visual interest */}
+              <div className="absolute top-4 left-4 h-16 w-16 rounded-full bg-gradient-to-r from-indigo-500/30 to-purple-500/30 blur-xl animate-pulse" />
+              <div className="absolute bottom-4 right-4 h-12 w-12 rounded-full bg-gradient-to-r from-purple-500/30 to-fuchsia-500/30 blur-xl animate-pulse" style={{animationDelay: '1s'}} />
+              
+              <div className="relative z-10 grid gap-8 md:grid-cols-[1fr_auto]">
+                <div className="space-y-6">
+                  <h1 className="text-4xl font-bold text-white bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">Welcome to Ayinel</h1>
+                  <p className="text-lg text-white/80">
                     Join the creator revolution. It&apos;s time to shine.
                   </p>
-                  <div className="flex gap-4">
-                    <button className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-white font-semibold shadow">
-                      Start Watching
+                  <div className="flex flex-wrap gap-4">
+                    <button className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-white font-semibold shadow-lg transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/25 hover:scale-105">
+                      <span className="relative z-10">Start Watching</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-indigo-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                     </button>
-                    <button className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-white hover:bg-white/10">
-                      Create
+                    <button className="group relative overflow-hidden rounded-xl border border-white/20 bg-white/10 px-6 py-3 text-white font-semibold backdrop-blur-sm transition-all duration-300 hover:bg-white/20 hover:shadow-lg">
+                      <span className="relative z-10">Create</span>
                     </button>
                     <a 
                       href="/demo" 
-                      className="rounded-xl border border-indigo-500/50 bg-indigo-500/10 px-6 py-3 text-indigo-300 hover:bg-indigo-500/20"
+                      className="group relative overflow-hidden rounded-xl border border-indigo-500/50 bg-indigo-500/10 px-6 py-3 text-indigo-300 font-semibold backdrop-blur-sm transition-all duration-300 hover:bg-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/25"
                     >
-                      View UI Demo
+                      <span className="relative z-10">View UI Demo</span>
                     </a>
                   </div>
                 </div>
@@ -93,28 +102,40 @@ export default function HomePage() {
               </Grid>
             </Section>
 
-            {/* Quick Links */}
+            {/* Enhanced Quick Links */}
             <Section title="Quick Links">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <a href="/explore" className="rounded-2xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors">
-                  <div className="text-2xl mb-2">🧭</div>
-                  <div className="font-semibold text-white">Explore</div>
-                  <div className="text-sm text-white/60">Discover new content</div>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <a href="/explore" className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/20 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-cyan-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative z-10 text-center">
+                    <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-110">🧭</div>
+                    <div className="font-semibold text-white mb-2">Explore</div>
+                    <div className="text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90">Discover new content</div>
+                  </div>
                 </a>
-                <a href="/trending" className="rounded-2xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors">
-                  <div className="text-2xl mb-2">🔥</div>
-                  <div className="font-semibold text-white">Trending</div>
-                  <div className="text-sm text-white/60">See what's popular</div>
+                <a href="/trending" className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-orange-500/30 hover:shadow-xl hover:shadow-orange-500/20 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-red-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative z-10 text-center">
+                    <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-110">🔥</div>
+                    <div className="font-semibold text-white mb-2">Trending</div>
+                    <div className="text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90">See what's popular</div>
+                  </div>
                 </a>
-                <a href="/live" className="rounded-2xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors">
-                  <div className="text-2xl mb-2">🔴</div>
-                  <div className="font-semibold text-white">Live</div>
-                  <div className="text-sm text-white/60">Watch broadcasts</div>
+                <a href="/live" className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-red-500/30 hover:shadow-xl hover:shadow-red-500/20 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-pink-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative z-10 text-center">
+                    <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-110">🔴</div>
+                    <div className="font-semibold text-white mb-2">Live</div>
+                    <div className="text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90">Watch broadcasts</div>
+                  </div>
                 </a>
-                <a href="/music" className="rounded-2xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors">
-                  <div className="text-2xl mb-2">🎵</div>
-                  <div className="font-semibold text-white">Music</div>
-                  <div className="text-sm text-white/60">Listen to collections</div>
+                <a href="/music" className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-purple-500/30 hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-fuchsia-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative z-10 text-center">
+                    <div className="text-4xl mb-3 transition-transform duration-300 group-hover:scale-110">🎵</div>
+                    <div className="font-semibold text-white mb-2">Music</div>
+                    <div className="text-sm text-white/70 transition-colors duration-300 group-hover:text-white/90">Listen to collections</div>
+                  </div>
                 </a>
               </div>
             </Section>
