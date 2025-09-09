@@ -9,7 +9,7 @@ interface VideoCardProps {
   onClick?: () => void;
 }
 
-export function VideoCard({ title, channel = "Creator", duration = "6:28", badge, live, onClick }: VideoCardProps) {
+export function VideoCard({ title, channel = "username", duration = "12:45", badge, live, onClick }: VideoCardProps) {
   return (
     <div 
       className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10 transition-colors"
@@ -24,9 +24,14 @@ export function VideoCard({ title, channel = "Creator", duration = "6:28", badge
         )}
         <span className="absolute bottom-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-xs text-white">{duration}</span>
       </div>
-      <div className="space-y-1 p-3">
-        <h3 className="line-clamp-1 font-medium text-white">{title}</h3>
-        <p className="text-xs text-white/60">{channel}</p>
+      <div className="p-3">
+        <div className="flex items-start gap-3">
+          <div className="h-8 w-8 rounded-full bg-white/10" />
+          <div>
+            <h3 className="text-white font-medium leading-tight">{title}</h3>
+            <div className="text-xs text-white/60">by {channel}</div>
+          </div>
+        </div>
       </div>
     </div>
   );
