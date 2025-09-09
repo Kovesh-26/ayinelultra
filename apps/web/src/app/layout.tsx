@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -15,7 +15,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
