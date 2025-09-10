@@ -11,6 +11,7 @@ import {
   VideoCard,
   StatCard
 } from '@/components/ayinel';
+import AgentChat from '@/components/AgentChat';
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -121,6 +122,9 @@ export default function HomePage() {
           </main>
         </div>
       </Container>
+      
+      {/* Agent Chat Component */}
+      <AgentChat />
     </div>
   );
 }
