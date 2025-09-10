@@ -13,7 +13,7 @@ export default function DashboardPage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   // Real-time data with advanced animations
   const [liveStats, setLiveStats] = useState({

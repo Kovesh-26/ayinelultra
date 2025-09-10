@@ -1,16 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import * as compression from 'compression';
-import * as helmet from 'helmet';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import compression from 'compression';
+import helmet from 'helmet';
 import { CustomThrottlerGuard } from './modules/rate-limit/rate-limit.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Security middleware
-  app.use(helmet.default());
+  app.use(helmet());
   app.use(compression());
 
   // CORS
