@@ -5,5 +5,5 @@ interface GridProps {
 }
 
 export function Grid({ children }: GridProps) {
-  return <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{children}</div>;
+  return <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">{children}</div>;
 }
