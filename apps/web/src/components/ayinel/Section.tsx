@@ -8,9 +8,9 @@ interface SectionProps {
 
 export function Section({ title, right, children }: SectionProps) {
   return (
-    <section className="mt-8">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-white/90">{title}</h2>
+    <section className="mt-12">
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-white">{title}</h2>
         {right}
       </div>
       {children}
