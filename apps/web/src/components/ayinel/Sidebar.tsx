@@ -21,16 +21,18 @@ export function Sidebar({ active = "Home" }: SidebarProps) {
 
   return (
     <aside className="hidden md:block w-56 shrink-0">
-      <nav className="sticky top-16 space-y-2">
+      <nav className="sticky top-20 space-y-1">
         {items.map((item) => (
           <div
             key={item}
-            className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm cursor-default ${
-              active === item ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
+            className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm cursor-pointer transition-all duration-200 ${
+              active === item 
+                ? "bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-white border border-indigo-500/30 shadow-lg" 
+                : "text-white/70 hover:bg-white/5 hover:text-white"
             }`}
           >
             <span className="text-lg">{getIcon(item)}</span>
-            <span>{item}</span>
+            <span className="font-medium">{item}</span>
           </div>
         ))}
       </nav>
