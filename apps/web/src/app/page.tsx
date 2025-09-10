@@ -22,7 +22,7 @@ export default function HomePage() {
     { number: '45K', label: 'Creators', icon: '👑' }
   ];
 
-  const categories = ['Gaming', 'Music', 'Tech', 'Fitness', 'Cooking', 'Travel', 'Education', 'Comedy'];
+  const categories = ['All', 'Gaming', 'Music', 'Tech', 'Fitness', 'Cooking', 'Travel', 'Education', 'Comedy', 'News'];
 
   return (
     <div className="min-h-screen bg-[#0a0f14] text-white">
@@ -32,26 +32,31 @@ export default function HomePage() {
           <Sidebar active="Home" />
           <main className="flex-1">
             {/* Hero Section */}
-            <div className="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-indigo-800/40 via-purple-800/30 to-fuchsia-700/40 p-8">
-              <div className="grid gap-8 md:grid-cols-[1fr_auto]">
+            <div className="relative mb-8 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-indigo-800/40 via-purple-800/30 to-fuchsia-700/40 p-8">
+              {/* Faint Eye Watermark Background */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                <svg width="300" height="200" viewBox="0 0 300 200" className="text-white">
+                  <ellipse cx="150" cy="100" rx="120" ry="60" fill="none" stroke="currentColor" strokeWidth="3" />
+                  <ellipse cx="150" cy="100" rx="60" ry="30" fill="currentColor" opacity="0.3" />
+                  <circle cx="150" cy="100" r="15" fill="currentColor" />
+                </svg>
+              </div>
+              
+              <div className="relative z-10 grid gap-8 md:grid-cols-[1fr_auto]">
                 <div>
-                  <h1 className="text-4xl font-bold text-white mb-4">Welcome to Ayinel</h1>
-                  <p className="text-lg text-muted-foreground">
-                    Join the creator revolution. It&apos;s time to shine.
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent mb-4">
+                    Welcome to Ayinel
+                  </h1>
+                  <p className="text-lg text-white/80 mb-6">
+                    Discover amazing content from creators worldwide. Tune-In, Boost, and build your Crew.
                   </p>
                   <div className="flex gap-4">
-                    <button className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-white font-semibold shadow">
+                    <button className="rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-3 text-white font-semibold shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-cyan-600 transition-all">
                       Start Watching
                     </button>
-                    <button className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-white hover:bg-white/10">
+                    <button className="rounded-full border border-white/20 bg-black/20 px-8 py-3 text-white hover:bg-black/30 hover:border-white/30 transition-all">
                       Create
                     </button>
-                    <a 
-                      href="/demo" 
-                      className="rounded-xl border border-indigo-500/50 bg-indigo-500/10 px-6 py-3 text-indigo-300 hover:bg-indigo-500/20"
-                    >
-                      View UI Demo
-                    </a>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
