@@ -1,52 +1,52 @@
 # GAP_REPORT — Ayinel
 
-## Web Routes (Next.js) (Found 101/130)
+## Web Routes (Next.js) (Found 1/97)
 
 | Item | Status |
 |---|---|
 | / | ✅ |
-| watch/[id] | ✅ |
-| search | ✅ |
-| u/[handle] | ✅ |
-| studio/[handle] | ✅ |
-| studio/[handle]/collections/[id] | ✅ |
-| upload | ✅ |
-| kidzone | ✅ |
+| watch/[id] | ❌ |
+| search | ❌ |
+| u/[handle] | ❌ |
+| studio/[handle] | ❌ |
+| studio/[handle]/collections/[id] | ❌ |
+| upload | ❌ |
+| kidzone | ❌ |
 | pricing | ❌ |
-| legal/terms | ✅ |
-| legal/privacy | ✅ |
+| legal/terms | ❌ |
+| legal/privacy | ❌ |
 | legal/dmca | ❌ |
-| support | ✅ |
-| auth/login | ✅ |
-| auth/verify | ✅ |
+| support | ❌ |
+| auth/login | ❌ |
+| auth/verify | ❌ |
 | auth/callback/[provider] | ❌ |
-| settings/profile | ✅ |
+| settings/profile | ❌ |
 | settings/kidzone | ❌ |
-| dashboard | ✅ |
-| dashboard/uploads | ✅ |
-| dashboard/uploads/new | ✅ |
-| dashboard/customize | ✅ |
-| dashboard/memberships | ✅ |
+| dashboard | ❌ |
+| dashboard/uploads | ❌ |
+| dashboard/uploads/new | ❌ |
+| dashboard/customize | ❌ |
+| dashboard/memberships | ❌ |
 | dashboard/newsletters | ❌ |
-| dashboard/analytics | ✅ |
-| dashboard/studio | ✅ |
-| dashboard/collections | ✅ |
-| dashboard/collections/[id]/edit | ✅ |
-| admin | ✅ |
-| admin/moderation | ✅ |
-| 404 | ✅ |
+| dashboard/analytics | ❌ |
+| dashboard/studio | ❌ |
+| dashboard/collections | ❌ |
+| dashboard/collections/[id]/edit | ❌ |
+| admin | ❌ |
+| admin/moderation | ❌ |
+| 404 | ❌ |
 | 500 | ❌ |
-| trending | ✅ |
-| flips | ✅ |
-| music | ✅ |
-| broadcasts | ✅ |
-| categories | ✅ |
-| tags/[tag] | ✅ |
-| studios | ✅ |
-| studios/family-friendly | ✅ |
-| collections/[id] | ✅ |
-| history | ✅ |
-| library | ✅ |
+| trending | ❌ |
+| flips | ❌ |
+| music | ❌ |
+| broadcasts | ❌ |
+| categories | ❌ |
+| tags/[tag] | ❌ |
+| studios | ❌ |
+| studios/family-friendly | ❌ |
+| collections/[id] | ❌ |
+| history | ❌ |
+| library | ❌ |
 | watch/[id]/clips | ❌ |
 | watch/[id]/captions | ❌ |
 | watch/[id]/chapters | ❌ |
@@ -57,7 +57,7 @@
 | friends/requests | ❌ |
 | groups | ❌ |
 | groups/[id] | ❌ |
-| inbox | ✅ |
+| inbox | ❌ |
 | inbox/[threadId] | ❌ |
 | chat/[roomId] | ❌ |
 | settings/account | ❌ |
@@ -65,55 +65,55 @@
 | settings/payments | ❌ |
 | settings/notifications | ❌ |
 | settings/privacy | ❌ |
-| settings/studio/branding | ✅ |
+| settings/studio/branding | ❌ |
 | settings/studio/integrations | ❌ |
-| settings/store | ✅ |
+| settings/store | ❌ |
 | settings/address | ❌ |
 | settings/tax | ❌ |
-| plus | ✅ |
-| store | ✅ |
-| store/cart | ✅ |
-| store/orders | ✅ |
-| store/orders/[id] | ✅ |
-| payouts | ✅ |
-| payouts/tax | ✅ |
-| memberships | ✅ |
-| memberships/manage | ✅ |
+| plus | ❌ |
+| store | ❌ |
+| store/cart | ❌ |
+| store/orders | ❌ |
+| store/orders/[id] | ❌ |
+| payouts | ❌ |
+| payouts/tax | ❌ |
+| memberships | ❌ |
+| memberships/manage | ❌ |
 | kidzone/studios | ❌ |
 | kidzone/approvals | ❌ |
 | kidzone/time | ❌ |
 | parent | ❌ |
 | parent/approvals | ❌ |
 | parent/pin | ❌ |
-| guidelines | ✅ |
-| help | ✅ |
+| guidelines | ❌ |
+| help | ❌ |
 | help/articles | ❌ |
 | help/articles/[slug] | ❌ |
-| appeals | ✅ |
+| appeals | ❌ |
 | admin/queues | ❌ |
 | admin/reports | ❌ |
 | admin/appeals | ❌ |
-| admin/users | ✅ |
+| admin/users | ❌ |
 | admin/studios | ❌ |
 | admin/media | ❌ |
-| admin/payments | ✅ |
+| admin/payments | ❌ |
 | admin/feature-flags | ❌ |
 | admin/kidzone | ❌ |
 | admin/newsletters | ❌ |
 | admin/search | ❌ |
 
-## API Modules (NestJS) (Found 18/18)
+## API Modules (NestJS) (Found 13/19)
 
 | Item | Status |
 |---|---|
 | auth | ✅ |
 | users | ✅ |
 | studios | ✅ |
-| media | ✅ |
+| media | ❌ |
 | collections | ✅ |
 | chat | ✅ |
-| kidsettings | ✅ |
-| payments | ✅ |
+| kidsettings | ❌ |
+| payments | ❌ |
 | webhooks | ✅ |
 | newsletters | ❌ |
 | moderation | ❌ |
@@ -126,7 +126,7 @@
 | reports | ✅ |
 | appeals | ✅ |
 
-## Mobile Screens (Expo) (Found 0/58)
+## Mobile Screens (Expo) (Found 0/51)
 
 | Item | Status |
 |---|---|
@@ -181,3 +181,4 @@
 | admin/reports | ❌ |
 | admin/moderation | ❌ |
 | admin/appeals | ❌ |
+

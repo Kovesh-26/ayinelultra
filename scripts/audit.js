@@ -40,7 +40,8 @@ function hasPage(route, files) {
 }
 
 function hasApiModule(module, files) {
-  return files.some(f => f.includes(/modules//));
+  // Check if the file path includes the module name in the modules directory
+  return files.some(f => f.replace(/\\/g, '/').includes(`/modules/${module}/`) || f.replace(/\\/g, '/').includes(`/modules/${module}.`));
 }
 
 // Find web pages
@@ -57,16 +58,17 @@ const mobileExpected = [
   'onboarding','login','verify','home','search','watch','chat','u/[handle]','studio/[handle]','collection/[id]','upload','kidzone','settings/profile','settings/kidzone','plus','tips','inbox','dm/[id]',
   'trending','flips','music','broadcasts','categories','tags/[tag]','studios','player/clips','player/captions','player/chapters','friends','friends/requests','groups','groups/[id]','chat/[roomId]','inbox/[threadId]','store','store/cart','orders','orders/[id]','payouts','settings/security','settings/payments','settings/notifications','settings/privacy','settings/studio/branding','settings/studio/integrations','parent','parent/approvals','parent/pin','admin/reports','admin/moderation','admin/appeals'
 ];
-const mobileFound = mobileExpected.map(s => ({ label: s, ok: mobileFiles.some(f => f.includes(pp//)) }));
+
+const mobileFound = mobileExpected.map(s => ({ label: s, ok: mobileFiles.some(f => f.replace(/\\/g, '/').includes(`/app/${s}`)) }));
 
 let md = '# GAP_REPORT — Ayinel\n\n';
 
 function section(title, rows) {
   const found = rows.filter(r => r.ok).length;
   const total = rows.length;
-  md += ##  (Found /)\n\n| Item | Status |\n|---|---|\n;
+  md += `## ${title} (Found ${found}/${total})\n\n| Item | Status |\n|---|---|\n`;
   for (const r of rows) {
-    md += |  |  |\n;
+    md += `| ${r.label} | ${r.ok ? '✅' : '❌'} |\n`;
   }
   md += '\n';
 }
